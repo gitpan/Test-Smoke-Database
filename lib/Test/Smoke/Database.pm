@@ -1,17 +1,31 @@
 package Test::Smoke::Database;
 
+# module Test::Smoke::Database - Add / parse /display perl reports smoke database
+# Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
+# $Date: 2003/01/05 01:15:55 $
+# $Log: Database.pm,v $
+# Revision 1.3  2003/01/05 01:15:55  alian
+# - Add a special parser for HM Brand's reports
+# - Remove --rename option
+# - Rewrite code for better daily use with no --clear option
+# - Add tests for report parsing
+# - Update POD
+#
+
 use Carp;
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 use DBI;
 use CGI qw/:standard/;
 use News::NNTPClient;
+use Data::Dumper;
+use Carp qw(cluck);
 
 require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(prompt);
-$VERSION = ('$Revision: 1.2 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.3 $ ' =~ /(\d+\.\d+)/)[0];
 
 my $limite = 18013;
 #$limite = 0;
@@ -26,14 +40,18 @@ sub new   {
   $self->{opts} = shift || return undef;
   my $driver = "DBI:mysql:database=".$self->{opts}->{database}.
     ";host=localhost;port=3306";
-  $self->{DBH} = DBI->connect($driver,
-			      $self->{opts}->{user},
-			      $self->{opts}->{password})
+  if (!$self->{opts}->{no_dbconnect}) {
+    $self->{DBH} = DBI->connect($driver,
+				$self->{opts}->{user},
+				$self->{opts}->{password})
       || die "Can't connect to Mysql:$driver:$!\n";
-  $limite = shift if ($_[0] and $_[0] ne 'Last');
+  }
+  $limite = $self->{opts}->{limit} if ($self->{opts}->{limit});
   $limite = 0 if ($limite eq 'All');
   return $self;
 }
+
+sub DESTROY { $_[0]->{DBH}->disconnect if ($_[0]->{DBH}); }
 
 #------------------------------------------------------------------------------
 # header
@@ -77,7 +95,7 @@ sub rename_rpt {
   my $self = shift;
   foreach my $f (glob($self->{opts}->{dir}."/*.rpt")) {
     my $e=`grep "for patch" $f`;
-    if ($e=~/for patch (\d*)/) {
+    if ($e=~/for patch (\d+)/ or $e=~/for .* patch (\d*)/) {
       if (-e "$f.$1") { unlink($f); }
       else {
 	print "Rename $f $1\n" if ($self->{opts}->{verbose});
@@ -86,38 +104,8 @@ sub rename_rpt {
     }
   }
 
-  unlink("<$self->{opts}->{dir}/*.rpt>");
+#  unlink("<$self->{opts}->{dir}/*.rpt>");
 #  unlink("<$self->{opts}->{dir}/*.>");
-}
-
-#------------------------------------------------------------------------------
-# parse_import
-#------------------------------------------------------------------------------
-sub parse_import {
-  my $self = shift;
-  my ($nb,$nbo,%k) = (0,0);
-
-  # Select list of knows id
-  my $st = $self->{DBH}->prepare('select distinct id from builds');
-  $st->execute;
-  while (my ($id)= $st->fetchrow_array) { $k{$id}=1; }
-  $st->finish;
-
-  # Read a .rpt file
-  foreach (glob($self->{opts}->{dir}."/*.rpt*")) {
-    $nb++;
-    next if (/~$/ or ( /(\d*)\.rpt/ && $k{$1}));
-    my $ref = $self->parse_rpt($_);
-    if (!defined($ref)) { 
-      print STDERR "Can't read/parse $_\n" 
-	if ($self->{opts}->{verbose});
-    }
-    else {
-      # Add it to database
-      $self->add_to_db($ref) && $nbo++;
-    }
-  }
-  print "$nbo / $nb reports imported\n";
 }
 
 #------------------------------------------------------------------------------
@@ -163,6 +151,7 @@ sub suck_ng {
     if (!$isreport) { unlink("$first.rpt"); }
     $first++;
   }
+  $self->rename_rpt();
 }
 
 #------------------------------------------------------------------------------
@@ -217,7 +206,7 @@ sub display {
   my ($i,$summary,$details,$failure,$class)=(0);
   # Walk on each smoke
   $summary = h2("Summary - ".$self->nb." reports available after smoke $limite.").
-    "<table border=1>".
+    "<div class=\"box\"><table border=1>".
     Tr(th("Os"),th("Os version"),th("Archi"),th("Compiler"),th("Version compiler"),
        th("Last smoke"),th("Configuration<br>tested|pass"),
        th("Tests fails"))."\n";
@@ -341,7 +330,7 @@ sub display {
       }
     }
   }
-  $summary.="</table>";
+  $summary.="</table></div>";
   return (\$summary,\$details,\$failure);
 }
 
@@ -358,21 +347,202 @@ sub compl_url {
 }
 
 #------------------------------------------------------------------------------
+# parse_import
+#------------------------------------------------------------------------------
+sub parse_import {
+  my $self = shift;
+  my ($nb,$nbo,%k) = (0,0);
+
+  # Select list of knows id
+  my $st = $self->{DBH}->prepare('select distinct id from builds');
+  $st->execute;
+  while (my ($id)= $st->fetchrow_array) { $k{$id}=1; }
+  $st->finish;
+
+  # Read a .rpt file
+  foreach (glob($self->{opts}->{dir}."/*.rpt*")) {
+    $nb++;
+    # skip backup file or already defined report
+    next if (/~$/ or ( /(\d*)\.rpt/ && $k{$1}));
+    my $ref = $self->parse_rpt($_);
+    if (!defined($ref)) { 
+      print STDERR "Can't read/parse $_\n" 
+	if ($self->{opts}->{verbose});
+    }
+    elsif (!ref($ref)) {
+      if ($ref == -1) {
+	my @l = $self->parse_hm_brand_rpt($_);
+	foreach (@l) {
+	  next if (!$_->{id} or $k{$_->{id}});
+	  print STDERR "Add a H.M. Brand report\n"
+	    if ($self->{opts}->{verbose});
+	  $self->add_to_db($_) && $nbo++;
+	  $k{$_->{id}}=1;
+	}
+      } elsif ($ref == -2) {
+	print "\tSeems to be a DEAD report, will be unlink\n"
+	  if ($self->{opts}->{verbose});
+	unlink $_;
+      } elsif ($ref == -3) {
+	print "\tSeems to be a Alian report with too more rows, will be unlink\n"
+	  if ($self->{opts}->{verbose});
+	unlink $_;
+      }
+    }
+    else {
+      # Add it to database
+      print STDERR "Add report $_\n" if ($self->{opts}->{verbose});
+      $self->add_to_db($ref) && $nbo++;
+    }
+  }
+  print "$nbo reports imported from $nb files\n" if ($self->{opts}->{verbose});
+}
+
+#------------------------------------------------------------------------------
+# parse_hm_brand_rpt
+#------------------------------------------------------------------------------
+sub parse_hm_brand_rpt {
+  my ($self,$file)=@_;
+  return if (!$file);
+  if (!-r $file) { warn "Can't found $file"; return; }
+  my (@lr,$last,$header);
+  open(FILE,$file) or die "Can't read $file:$!\n";
+  my @content = <FILE>;
+  close(FILE);
+  my $ok=0;
+  # Rebuild report wrapped by mail to 72c
+  my $cont; my $re = 0;
+  foreach my $l (@content) {
+    chomp($l);
+    if ($l=~/\=$/) { chop($l); $re=1; }
+    if ($re) { $cont.=$l; $re=0; }
+    else { $cont.=$l."\n"; }
+  }
+  my $origI = 0;
+  my $nbI = 0;
+  foreach my $l (split(/\n/, $cont)) {
+    $l.="\n";
+    my $i = $origI;
+    if ($l=~/MULTIPART_MIXED_/) { $origI = $#lr+1; $ok=0; }
+    $ok = 1 if ($l=~/^ HP-UX/ && !$ok);
+    if (!$ok) { $header.= $l; next;} # skip header
+    if ($ok<5) {$l=~s/\s+/ /g; }
+    if ($ok ==1) { # os
+      foreach (split(/ /,$l)) { push(@lr, { os => $_ }) if ($_); } $ok++;}
+    elsif ($ok == 2) { # osver
+      foreach (split(/ /,$l)) { $lr[$i++]->{osver} = $_ if ($_); } $ok++;}
+    elsif ($ok == 3) { # cc
+      foreach (split(/ /,$l)) { $lr[$i++]->{cc} = $_ if ($_); } $ok++;}
+    elsif ($ok == 4) { # no smoke
+      foreach (split(/ /,$l)) { $lr[$i++]->{smoke} = $_ if ($_ && /^\d*$/); }
+      $ok++; $nbI = $i-$origI;
+    } elsif ($ok == 5) { $ok++; next; } # line of -
+    # line of speed result
+    elsif ($ok >5 && (($l=~/^\d/) or ($l=~/^ \d/))) {
+      for my $i (0..$nbI) { delete $lr[$origI+$i]; }
+    }
+    # line of result
+    elsif ($ok >5 && ($l=~/^O/ || $l=~/^F/ || $l=~/^m/)) {
+      chomp($l);
+      my @l;
+      $i=0;
+      while ($i < $nbI) {
+	((length($l)>=9*$i) ? push(@l,substr($l,9*$i,9)) : push(@l,' '));
+	$i++;
+      }
+      $i=$origI;
+      my $conf = (length($l)>9*$nbI ? substr($l,9*$nbI) : " ");
+      next if ($conf!~/^-/ and $conf!~/^\s*$/);
+      foreach (@l) {
+	$lr[$i]->{build}{$conf} = $_ if ($_!~m!^\s*$!);
+	$i++;
+      }
+      $ok++;
+    }
+    # errors
+    elsif ($ok > 6) {
+      my ($r,%ln)=(0);
+      foreach (@lr) {
+	next if (!$_->{os} && !$_->{osver});
+	if ($_->{os} eq "cygwin") {
+	  $ln{$i++} = $_->{os}." ".substr($_->{osver},0,3);
+	} else { $ln{$i++} = $_->{os}." ".$_->{osver}; }
+      }
+      foreach my $n (keys %ln) {
+	if ($l=~/^$ln{$n}/i) { $lr[$n]->{failure}.=$l; $last =$n; $r=1; last;}
+      }
+      if (!$r) {
+	if ($l=~/^\s+/ && defined($last)) { $lr[$last]->{failure}.=$l; }
+	else { undef $last; }
+      }
+    }
+  }
+
+  $ok=-1;
+  foreach my $r (@lr) {
+    $ok++;
+    if (!$r->{smoke}) { delete $lr[$ok]; next; }
+    $r->{osver} = $1 if ($r->{osver}=~/^(.*)-\d/);
+    # Try to guess cc version
+    my $name = $r->{os}.' '.$r->{osver};
+    if (!$r->{ccver} && $header=~m/$name[^ ]*  \s*([^\n]*)\n/i) {
+      my $v = $1;
+      if ($v=~/^([^\n]*?\d)\s+(.*)/) {
+	$r->{ccver} = $1; 
+	$lr[$ok+1]->{ccver}=$2 
+	  if ($lr[$ok+1]->{os} && $lr[$ok+1]->{os} eq $r->{os});
+      } else { $r->{ccver} = $v; }
+    }
+    # Set others values
+    $r->{nbte} = ( $r->{failure} ? ($r->{failure}=~tr/FAILED//) : 0);
+    $r->{nbc} = scalar keys %{$r->{build}};
+    $r->{nbco} = 0;
+    $r->{id} = $r->{smoke}.$ok;
+  }
+  return @lr;
+}
+ 
+#------------------------------------------------------------------------------
 # parse_rpt
 #------------------------------------------------------------------------------
 sub parse_rpt {
   my ($self,$file)=@_;
-  my ($fail,%h,$col,$content);
+  my ($nbr,$fail,%h,$col,$content)=(0);
   return if (!$file);
   if (!-r $file) { warn "Can't found $file"; return; }
-  print STDERR "Parse $file\n" if ($self->{opts}->{verbose});
   open(FILE,$file) or die "Can't read $file:$!\n";
-  while(my $l=<FILE>) {
+  my @content = <FILE>;
+  close(FILE);
+  my $r = 0;
+  # Rebuild report wrapped by mail to 72c
+  my $cont;
+  foreach my $l (@content) {
+    chomp($l);
+    if ($l=~/=$/) { chop($l); $r=1; }
+    if ($r) { $cont.=$l; $r=0; }
+    else { $cont.=$l."\n"; }
+  }
+  return undef if (!$cont);
+  foreach my $l (split(/\n/, $cont)) {
     $content.=$l;
     chomp($l);
-    if ($l=~/From: Merijn/) { $col=1; }
-    elsif ($l=~/Automated smoke report for patch (\d*) on (.*) - (.*)$/) {
+    $nbr++ if ($l=~/^>/);
+    if ($l=~/^From:/ && $l=~/Brand/) { $col=-1; }
+    elsif ($l=~/^From:/ && $l=~/Alian/) { $col=-3; }
+    elsif ($l=~/^Return-Path: <h.m.brand\@hccnet.nl>/) { $col=-1; }
+    # A report without info about os
+    elsif ($l=~/Automated smoke report for patch (\d+) on  - $/) { return -2; }
+    # A report without info about os
+    elsif ($l=~/Automated smoke report for patch (\d*) on  -  \(\)$/) { return -2; }
+    # A normal report with os and osver
+    elsif (($l=~/Automated smoke report for patch (\d+) on (.*) - (.*)$/) or
+	   ($l=~/Automated smoke report for .* patch (\d+) on (.*) - (.*)$/)) {
       ($h{smoke},$h{os}, $h{osver}) = ($1,$2,$3);
+      if (!$h{os} and !$h{osver}) {
+#	print "\tNo os and osver defined in report\n"
+#	  if ($self->{opts}->{verbose});
+	return undef;
+      }
     }
     elsif ($l=~/Automated smoke report for patch (\d*) on (.*)$/) {
       ($h{smoke},$h{os}, $h{osver}) = ($1,$2,"??");
@@ -394,29 +564,24 @@ sub parse_rpt {
     elsif ($l=~/Failures(.*):/) { $fail=1; }
     elsif ($fail) { $h{"failure"}.=$l."\n"; }
   }
-  close(FILE);
+
 #  print $h{failure},"\n";
   if ($h{build} && $h{os}) {
-    if ($self->{opts}->{verbose}) {
-      print <<EOF;
-    OS        : $h{os}
-    OS version: $h{osver}
-    CC        : $h{cc}
-    CC version: $h{ccver}
-    No smoke  : $h{smoke}
-
-EOF
-    }
     $h{ccver}="??" if (!$h{ccver});
     $h{nbte} = ( $h{failure} ? ($h{failure}=~tr/FAILED//) : 0);
     $h{nbc} = scalar keys %{$h{build}};
     $h{nbco} = 0;
-    $h{report}= $content;
-    $h{id}=$1 if ($file=~/(\d*)\.rpt/);
+#    $h{report}= $content;
+    $h{id}=$1 if ($file=~/(\d+)\.rpt/ or $file=~/(\d+)\.normal\.rpt/);
     return \%h
   }
-  print "No build or os\n" if ($self->{opts}->{verbose});
-  return undef;
+  # More than 8 lines beginning with '>', seems to be a reply
+  if ($nbr>8) {
+    print "\t Seems to be a reply\n" if ($self->{opts}->{verbose}); 
+    return -2;
+  }
+  elsif ($self->{opts}->{verbose} && !$col) { print "No build or os\n"; }
+  return ($col ? $col : undef);
 }
 
 #------------------------------------------------------------------------------
@@ -538,8 +703,10 @@ sub nb {
 #------------------------------------------------------------------------------
 sub add_to_db {
   my ($self, $ref)=@_;
+  print STDERR Data::Dumper->Dump([$ref]) if ($self->{opts}->{verbose});
+  return if (!$ref->{os});
   my ($nbco,$vf)=(0,0);
-  my ($cc,$ccf,$f,$r) = ($ref->{cc},$ref->{ccver},
+  my ($cc,$ccf,$f,$r) = ($ref->{cc},$ref->{ccver} || ' ',
 			 $ref->{failure},$ref->{report});
   foreach ($cc,$ccf,$f,$r) { s/'/\\'/g if ($_); }
   foreach my $c (keys %{$$ref{build}}) {
@@ -560,7 +727,10 @@ sub add_to_db {
 EOF
 #  print $req,"\n";
   my $st = $self->{DBH}->prepare($req);
-  $st->execute || print STDERR "on $req\n";
+  if (!$st->execute) {
+    cluck($DBI::err." on $req");
+    return;
+  }
   # id du test
   my $id =  $st->{'mysql_insertid'};
 
@@ -568,8 +738,8 @@ EOF
   $r = ' ' if (!$r);
   $f = ' ' if (!$f);
   $req = <<EOF;
-INSERT INTO data(idbuild,failure,report)
-VALUES ($id, '$f', '$r')
+INSERT INTO data(idbuild,failure)
+VALUES ($id, '$f')
 EOF
     $self->{DBH}->do($req) or print STDERR "On $req\n";
 
@@ -598,7 +768,7 @@ Test::Smoke::Database - Add / parse /display perl reports smoke database
 
 =head1 SYNOPSIS
 
-  $ admin_smokedb --rename --suck --import --update_archi
+  $ admin_smokedb --create --suck --import --update_archi
   $ lynx http://localhost/cgi-bin/smokedb.cgi
  
 
@@ -625,7 +795,8 @@ A www interface to browse this smoke database
 
 =head1 SEE ALSO
 
-L<admin_smokedb>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>
+L<admin_smokedb>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>,
+L<http://www.alianwebserver.com/perl/smoke/smoke_db.cgi>
 
 =head1 METHODS
 
@@ -634,7 +805,9 @@ L<admin_smokedb>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>
 =item B<new> I<hash reference>
 
 Construct a new Test::Smoke::Database object and return it. This call too
-connect method of DBD::Mysql and store dbh in $self->{DBH}
+connect method of DBD::Mysql and store dbh in $self->{DBH} except if 
+key I<no_dbconnect> is found in I<hash reference>. Disconnect method is
+auto called with DESTROY call.
 
 =item B<rundb> I<SQL request>
 
@@ -673,13 +846,10 @@ See L<admin_smokedb>
 
 =over 4
 
-=item B<rename_rpt>
-
-For all reports found, this will append at end of name the number of smoke
-
 =item B<parse_import>
 
-As his name, this method will parse and import fetched report in database
+As his name say, this method will parse and import fetched report found
+in $self->{opts}->{dir} and put them in database.
 
 =item B<suck_ng>
 
@@ -695,11 +865,31 @@ Fetch new report from perl.daily-build.reports
 
 =item B<compl_url>
 
+=item B<parse_rpt> I<file>
+
+This method is call by parse_import.
+Parse I<file> and return values parsed in a reference of hash.
+Else return -1 for a H.M. Brand report (then B<parse_hm_brand_rpt> will be 
+called), -2 for a bad report, ie a report without os/osver (this report will be
+deleted), -3 for an Alian multi-col report (deleted too).
+
+=item B<parse_hm_brand_rpt> I<file>
+
+Do a specific parsing for H.M Brand report I<file>. (his report is multi-col).
+Return a list of reference of report to use with add_db.
+
+=item B<rename_rpt>
+
+Rename fetched report to add no of smoke in name of file.
+For all reports found, this will append at end of name the number of smoke.
+After that all *. and *.rpt file will be deleted. This method is auto. called
+after B<fetch> method.
+
 =back
 
 =head1 VERSION
 
-$Revision: 1.2 $
+$Revision: 1.3 $
 
 =head1 AUTHOR
 

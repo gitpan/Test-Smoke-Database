@@ -3,9 +3,24 @@ BODY {
   color: black;
   font-family: arial,sans-serif;
   margin: 0;
-  padding: 2ex;
+  padding: 0ex;
+  border: 0px;
+}
+ H1      {
+  background: transparent;
+  color: #006699;
+  font-size: large;
 }
 
+ H2      {
+  background: transparent;
+  color: #006699;
+  font-size: medium;
+}
+.mod1
+  { background : #DDDDDD; }
+.mod0
+  { background : #FFFFFF; }
 TABLE {
   border-collapse: collapse;
   border-spacing: 0;
@@ -30,9 +45,15 @@ A:link, A:visited {
   color: #006699;
 }
 
+.red A:link, .red A:visited, .red TD {
+	  color: #FFFFFF;
+	  background: red;
+  }
+
 TD {
   margin: 0;
   padding: 0;
+  font-size: 90%;
 }
 
 DIV {
@@ -75,7 +96,7 @@ TH A:link, TH A:visited {
 
 .box {
   border: 1px solid #006699;
-  margin: 1ex 0;
+  margin: 5ex;
   padding: 0;
 }
 
@@ -187,7 +208,7 @@ TH A:link, TH A:visited {
   background: #006699;
   color: white;
   margin: 1ex 0;
-  padding: 1px;
+  padding: 5px;
 }
 
 .menubar .links     {

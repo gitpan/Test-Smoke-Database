@@ -2,8 +2,8 @@
 #
 # Simple perl example to interface with module Test::Smoke::Database
 # Copyright 200x A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/01/01 21:37:52 $
-# $Revision: 1.2 $
+# $Date: 2003/01/05 01:09:25 $
+# $Revision: 1.3 $
 #
 
 use strict;
@@ -27,13 +27,10 @@ my $update_archi = <<EOF;
 update builds set archi='i386';
 update builds set archi='sparc' where os='solaris';
 update builds set archi='sparc' where os='NetBSD' and osver='1.5.3';
-update builds set archi='sparc' where os='linux'  and osver='2.2.19';
-update builds set archi='ppc'   where os='linux'  and osver='2.2.16';
-update builds set archi='ppc'   where os='linux'  and osver='2.4.18' 
-                                                  and ccver='2.95.4';
-update builds set archi=' '     where os='AIX'    or os='HP-UX'
-                                                  or os='dec_osf'
-                                                  or os like 'irix%';
+update builds set archi='sparc' where os='linux' and osver='2.2.19';
+update builds set archi='ppc' where os='linux' and osver='2.2.16';
+update builds set archi='ppc'where os='linux' and osver='2.4.18' and ccver='2.95.4';
+update builds set archi=' ' where os='AIX'or os='HP-UX' or os='dec_osf' or os like 'irix%';
 update builds set osver='4.6-STABLE' where os='freebsd';
 EOF
 
@@ -95,7 +92,7 @@ CREATE TABLE data (
 EOF
 
 my @options = qw/clear suck import dir=s verbose nntp_server=s create drop
-                 user=s password=s database=s update_archi rename help man/;
+                 user=s password=s database=s update_archi help man/;
 
 GetOptions( \%opts, @options) or pod2usage( -verbose => 1, -exitval => 1 );
 $opts{help}  and pod2usage( -verbose => 1, -exitval => 0 );
@@ -138,9 +135,10 @@ admin_smokedb - Import smoke report in a mysql database
 
 =head1 SYNOSPIS
 
-admin_smokedb --clear --suck --import --dir=s --verbose --nntp_server=s 
-              --mysql=s --user=s --password=s --database=s --update_archi
-              --rename --help --man --create --drop
+  admin_smokedb --clear --suck --import --dir=s --verbose 
+                --nntp_server=s --mysql=s --user=s 
+                --password=s --database=s --update_archi
+                --help --man --create --drop
 
 =head1 DESCRIPTION
 
@@ -155,7 +153,7 @@ overwrite default values.
 
 Then you must do:
 
-  admin_smokedb --rename --suck --import --update_archi
+  admin_smokedb --suck --import --update_archi
 
 for create a complete smoke database. You can add this sequence to your
 crontab daily. You can now lauch your browser yo browse database with
@@ -184,10 +182,6 @@ Drop tables in mysql created by this app.
 =item B<--import>
 
 Parse and imports reports in database
-
-=item B<--rename>
-
-Rename fetched report to add no of smoke in name of file.
 
 =item B<--suck>
 
@@ -229,7 +223,7 @@ L<Test::Smoke::Database>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>
 
 =head1 VERSION
 
-$Revision: 1.2 $
+$Revision: 1.3 $
 
 =head1 AUTHOR
 
