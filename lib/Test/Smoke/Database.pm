@@ -1,13 +1,23 @@
 package Test::Smoke::Database;
 
-# module Test::Smoke::Database - Add / parse /display perl reports smoke database
+# Test::Smoke::Database - Add / parse /display perl reports smoke database
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/02/16 18:47:04 $
+# $Date: 2003/08/02 12:39:05 $
 # $Log: Database.pm,v $
+# Revision 1.9  2003/08/02 12:39:05  alian
+# Use dbi method like selectrow_array
+#
+# Revision 1.8  2003/07/30 22:07:34  alian
+# - Move away parsing code in Parsing.pm
+# - Update POD documentation
+#
+# Revision 1.7  2003/07/19 18:12:16  alian
+# Use a debug flag and a verbose one. Fix output
+#
 # Revision 1.6  2003/02/16 18:47:04  alian
-# - Update summary table: add number of configure failed, number of make failed.
+# - Update summary table:add number of configure failed, number of make failed.
 # - Add legend after summary table
-# - Add parsing/display of matrice, as Test::Smoke 1.16_15+ can report more than
+# - Add parsing/display of matrice,as Test::Smoke 1.16_15+ can report more than
 # 4 columns
 # - Correct a bug that add a 'Failure:' in HM Brand Report
 #
@@ -38,13 +48,14 @@ use CGI qw/:standard/;
 use News::NNTPClient;
 use Data::Dumper;
 use Test::Smoke::Database::Graph;
+use Test::Smoke::Database::Parsing;
 use Carp qw(cluck);
-
+use File::Basename;
 require Exporter;
 
 @ISA = qw(Exporter);
-@EXPORT = qw(prompt);
-$VERSION = ('$Revision: 1.6 $ ' =~ /(\d+\.\d+)/)[0];
+@EXPORT = qw();
+$VERSION = ('$Revision: 1.9 $ ' =~ /(\d+\.\d+)/)[0];
 
 my $limite = 18600;
 #$limite = 0;
@@ -52,25 +63,29 @@ my $limite = 18600;
 #------------------------------------------------------------------------------
 # new
 #------------------------------------------------------------------------------
-sub new   {
+sub new($$)   {
   my $class = shift;
   my $self = {};
   bless $self, $class;
-  $self->{opts} = shift || return undef;
+  $self->{opts} = shift || {};
   my $driver = "DBI:mysql:database=".$self->{opts}->{database}.
     ";host=localhost;port=3306";
   if (!$self->{opts}->{no_dbconnect}) {
     $self->{DBH} = DBI->connect($driver,
 				$self->{opts}->{user},
-				$self->{opts}->{password})
+				$self->{opts}->{password} || undef)
       || die "Can't connect to Mysql:$driver:$!\n";
   }
-  $limite = $self->{opts}->{limit} if ($self->{opts}->{limit});
+  $limite = $self->{opts}->{limit} if (defined($self->{opts}->{limit}));
   $limite = 0 if ($limite eq 'All');
+  print scalar(localtime),": New run\n" if ($self->{opts}->{verbose});
   return $self;
 }
 
-sub DESTROY { $_[0]->{DBH}->disconnect if ($_[0]->{DBH}); }
+sub DESTROY {
+  $_[0]->{DBH}->disconnect if ($_[0]->{DBH});
+  print scalar(localtime),": Finished\n" if ($_[0]->{opts}->{verbose});
+}
 
 #------------------------------------------------------------------------------
 # header
@@ -86,7 +101,7 @@ sub header_html {
     (-style=>{'src'=>"$u/smokedb.css"}, -title=>"perl-current smoke results");
   $buf.= <<EOF;
  <div class=menubar><table width="100%"><tr><td class=links>&nbsp;
-   <a class=o href="$ENV{SCRIPT_NAME}">Home</a> &nbsp;|&nbsp;
+   <a class=m href="$ENV{SCRIPT_NAME}">Home</a> &nbsp;|&nbsp;
    <a class=m href="$ENV{SCRIPT_NAME}?filter=1">Filter</a> &nbsp;|&nbsp;
    <a class=m href="$ENV{SCRIPT_NAME}?last=1">Last report</a> &nbsp;|&nbsp;
    <a class=m href="$ENV{SCRIPT_NAME}?last=1;want_smoke=1">Last smoke</a> &nbsp;|&nbsp;
@@ -107,21 +122,35 @@ EOF
 #------------------------------------------------------------------------------
 # rundb
 #------------------------------------------------------------------------------
-sub rundb {
-  my ($self,$cmd) = @_;
+sub rundb(\%\%) {
+  my ($self,$cmd,$nochomp) = @_;
+  my $ret = 1;
   foreach (split(/;/, $cmd)) {
-    $_=~s/\n//g;
+    $_=~s/\n//g if (!$nochomp);
     next if (!$_ or $_ eq ';');
-    print "mysql <-\t$_\n" if ($self->{opts}->{verbose});
-    $self->{DBH}->do($_) || print "Error $_: $DBI::errstr!\n";
+    print "mysql <-\t$_\n" if ($self->{opts}->{debug});
+    if (!$self->{DBH}->do($_)) {
+      print STDERR "Error $_: $DBI::errstr!\n";
+      $ret = 0;
+    }
   }
+  return $ret;
 }
 
 #------------------------------------------------------------------------------
 # build_graph
 #------------------------------------------------------------------------------
-sub build_graph {
+sub build_graph(\%) {
   my $self = shift;
+  print scalar(localtime),": Create graph\n"
+    if ($self->{opts}->{verbose});
+  eval("use GD::Graph::mixed");
+  if ($@) {
+    print scalar(localtime),
+      ": You don't seem to have GD::Graph, aborted graph\n"
+	if ($self->{opts}->{verbose});
+    return;
+  }
   my $c = new CGI;
   # Last 50 smoke
   my $st = $self->{DBH}->prepare('select max(smoke)-50 from builds');
@@ -161,16 +190,21 @@ sub build_graph {
 #------------------------------------------------------------------------------
 sub rename_rpt {
   my $self = shift;
+  my $nb = 0;
+  print scalar(localtime),": Rename report with his nntp id\n"
+    if ($self->{opts}->{verbose});
   foreach my $f (glob($self->{opts}->{dir}."/*.rpt")) {
     my $e=`grep 'for [ 1234567890.]*patch' $f`;
     if ($e=~/for [\d\.]* ?patch (\d+)/) {
       if (-e "$f.$1") { unlink($f); }
       else {
-	print "Rename $f $1\n" if ($self->{opts}->{verbose});
+	print "Rename $f $1\n" if ($self->{opts}->{debug});
 	`mv $f $f.$1`;
+	$nb++;
       }
     }
   }
+  return $nb;
 }
 
 #------------------------------------------------------------------------------
@@ -178,26 +212,27 @@ sub rename_rpt {
 #------------------------------------------------------------------------------
 sub suck_ng {
   my $self = shift;
+  print scalar(localtime),": Suck newsgroup on $self->{opts}->{nntp_server}\n"
+    if ($self->{opts}->{verbose});
   # Find last id on dir
   my $max=0;
   my @l = glob($self->{opts}->{dir}."/*");
   foreach (@l) { $max=$1 if (/\/(\d*)\.rpt/ && $1 > $max); }
   print "NNTP max id is $max ($#l files in $self->{opts}->{dir})\n"
-    if ($self->{opts}->{verbose});
+    if ($self->{opts}->{debug});
 
   # Connect on ng
-  print "Connect on $self->{opts}->{nntp_server}\n" 
-    if ($self->{opts}->{verbose});
   my $c = new News::NNTPClient($self->{opts}->{nntp_server});
+  return undef if (!$c->ok);
 
   # Fetch last - first
   my ($first, $last) = ($c->group("perl.daily-build.reports"));
   #print "Max:$max first:$first last:$last\n";
   if ($max) {
     if ($max == $last) {
-      $self->rename_rpt();
-      print "No new report on perl.daily-build.reports\n"
+      print scalar(localtime),": No new report on perl.daily-build.reports\n"
 	if ($self->{opts}->{verbose});
+      $self->rename_rpt();
       return;
     }
     else { $first = $max; }
@@ -269,10 +304,10 @@ sub filter {
 #------------------------------------------------------------------------------
 sub display {
   my ($self,$os,$osver,$ar,$cc,$ccver,$smoke)=@_;
-  my ($i,$summary,$details,$failure,$class)=(0);
+  my ($i,$summary,$details,$failure,$class,$resume)=(0);
+  my ($lastsmoke, $lastsuccessful)=(0,0,0);
   # Walk on each smoke
-  $summary = h2("Summary - ".$self->nb." reports available after smoke $limite.").
-    "
+  $summary = "
 <table class=box width=\"90%\"><tr><td>
 <table border=\"1\" width=\"100%\" class=\"box2\">".
   Tr(th("Os"), th("Os version"), th("Archi"), th("Compiler"), 
@@ -330,6 +365,7 @@ sub display {
 
 	  foreach my $smoke (sort @ls) {
 	    next if (!$$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke});
+	    $lastsmoke = $smoke if ($smoke >$lastsmoke);
 	    my ($nbt,$nbc,$nbto,$nbcf,$nbcm,$nbcc,$nbtt,$matrix)=
 	      ($$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{nbte},
 	       $$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{nbc},
@@ -354,12 +390,10 @@ sub display {
 	    }
 	    # Liste des tests echoues
 	    if ($$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{failure}) {
-	      (my $f = $$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{failure})
-		=~s/\n/<br>/g;
+	      my $f = $$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{failure};
 	      if (param('failure') && $nbt) {
-		$failure.=$de.Tr(td($f))."</table><br>"; }
+		$failure.=$de.Tr(td(pre($f)))."</table><br>"; }
 	    }
-	
 	    # Liste des configs testees
 	    if (ref($$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{build})) {
 	      my $r2 = 1;
@@ -430,6 +464,7 @@ sub display {
 				td({-width=>"15"},$nbcf),
 			       ))),
 			 $nbt."\n");
+	    $lastsuccessful = $smoke if ($nbto == $nbtt && ($smoke>$lastsuccessful));
 	  }
 	  }
 	}
@@ -452,7 +487,15 @@ sub display {
 </ol>
 </div>
 EOF
-
+   $lastsuccessful = "Never" if ! $lastsuccessful;
+  $resume = table({ border=>1, class=>"box2" },
+		  Tr(th("Smoke available"),
+		     th("Since smoke"),
+		     th("Last, "),
+		     th("Last successfull")),
+		  Tr(td($self->nb), td($limite),
+		     td($lastsmoke),td($lastsuccessful)));
+  $summary = $resume.$summary;
   return (\$summary,\$details,\$failure);
 }
 
@@ -472,308 +515,7 @@ sub compl_url {
 # parse_import
 #------------------------------------------------------------------------------
 sub parse_import {
-  my $self = shift;
-  my ($nb,$nbo,%k) = (0,0);
-
-  # Select list of knows id
-  my $st = $self->{DBH}->prepare('select distinct id from builds');
-  $st->execute;
-  while (my ($id)= $st->fetchrow_array) { $k{$id}=1; }
-  $st->finish;
-
-  # Read a .rpt file
-  foreach (glob($self->{opts}->{dir}."/*.rpt*")) {
-    $nb++;
-    # skip backup file or already defined report
-    next if (/~$/ or ( /(\d*)\.rpt/ && $k{$1}));
-    my $ref = $self->parse_rpt($_);
-    if (!defined($ref)) { 
-      print STDERR "Can't read/parse $_\n" 
-	if ($self->{opts}->{verbose});
-    }
-    elsif (!ref($ref)) {
-      if ($ref == -1) {
-	my @l = $self->parse_hm_brand_rpt($_);
-	foreach (@l) {
-	  next if (!$_->{id} or $k{$_->{id}});
-	  print STDERR "Add a H.M. Brand report\n"
-	    if ($self->{opts}->{verbose});
-	  $self->add_to_db($_) && $nbo++;
-	  $k{$_->{id}}=1;
-	}
-      } elsif ($ref == -2) {
-	print "\tSeems to be a DEAD report, will be unlink\n"
-	  if ($self->{opts}->{verbose});
-	unlink $_;
-      } elsif ($ref == -3) {
-	print "\tSeems to be a Alian report with too more rows, will be unlink\n"
-	  if ($self->{opts}->{verbose});
-	unlink $_;
-      }
-    }
-    else {
-      # Add it to database
-      print STDERR "Add report $_\n" if ($self->{opts}->{verbose});
-      $self->add_to_db($ref) && $nbo++;
-    }
-  }
-  print "$nbo reports imported from $nb files\n" if ($self->{opts}->{verbose});
-}
-
-#------------------------------------------------------------------------------
-# parse_hm_brand_rpt
-#------------------------------------------------------------------------------
-sub parse_hm_brand_rpt {
-  my ($self,$file)=@_;
-  return if (!$file);
-  if (!-r $file) { warn "Can't found $file"; return; }
-  my (@lr,%last,$header);
-  open(FILE,$file) or die "Can't read $file:$!\n";
-  my @content = <FILE>;
-  close(FILE);
-  my $ok=0;
-  # Rebuild report wrapped by mail to 72c
-  my $cont; my $re = 0;
-  foreach my $l (@content) {
-    chomp($l);
-    if ($l=~/\=$/) { chop($l); $re=1; }
-    if ($re) { $cont.=$l; $re=0; }
-    else { $cont.=$l."\n"; }
-  }
-  my $origI = 0;
-  my $nbI = 0;
-  foreach my $l (split(/\n/, $cont)) {
-    $l.="\n";
-    my $i = $origI;
-    foreach my $a (@lr) {
-      if (!$a or !ref($a)) { delete $lr[$i]; next;}
-      $i++;
-    }
-    $i = $origI;
-    if ($l=~/MULTIPART_MIXED_/) { $origI = $#lr+1; $ok=0; }
-    $ok = 1 if ($l=~/^ HP-UX/ && !$ok);
-    if (!$ok) { $header.= $l; next;} # skip header
-    if ($ok<5) {$l=~s/\s+/ /g; }
-    if ($ok ==1) { # os
-      foreach (split(/ /,$l)) { push(@lr, +{ os => $_ }) if ($_); } $ok++;}
-    elsif ($ok == 2) { # osver
-      foreach (split(/ /,$l)) { $lr[$i++]->{osver} = $_ if ($_); } $ok++;}
-    elsif ($ok == 3) { # cc
-      foreach (split(/ /,$l)) { $lr[$i++]->{cc} = $_ if ($_); } $ok++;}
-    elsif ($ok == 4) { # no smoke
-      foreach (split(/ /,$l)) { $lr[$i++]->{smoke} = $_ if ($_ && /^\d*$/); }
-      $ok++; $nbI = $i-$origI;
-    } elsif ($ok == 5) { $ok++; next; } # line of -
-    # line of speed result
-    elsif ($ok >5 && (($l=~/^\d/) or ($l=~/^ \d/))) {
-     for my $i (0..$nbI) { delete $lr[$origI+$i]; }
-    }
-    # line of result
-    elsif ($ok >5 && ($l=~/^O/ || $l=~/^F/ || $l=~/^m/) && $l ne "Failures:\n") {
-      chomp($l);
-      my @l;
-      $i=0;
-      while ($i < $nbI) {
-	((length($l)>=9*$i) ? push(@l,substr($l,9*$i,9)) : push(@l,' '));
-	$i++;
-      }
-      $i=$origI;
-      my $conf = (length($l)>9*$nbI ? substr($l,9*$nbI) : " ");
-      next if ($conf!~/^-/ and $conf!~/^\s*$/);
-      foreach (@l) {
-	if (!(/^[ \?\-\.]+$/)) { # really a result
-	  $lr[$i]->{build}{$conf} = $_ if ($_!~m!^\s*$!);
-	}
-	$i++;
-      }
-      $ok++;
-    }
-    # errors
-    elsif ($ok > 6) {
-      my ($r,%ln)=(0);
-      foreach my $a (@lr) {
-#	print "Dump:",Data::Dumper->Dump([ $a ]),"\n";
-#	print $a,"\n";
-	next if (!$a->{os} && !$a->{osver});
-	if ($a->{os} =~ /cygwin/i) {
-	  $ln{$i++} = $a->{os}." ".substr($a->{osver},0,3);
-	} elsif ($a->{os} =~ /aix/i) {
-	  $ln{$i++} = $a->{os}." ".substr($a->{osver},0,3).' '.$a->{cc};
-	} else { $ln{$i++} = $a->{os}." ".$a->{osver}; }
-      }
-      foreach my $n (keys %ln) {# print $ln{$n},"\n";
-	if ($l=~/^$ln{$n}/i) {
-	  $lr[$n]->{failure}.=$l if ($lr[$n]);
-	  $last{$n}=1;
-	  $r=1; #last;
-	}
-      }
-      if (!$r) {
-	if ($l=~/^[ \t]+/ && %last) {
-	  foreach (keys %last) { 
-	    if ($lr[$_]) { $lr[$_]->{failure}.=$l; $lr[$_]->{nbte}++;  }
-	  }
-	} else { undef %last; }
-      }
-    }
-  }
-
-  $ok=-1;
-  foreach my $r (@lr) {
-    $ok++;
-    if (!ref($r) or !$r->{smoke}) { delete $lr[$ok]; next; }
-    $r->{osver} = $1 if ($r->{osver}=~/^(.*)-\d/);
-    # Try to guess cc version
-    my $name = $r->{os}.' '.$r->{osver};
-    if (!$r->{ccver} && $header=~m/$name[^ ]*  \s*([^\n]*)\n/i) {
-      my $v = $1;
-      if ($v=~/^([^\n]*?\d)\s+(.*)/) {
-	$r->{ccver} = $1;
-	$lr[$ok+1]->{ccver}=$2
-	  if ($lr[$ok+1]->{os} && $lr[$ok+1]->{os} eq $r->{os});
-      } else { $r->{ccver} = $v; }
-    }
-    # Set others values
-    $r->{nbc} = scalar keys %{$r->{build}};
-    $r->{nbco} = 0;
-    $r->{nbte} = 0 if (!$r->{nbte});
-    $r->{id} = $r->{smoke}.$ok;
-    if ($r->{ccver} && $r->{ccver}=~/^(.*?)\s+32-bit$/) {
-      $r->{ccver} = $1; 
-    } elsif (!$r->{ccver}) { $r->{ccver}= ' '; }
-    $r->{cc} = ' ' if (!$r->{cc});
-    $r->{osver} = ' ' if (!$r->{osver});
-    $r->{archi}= ' ';
-    $r->{matrix} = [
-		    'PERLIO = stdio',
-		    'PERLIO = perlio',
-		    'PERLIO = stdio  -DDEBUGGING',
-		    'PERLIO = perlio -DDEBUGGING'
-		   ];
-  }
-  return @lr;
-}
- 
-#------------------------------------------------------------------------------
-# parse_rpt
-#------------------------------------------------------------------------------
-sub parse_rpt {
-  my ($self,$file)=@_;
-  my ($nbr,$fail,%h,$col,$content)=(0);
-  return if (!$file);
-  if (!-r $file) { warn "Can't found $file"; return; }
-  open(FILE,$file) or die "Can't read $file:$!\n";
-  my @content = <FILE>;
-  close(FILE);
-  my $r = 0;
-  # Rebuild report wrapped by mail to 72c
-  my $cont;
-  foreach my $l (@content) {
-    chomp($l);
-    $l=~s/=3D/=/g;
-    if ($l=~/=$/) { chop($l); $r=1; }
-    if ($r) { $cont.=$l; $r=0; }
-    else { $cont.=$l."\n"; }
-  }
-  return undef if (!$cont);
-  my $irix = 0;
-  my $re = qr/(?:\w|-|\?) /;
-  foreach my $l (split(/\n/, $cont)) {
-    $content.=$l;
-    chomp($l);
-    $nbr++ if ($l=~/^>/);
-    if ($l=~/^From:/ && $l=~/Brand/) { $col=-1; }
-    elsif ($l=~/^From:/ && $l=~/Alian/) { $col=-3; }
-    elsif ($l=~/^Return-Path: <h.m.brand\@hccnet.nl>/) { $col=-1; }
-    # A reply
-    elsif ($l=~/^Subject: Re:/) { return -2; }
-    # A report without info about os
-    elsif (($l=~/Automated smoke report for patch (\d+) on  - $/) or
-	   ($l=~/Automated smoke report for patch (\d*) on  -  \(\)$/)) {
-      return -2;
-    }
-    # A normal report with os and osver
-    elsif (($l=~/Automated smoke report for patch (\d+) on (.*) - (.*)$/) or
-	   ($l=~/Automated smoke report for .* patch (\d+) on (.*) - (.*)$/)) {
-      ($h{smoke},$h{os}, $h{osver}) = ($1,$2,$3);
-      if (!$h{os} and !$h{osver}) {
-#	print "\tNo os and osver defined in report\n"
-#	  if ($self->{opts}->{verbose});
-	return undef;
-      }
-    }
-    elsif ($l=~/Automated smoke report for patch (\d*) on (.*)$/) {
-      ($h{smoke},$h{os}, $h{osver}) = ($1,$2,"??");
-      if ($l=~/(irix\d*)$/) { $irix = 1; $h{os}=$1;}
-    }
-    elsif ($l=~/Automated smoke report for patch (\d*)$/) {
-      ($h{smoke}) = ($1);
-    }
-    elsif ($irix==1) {
-      $irix=0;
-      $h{osver} = $1 if ($l=~/^ - (.*)$/);
-    }
-    elsif ($l=~/on (.*) using (.*) version (.*)$/) {
-      ($h{os}, $h{cc},$h{ccver},$h{osver}) = ($1,$2,$3,"??");
-    }
-    elsif ($l=~/using (.*) version (.*)$/) {
-      ($h{cc}, $h{ccver}) = ($1,$2);
-    }
-    # A line of result
-    elsif (($l=~/^($re{3,}(?:\w|-|\?)) +(-.+)$/)
-	    || ($l=~/^($re{3,}(?:\w|-|\?))$/)) {
-      my $c = $2; 
-      $c=' ' if (!$c);
-      $h{"build"}{$c} = $1;
-    }
-    # Matrix
-    elsif (!$fail && $l=~/^[\| ]*\+-+ (.*)$/ && $1!~/^-*$/) {
-      push(@{$h{matrix}}, $1) if ($1 ne 'Configuration');
-    }
-    # Failures
-    elsif ($l=~/Failures(.*):/) { $fail=1; }
-    elsif ($fail) { $h{"failure"}.=$l."\n"; $h{nbte}++ if ($l=~/\.\.\./); }
-  }
-#    if ($h{os}=~/irix/i) { print Data::Dumper->Dump( [ \%h]); }
-#  print $h{failure},"\n";
-  # Valid report have os and build
-  if ($h{build} && $h{os}) {
-    # ccver
-    if (!$h{ccver}) { $h{ccver}="??"; }
-    else {
-      $h{ccver}=~s/\(prerelease\)//g;
-      $h{ccver}=~s/\(release\)//g;
-    }
-    # Number of failed test
-    $h{nbte} = 0 if (!$h{nbte});
-    # cc
-    if (!$h{cc}) { $h{cc}="??"; }
-    elsif ($h{cc}=~m!/([^/]*)$!) { $h{cc}=$1 }
-    # Number of configure run
-    $h{nbc} = scalar keys %{$h{build}};
-    $h{nbco} = 0;
-    # Try to set the archi
-    if ($h{osver}=~m!^(.*)\((.*)/.*\)! or $h{osver}=~m!^(.*)\((.*)\)!) {
-      $h{osver} = $1;
-      $h{archi} = $2;
-      if ($h{archi}=~m!^([^-]*)-!) { $h{archi} = $1; }
-      $h{archi} = "i386" if ($h{archi}=~/86$/);
-    } else {$h{archi}= '??';}
-    if ($h{os}=~/^irix/ && $h{osver}=~/^(.*) (IP\d*)/) {
-      $h{osver}=$1; $h{archi}=$2;
-    }
-    @{$h{matrix}}=reverse @{$h{matrix}} if ($h{matrix});
-#    $h{report}= $content;
-    $h{id}=$1 if ($file=~/(\d+)\.rpt/ or $file=~/(\d+)\.normal\.rpt/);
-    return \%h
-  }
-  # More than 8 lines beginning with '>', seems to be a reply
-  if ($nbr>8) {
-    print "\t Seems to be a reply\n" if ($self->{opts}->{verbose}); 
-    return -2;
-  }
-  elsif ($self->{opts}->{verbose} && !$col) { print "No build or os\n"; }
-  return ($col ? $col : undef);
+  Test::Smoke::Database::Parsing::parse_import(@_);
 }
 
 #------------------------------------------------------------------------------
@@ -781,7 +523,9 @@ sub parse_rpt {
 #------------------------------------------------------------------------------
 sub read_all {
   my $self = shift;
-  my (%h2,@lid,$req,%f,$a);
+  return {} if (!$self->{DBH});
+  my ($req,$a,%h2);
+  my ($ref_result, $ref_failure);
 # if (param('smoke') or ($limite and (param('last') or param('failure')))) {
 # if (param('smoke') or $limite) {
   $req = "select id from builds ";
@@ -794,46 +538,36 @@ sub read_all {
     $a.="$o='$v' ";
   }
   $req.="where $a" if ($a);
-  my $st3 = $self->{DBH}->prepare($req);
-  $st3->execute or print STDERR "On $req";
-  while (my @l = $st3->fetchrow_array) {
-    push(@lid, shift @l);
-  }
-  $st3->finish();
-  #  }
+  my $ref_lid = $self->{DBH}->selectall_hashref($req, 'id') ||
+      print "On $req: $DBI::errstr\n";
+#  print STDERR $req,$DBI::errstr;
+  my $list_id = join("," , keys %$ref_lid);
 
   if (param('failure')) {
     $req = "select idbuild,failure from data";
-    if (@lid) { $req.=" where idbuild in (".join(",",@lid).")"; }
-    my $st2 = $self->{DBH}->prepare($req);
-    $st2->execute or print STDERR "On $req";
-    while (my @l = $st2->fetchrow_array) {
-      my $id = shift @l;
-      $f{$id} = shift @l;
-    }
-    $st2->finish;
+    if ($list_id) { $req.=" where idbuild in (".$list_id.")"; }
+    $ref_failure = $self->{DBH}->selectall_hashref($req, 'idbuild') ||
+      print "On $req: $DBI::errstr\n";
   }
 
   if (param('last')) {
     $req = "select idbuild,configure,result from configure";
-    if (@lid) { $req.=" where idbuild in (".join(",",@lid).")"; }
-    my $st2 = $self->{DBH}->prepare($req);
-#    print $req,"<br>";
-    $st2->execute or print STDERR "On $req";
-    while (my @l = $st2->fetchrow_array) {
-      my $id = shift @l;
-      push(@{$h2{$id}}, \@l);
+    if ($list_id) { $req.=" where idbuild in (".$list_id.")"; }
+    $ref_result = $self->{DBH}->selectall_arrayref($req) ||
+      print "On $req: $DBI::errstr\n";
+#    print STDERR "SQL: $req\n", Data::Dumper->Dump([$ref_result]);
+    foreach my $ra (@$ref_result) {
+      $h2{$ra->[0]}{$ra->[1]} = $ra->[2];
     }
-    $st2->finish();
   }
 
   $req = <<EOF;
 select id,os,osver,archi,cc,ccver,date,smoke,nbc,nbco,nbcm,nbcf,nbcc,nbte,matrix
 from builds
 EOF
-  if (@lid) { $req.=" where id in (".join(",",@lid).")"; }
+  if ($list_id) { $req.=" where id in (".$list_id.")"; }
   my $st = $self->{DBH}->prepare($req);
-  $st->execute or print STDERR $req,"<br>";
+  $st->execute || print STDERR $req,"<br>";
   my %h;
   while (my ($id,$os,$osver,$archi,$cc,$ccver,$date,$smoke,$nbc,$nbco,
 	     $nbcm,$nbcf,$nbcc,$nbte,$matrix)=
@@ -850,15 +584,13 @@ EOF
     $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{matrix} = $matrix;
     $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{nbtt} =
       $nbcf + $nbcm + $nbco + $nbcc;
-    $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{failure} =$f{$id} 
-      if ($f{$id});
-    foreach (@{$h2{$id}}) {
-      $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{build}{$_->[0]}
-	= $_->[1] if ($_);
-    }
+    $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{failure} =
+      $ref_failure->{$id}{failure} if ($ref_failure->{$id});
+    $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{build} = $h2{$id}
+      if ($h2{$id});
   }
   $st->finish;
-  undef %h2; undef @lid;
+  
   return \%h;
 }
 
@@ -871,7 +603,7 @@ sub distinct {
   my $req = "select distinct $col from builds where smoke>=$limite 
              order by $col";
   my $st = $self->{DBH}->prepare($req);
-  print STDERR $req,"\n";
+  print STDERR $req,"\n" if ($self->{opts}->{debug});
   $st->execute or confess($req) && return undef;
   while (my @l =$st->fetchrow_array) { push(@res,join('-',@l)); }
   $st->finish;
@@ -885,12 +617,10 @@ sub distinct {
 sub nb {
   my $self = shift;
   my $req = "select count(*) from builds where smoke >= $limite";
-  print STDERR $req,"\n";
-  my $st = $self->{DBH}->prepare($req);
-  $st->execute or return undef;
-  my ($nb) =$st->fetchrow_array;
-  $st->finish;
-  return $nb;
+  print STDERR $req,"\n" if ($self->{opts}->{debug});
+  return if (!$self->{DBH});
+  my @row_ary = $self->{DBH}->selectrow_array($req) || return undef;
+  return $row_ary[0];
 }
 
 #------------------------------------------------------------------------------
@@ -898,12 +628,12 @@ sub nb {
 #------------------------------------------------------------------------------
 sub add_to_db {
   my ($self, $ref)=@_;
-  print STDERR Data::Dumper->Dump([$ref]) if ($self->{opts}->{verbose});
-  return if (!$ref->{os});
+  return if (!ref($ref) || ref($ref) ne 'HASH' || !$ref->{os});
   my ($nbco, $nbcf, $nbcm, $nbcc)=(0,0,0,0);
   my ($cc,$ccf,$f,$r) = ($ref->{cc}||' ',$ref->{ccver} || ' ',
 			 $ref->{failure},$ref->{report});
   foreach ($cc,$ccf,$f,$r) { s/'/\\'/g if ($_); }
+  $ref->{osver}=~s/[\s]+$//g;
   # Count make test ok / build fail in make / configure fail / make test fail
   foreach my $c (keys %{$$ref{build}}) {
     foreach (split(/ /,$$ref{build}{$c})) {
@@ -913,6 +643,12 @@ sub add_to_db {
       elsif ($_ eq 'c') { $nbcc++; }
     }
   }
+  my $pass = 1;
+  $pass = 0 if ($ref->{failure});
+  printf( "\t =>%25s %s %5d (%s)\n",
+	  $ref->{os}." ".$ref->{osver}, ($pass ? "PASS" : "FAIL"),
+	  $ref->{smoke}, basename($ref->{file}))
+    if ($self->{opts}->{verbose});
   # Ajout des infos sur le host
   my $v2 = ($ref->{matrix} ? join("|", @{$ref->{matrix}}) : '');
   my $req = "INSERT INTO builds(";
@@ -921,19 +657,34 @@ sub add_to_db {
     "VALUES (";
   $req.= "$ref->{id}," if ($ref->{id});
   $req.= <<EOF;
-        '$ref->{os}', '$ref->{osver}','$cc','$ccf', NOW(),
-        $ref->{smoke}, $ref->{nbc}, $nbco, $nbcf,$nbcm,$nbcc,
-        $ref->{nbte},'$ref->{archi}','$v2')
+
+'$ref->{os}',
+'$ref->{osver}',
+'$cc',
+'$ccf',
+NOW(),
+$ref->{smoke},
+$ref->{nbc},
+$nbco,
+$nbcf,
+$nbcm,
+$nbcc,
+$ref->{nbte},
+'$ref->{archi}',
+'$v2')
 EOF
 
-#  print $req,"\n";
+  print $req,"\n" if ($self->{opts}->{debug});
   my $st = $self->{DBH}->prepare($req);
   if (!$st->execute) {
-    cluck($DBI::err." on $req");
+    print STDERR "SQL: $req\n", Data::Dumper->Dump([$ref]);
+    cluck($DBI::errstr);
     return;
   }
   # id du test
   my $id =  $st->{'mysql_insertid'};
+  $ref->{id}=$id;
+  print STDERR Data::Dumper->Dump([$ref]) if ($self->{opts}->{debug});
 
   # Ajout des details des erreurs
   $r = ' ' if (!$r);
@@ -942,7 +693,7 @@ EOF
 INSERT INTO data(idbuild,failure)
 VALUES ($id, '$f')
 EOF
-    $self->{DBH}->do($req) or print STDERR "On $req\n";
+    $self->rundb($req,1) || print STDERR "On $req\n";
 
   # Ajout des options du configure
   foreach my $config (keys %{$$ref{build}}) {
@@ -954,11 +705,12 @@ INSERT INTO configure (idbuild,configure,result)
 VALUES ($id,'$co','$v')
 EOF
  #   print $req,"\n";
-    $self->{DBH}->do($req) or print STDERR "On $req\n";
+    $self->rundb($req,1) or print STDERR "On $req\n";
   }
   return ($DBI::errstr ? 0 : 1);
 }
 
+__END__
 
 #------------------------------------------------------------------------------
 # POD DOC
@@ -1010,12 +762,13 @@ L<http://www.alianwebserver.com/perl/smoke/smoke_db.cgi>
 Construct a new Test::Smoke::Database object and return it. This call too
 connect method of DBD::Mysql and store dbh in $self->{DBH} except if 
 key I<no_dbconnect> is found in I<hash reference>. Disconnect method is
-auto called with DESTROY call.
+auto called with DESTROY call if needed.
 
 =item B<rundb> I<SQL request>
 
 This will do like $dbh->do, but several request can be put in SQL request,
-separated by ';'
+separated by ';'. Return 1 on sucess, 0 if one of request failed. If failed,
+reason is printed on STDERR.
 
 =back
 
@@ -1025,7 +778,8 @@ separated by ';'
 
 =item B<nb>
 
-Return the number of reports found after limit.
+Return the number of reports found after limit. Return undef if SQL request
+fail.
 
 =item B<header_html>
 
@@ -1051,8 +805,7 @@ See L<admin_smokedb>
 
 =item B<parse_import>
 
-As his name say, this method will parse and import fetched report found
-in $self->{opts}->{dir} and put them in database.
+Wrapper. See L<Test::Smoke::Database::Parsing>
 
 =item B<suck_ng>
 
@@ -1068,19 +821,6 @@ Fetch new report from perl.daily-build.reports
 
 =item B<compl_url>
 
-=item B<parse_rpt> I<file>
-
-This method is call by parse_import.
-Parse I<file> and return values parsed in a reference of hash.
-Else return -1 for a H.M. Brand report (then B<parse_hm_brand_rpt> will be 
-called), -2 for a bad report, ie a report without os/osver (this report will be
-deleted), -3 for an Alian multi-col report (deleted too).
-
-=item B<parse_hm_brand_rpt> I<file>
-
-Do a specific parsing for H.M Brand report I<file>. (his report is multi-col).
-Return a list of reference of report to use with add_db.
-
 =item B<rename_rpt>
 
 Rename fetched report to add no of smoke in name of file.
@@ -1092,7 +832,7 @@ after B<fetch> method.
 
 =head1 VERSION
 
-$Revision: 1.6 $
+$Revision: 1.9 $
 
 =head1 AUTHOR
 

@@ -1,6 +1,7 @@
 Changes
 lib/Test/Smoke/Database.pm
 lib/Test/Smoke/Database/Graph.pm
+lib/Test/Smoke/Database/Parsing.pm
 lib/Test/Smoke/Database/FAQ.pod
 bin/admin_smokedb
 bin/smoke_db.cgi
@@ -10,7 +11,9 @@ MANIFEST
 README
 t/1.t
 t/2normal_report.t  
-t/3hmbrand_report.t  
+t/3hmbrand_report.t
+t/4html.t
+t/5db.t
 t/result_hm  
 t/result_normal  
 t/rpt/1506.hm.rpt.18042
@@ -21,3 +24,6 @@ t/rpt/799.hm.rpt.17046
 t/rpt/2568.hm.rpt.18662
 t/rpt/2131.normal.rpt.18468
 t/rpt/2582.normal.rpt.18669
+t/rpt/7084.normal.rpt.18666
+t/rpt/response.good
+TODO

@@ -2,8 +2,8 @@
 #
 # Simple perl example to interface with module Test::Smoke::Database
 # Copyright 200x A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/02/16 16:24:51 $
-# $Revision: 1.6 $
+# $Date: 2003/07/19 18:12:16 $
+# $Revision: 1.7 $
 #
 
 use strict;
@@ -100,7 +100,7 @@ EOF
 
 my @options = qw/clear suck import dir=s verbose nntp_server=s create drop
                  user=s password=s database=s help man graph
-                 min_smoke=i/;
+                 min_smoke=i debug/;
 
 GetOptions( \%opts, @options) or pod2usage( -verbose => 1, -exitval => 1 );
 $opts{help}  and pod2usage( -verbose => 1, -exitval => 0 );
@@ -236,7 +236,7 @@ L<Test::Smoke::Database>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>
 
 =head1 VERSION
 
-$Revision: 1.6 $
+$Revision: 1.7 $
 
 =head1 AUTHOR
 

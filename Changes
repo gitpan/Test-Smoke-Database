@@ -1,5 +1,11 @@
 Revision history for Perl extension Test::Smoke::Database.
 
+1.8  2003/07/30 22:07:34  alian
+ - Split code for parsing
+ - Increase code average from 20% to 85%. Tks to Devel::Cover
+ - Correct bugs found with new tests
+ - Update output for admin_smokedb
+
 1.6  2003/02/16 18:47:04  alian
  - FORMAT OF DATABASE UPDATED !
  - Update summary table: add number of configure failed, number of make failed.

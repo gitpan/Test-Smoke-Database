@@ -2,31 +2,43 @@ package Test::Smoke::Database::Graph;
 
 # module Test::Smoke::Database - Create graph about smoke database
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/02/16 16:14:29 $
+# $Date: 2003/08/02 12:38:27 $
 # $Log: Graph.pm,v $
+# Revision 1.5  2003/08/02 12:38:27  alian
+# Minor typo
+#
+# Revision 1.4  2003/07/30 15:42:27  alian
+# -Graph in 1000*300
+# - Graphs always in png
+# - Add warn messages
+# - Add use of GD in a eval
+#
+# Revision 1.3  2003/07/19 18:12:16  alian
+# Use a debug flag and a verbose one. Fix output
+#
 # Revision 1.2  2003/02/16 16:14:29  alian
 # - Add CPAN chart
-# - All graph are 800*300
+# - All graph are 1000*300
 # -  Change new parameters: use a var for directory where create img
-#
-# Revision 1.1  2003/02/10 00:59:25  alian
-# New files
-#
-#
 
 use strict;
-use GD::Graph::mixed;
-use GD::Graph::colour;
-use GD::Graph::Data;
 use Data::Dumper;
 use LWP::Simple;
+use Carp qw/confess/;
 use POSIX;
+eval("
+  use GD::Graph::mixed;
+  use GD::Graph::colour;
+  use GD::Graph::Data;
+");
+
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 require Exporter;
 
+
 @ISA = qw(Exporter);
 @EXPORT = qw(prompt);
-$VERSION = ('$Revision: 1.2 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.5 $ ' =~ /(\d+\.\d+)/)[0];
 
 my $debug = 0;
 my $font = '/usr/X11R6/share/enlightenment/themes/Blue_OS/ttfonts/arial.ttf';
@@ -55,16 +67,17 @@ sub new   {
 #------------------------------------------------------------------------------
 sub percent_configure {
   my $self = shift;
-  my $request = "select smoke,os,(sum(nbco)/sum(nbc))*100 from builds ";
+  my $request = "select smoke,os,(sum(nbco)/sum(nbco+nbcf+nbcc+nbcm))*100 from builds ";
   $request.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
   $request.="group by smoke,os order by smoke";
   my (%l,%tt);
   my $st = $self->{DBH}->prepare($request);
-  $st->execute or print STDERR $request,"<br>";
+  $st->execute || print STDERR $request,"<br>";
   while (my @l = $st->fetchrow_array) { $l{lc($l[1])}{$l[0]}=$l[2] if ($l[2]);}
   $st->finish;
   my @l1;
   foreach my $os (keys %l) {
+    $os=~s!/!!g;
     my (@l,@l2,$tt);
     foreach (sort keys %{$l{$os}}) {
       push(@l,$_);
@@ -74,7 +87,7 @@ sub percent_configure {
     next if $#l2 < 2;
     $tt{$os}=sprintf("%2d", $tt/($#l2+1));
     my @la=(\@l, \@l2);
-    my $my_graph = GD::Graph::area->new(800,300);
+    my $my_graph = GD::Graph::area->new(1000,300);
     $my_graph->set_legend("","% of successful make test");
     $my_graph->set( 
 		   title           => '% of successful make test for '
@@ -99,11 +112,11 @@ sub percent_configure {
 #------------------------------------------------------------------------------
 sub percent_configure_all {
   my $self = shift;
-  my $request = "select smoke,(sum(nbco)/sum(nbc))*100 from builds ";
+  my $request = "select smoke,(sum(nbco)/sum(nbco+nbcf+nbcc+nbcm))*100 from builds ";
   $request.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
   $request.="group by smoke order by smoke";
   my $ref = $self->fetch_array($request);
-  my $my_graph = GD::Graph::area->new(800,300);
+  my $my_graph = GD::Graph::area->new(1000,300);
   $my_graph->set_legend("","% of successful make test");
   $my_graph->set( 
 		 title           => '% of successful make test',
@@ -127,16 +140,16 @@ sub percent_configure_all {
 #------------------------------------------------------------------------------
 sub configure_per_smoke {
   my $self = shift;
-  my $req ="select smoke,sum(nbc),sum(nbco) from builds ";
+  my $req ="select smoke,sum(nbco+nbcf+nbcc+nbcm),sum(nbco) from builds ";
   $req.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
   $req.="group by smoke order by smoke";
   my $ref = $self->fetch_array($req);
-  my $my_graph = GD::Graph::mixed->new(800,300);
+  my $my_graph = GD::Graph::mixed->new(1000,300);
   $my_graph->set_legend("make test run","make test pass all tests");
   $my_graph->set(
 		 y_label         => 'make test run',
 		 title           => 'make test run/pass all tests by smoke',
-		 y_max_value     => 250,
+		 y_max_value     => 1000,
 		 y_tick_number   => 10,
 		 x_label_skip    => (scalar @{@{$ref}[0]})/8,
 		 types => [qw(lines area )],
@@ -163,9 +176,14 @@ sub configure_per_os {
   $req.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
   $req.="group by os order by 2";
   my $ref = $self->fetch_array($req,10);
+  # no info about this config. Can't create graph
+  if (!ref($$ref[1]) || ref($$ref[1] ne 'ARRAY')) {
+    warn __PACKAGE__." not enough data to make configure per os graph.";
+    return;
+  }
   my @a = @{$$ref[1]};
   my $my = (floor($a[$#a] / 50)+1)*50;
-  my $my_graph = GD::Graph::bars->new(800,300);
+  my $my_graph = GD::Graph::bars->new(1000,300);
   $my_graph->set_legend("","os tested");
   $my_graph->set(
 		 title           => 'Number of configure run by os',
@@ -184,7 +202,7 @@ sub configure_per_os {
 		 box_axis => 0,
 		)
     or warn $my_graph->error;
-  go($my_graph, $ref, "$self->{DIR}/4_nb_configure");
+  return go($my_graph, $ref, "$self->{DIR}/4_nb_configure");
 }
 
 #------------------------------------------------------------------------------
@@ -196,9 +214,14 @@ sub smoke_per_os {
   $req.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
   $req.="group by os order by 2";
   my $ref = $self->fetch_array($req,2);
+  # no info about this config. Can't create graph
+  if (!ref($$ref[1]) || ref($$ref[1] ne 'ARRAY')) {
+    warn __PACKAGE__." not enough data to make smoke per os graph";
+    return undef;
+  }
   my @a = @{$$ref[1]};
   my $my = (floor($a[$#a] / 50)+1)*50;
-  my $my_graph = GD::Graph::bars->new(800,300);
+  my $my_graph = GD::Graph::bars->new(1000,300);
   $my_graph->set_legend("","os tested");
   $my_graph->set(
 		 title           => 'Number of smoke run by os',
@@ -217,7 +240,7 @@ sub smoke_per_os {
 		 box_axis => 0
 		)
     or warn $my_graph->error;
-  go($my_graph, $ref, "$self->{DIR}/3_nb_smoke");
+  return go($my_graph, $ref, "$self->{DIR}/3_nb_smoke");
 }
 
 #------------------------------------------------------------------------------
@@ -229,7 +252,7 @@ sub os_by_smoke {
   $req.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
   $req.="group by smoke order by smoke";
   my $ref = $self->fetch_array($req);
-  my $my_graph = GD::Graph::area->new(800,300);
+  my $my_graph = GD::Graph::area->new(1000,300);
   $my_graph->set_legend("","os tested");
   $my_graph->set(
 		 title           => 'Number of os by smoke',
@@ -256,11 +279,11 @@ sub os_by_smoke {
 #------------------------------------------------------------------------------
 sub success_by_os {
   my $self = shift;
-  my $req = "select os,(sum(nbco)/sum(nbc))*100 from builds ";
+  my $req = "select os,(sum(nbco)/sum(nbco+nbcc+nbcm+nbcf))*100 from builds ";
   $req.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
   $req.="group by os order by 2";
   my $ref = $self->fetch_array($req, 15);
-  my $my_graph = GD::Graph::bars->new(800,300);
+  my $my_graph = GD::Graph::bars->new(1000,300);
   $my_graph->set_legend("","os tested");
   $my_graph->set(
 		 title           => 'Average % of successful make test by os',
@@ -304,22 +327,23 @@ sub go {
   $my_graph->set_text_clr("black");
   $my_graph->plot($data) or die $my_graph->error;
   print STDERR "Create $filename.png\n" if ($debug);
-  save_chart($my_graph, $filename);
+  return save_chart($my_graph, $filename);
 }
 
 #------------------------------------------------------------------------------
 # save_chart
 #------------------------------------------------------------------------------
 sub save_chart {
-  my $chart = shift or die "Need a chart!";
-  my $name = shift or die "Need a name!";
+  my $chart = shift or warn "Need a chart!";
+  my $name = shift or warn "Need a name!";
+  return if (!$name or !$chart);
   local(*OUT);
-  my $ext = $chart->export_format;
-  open(OUT, ">$name.$ext") or 
-    die "Cannot open $name.$ext for write: $!";
+  open(OUT, ">$name.png") or 
+    confess "Cannot open $name.png for write: $!";
   binmode OUT;
-  print OUT $chart->gd->$ext();
+  print OUT $chart->gd->png();
   close OUT;
+  return 1;
 }
 
 #------------------------------------------------------------------------------
@@ -329,16 +353,16 @@ sub fetch_array {
   my ($self,$request, $limit)=@_;
   my (@tab,@tab2);
   print STDERR "SQL request =>$request\n" if ($debug);
-  my $st = $self->{DBH}->prepare($request);
-  $st->execute or print STDERR $request,"<br>";
-  while (my @l = $st->fetchrow_array) {
+  my $ref = $self->{DBH}->selectall_arrayref($request);
+  print STDERR "1:",Data::Dumper->Dump($ref) if ($debug);
+  foreach (@$ref) {
+    my @l=@$_;
     next if (($limit && $l[1] < $limit) or (!$l[1] or !$l[0]));
     my $i = 0;
     foreach (@l) { push( @{$tab[$i++]}, $_);  }
   }
-  $st->finish;
 
-  print STDERR Data::Dumper->Dump([ \@tab ]) if ($debug);
+  print STDERR "2:",Data::Dumper->Dump([ \@tab ]) if ($debug);
   return \@tab;
 }
 
@@ -347,17 +371,16 @@ sub fetch_array {
 #------------------------------------------------------------------------------
 sub create_html {
   my ($self, $mt, $ref, $c)=@_;
-  print STDERR "Create $mt.html\n";
+  my $i=0;
+  print STDERR "Create $mt.html\n" if ($self->{opts}->{debug});
   open(STATS,">$mt.html") or die "Can't create $mt.html:$!\n";
   print STATS $self->{dbsmoke}->header_html.$c->h2($$ref{$mt})."Current result - ";
   foreach my $mt2 (keys %$ref) {
     print STATS $c->a({-href=>"$mt2.html"},$$ref{$mt2})." - ";
   }
-  print STATS $c->hr;
+  print STATS "<hr>\n";
   foreach (glob("$mt/*.png")) {
-    print STATS $c->img({-src => $_, 
-			 -align=>'center', 
-			 -width=>800,
+    print STATS $c->img({-src => $_,-align=>'center',-width=>1000,
 			 -height=>300}),"<hr>\n";
   }
   print STATS "Build with DBD::Mysql / GD::Graph / Test::Smoke::Database on ",
@@ -439,7 +462,7 @@ sub graph_cpan {
   my @l2;
   foreach (@l) { push(@l2, $perl{$_}); }
   my $ref = [ \@l, \@l2];
-  my $my_graph = GD::Graph::bars->new(800,300);
+  my $my_graph = GD::Graph::bars->new(1000,300);
   #$my_graph->set_legend("","% of successful make test");
   $my_graph->set( 
 		 title           => $title,
@@ -464,6 +487,7 @@ sub graph_cpan {
   go($my_graph, $ref, "cpan/$name");
 }
 
+__END__
 
 #------------------------------------------------------------------------------
 # POD DOC
@@ -499,7 +523,7 @@ Construct a new Test::Smoke::Database::Graph object and return it.
 
 =head1 VERSION
 
-$Revision: 1.2 $
+$Revision: 1.5 $
 
 =head1 AUTHOR
 

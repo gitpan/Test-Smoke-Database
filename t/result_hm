@@ -23,12 +23,13 @@ $rep = {
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'B.11.11.06',
                                         'nbc' => 12,
                                         'smoke' => '18662',
                                         'id' => '186620',
+                                        'file' => 't/rpt/2568.hm.rpt.18662',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -55,12 +56,13 @@ $rep = {
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.3',
                                         'nbc' => 12,
                                         'smoke' => '18662',
                                         'id' => '186621',
+                                        'file' => 't/rpt/2568.hm.rpt.18662',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -79,12 +81,13 @@ $rep = {
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'A.10.32.30',
                                         'nbc' => 4,
                                         'smoke' => '18662',
                                         'id' => '186622',
+                                        'file' => 't/rpt/2568.hm.rpt.18662',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -103,12 +106,13 @@ $rep = {
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.2  ',
                                         'nbc' => 4,
                                         'smoke' => '18662',
                                         'id' => '186623',
+                                        'file' => 't/rpt/2568.hm.rpt.18662',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -131,12 +135,13 @@ $rep = {
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => 'vac 5.0.2.6',
                                         'nbc' => 8,
                                         'smoke' => '18662',
                                         'id' => '186624',
+                                        'file' => 't/rpt/2568.hm.rpt.18662',
                                         'archi' => ' ',
                                         'cc' => 'vac'
                                       },
@@ -170,6 +175,7 @@ AIX 4.3 gcc  stdio/perlio     -DDEBUGGING -Duselongdouble
 AIX 4.3 gcc  stdio/perlio     -Dusemorebits
     ext/Encode/t/Unicode ................ 5
 ',
+                                        'file' => 't/rpt/2568.hm.rpt.18662',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -205,6 +211,7 @@ Cygwin 1.3   stdio            -DDEBUGGING -Dusemorebits
     lib/Test/Harness/t/strap-analyze .... 2
     lib/warnings ........................ 414-416
 ',
+                                        'file' => 't/rpt/2568.hm.rpt.18662',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       }
@@ -296,6 +303,7 @@ HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Duselongdouble -Dusethr
     lib/Net/Ping/t/450_service...........FAILED at test 2
     lib/Net/t/smtp.......................FAILED at test 0
 ',
+                                        'file' => 't/rpt/1506.hm.rpt.18042',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -385,6 +393,7 @@ HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Duselongdouble -Dusethr
     lib/Net/Ping/t/450_service...........FAILED at test 2
     lib/Net/t/smtp.......................FAILED at test 0
 ',
+                                        'file' => 't/rpt/1506.hm.rpt.18042',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -428,6 +437,7 @@ HP-UX 10.20  perlio           -DDEBUGGING -Duselongdouble -Dusethreads -Duseithr
     t/op/rand............................FAILED at test 5
     lib/Net/Ping/t/450_service...........FAILED at test 2
 ',
+                                        'file' => 't/rpt/1506.hm.rpt.18042',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -471,6 +481,7 @@ HP-UX 10.20  perlio           -DDEBUGGING -Duselongdouble -Dusethreads -Duseithr
     t/op/rand............................FAILED at test 5
     lib/Net/Ping/t/450_service...........FAILED at test 2
 ',
+                                        'file' => 't/rpt/1506.hm.rpt.18042',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -493,12 +504,13 @@ HP-UX 10.20  perlio           -DDEBUGGING -Duselongdouble -Dusethreads -Duseithr
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => 'vac 5.0.2.5',
                                         'nbc' => 8,
                                         'smoke' => '18042',
                                         'id' => '180424',
+                                        'file' => 't/rpt/1506.hm.rpt.18042',
                                         'archi' => ' ',
                                         'cc' => 'vac'
                                       },
@@ -533,6 +545,7 @@ AIX 4.3 gcc  stdio/perlio     -DDEBUGGING -Duselongdouble
 AIX 4.3 gcc  stdio            -DDEBUGGING -Dusethreads -Duseithreads
     lib/Net/Ping/t/450_service...........FAILED at test 2
 ',
+                                        'file' => 't/rpt/1506.hm.rpt.18042',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -551,12 +564,13 @@ AIX 4.3 gcc  stdio            -DDEBUGGING -Dusethreads -Duseithreads
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => 'xlc 3.1.4.10',
                                         'nbc' => 4,
                                         'smoke' => '18042',
                                         'id' => '180426',
+                                        'file' => 't/rpt/1506.hm.rpt.18042',
                                         'archi' => ' ',
                                         'cc' => 'xlc'
                                       },
@@ -732,6 +746,7 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
     lib/Test/Harness/t/strap-analyze.....FAILED at test 2
     lib/warnings.........................FAILED at test 413
 ',
+                                        'file' => 't/rpt/1506.hm.rpt.18042',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       }
@@ -761,12 +776,13 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                                      'PERLIO = stdio  -DDEBUGGING',
                                                      'PERLIO = perlio -DDEBUGGING'
                                                    ],
-                                       'os' => 'HP-UX',
                                        'nbte' => 0,
+                                       'os' => 'HP-UX',
                                        'ccver' => 'B.11.11.04',
                                        'nbc' => 13,
                                        'smoke' => '17046',
                                        'id' => '170460',
+                                       'file' => 't/rpt/799.hm.rpt.17046',
                                        'archi' => ' ',
                                        'cc' => 'HPc'
                                      },
@@ -794,12 +810,13 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                                      'PERLIO = stdio  -DDEBUGGING',
                                                      'PERLIO = perlio -DDEBUGGING'
                                                    ],
-                                       'os' => 'HP-UX',
                                        'nbte' => 0,
+                                       'os' => 'HP-UX',
                                        'ccver' => '3.1',
                                        'nbc' => 13,
                                        'smoke' => '17046',
                                        'id' => '170461',
+                                       'file' => 't/rpt/799.hm.rpt.17046',
                                        'archi' => ' ',
                                        'cc' => 'gcc'
                                      },
@@ -819,12 +836,13 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                                      'PERLIO = stdio  -DDEBUGGING',
                                                      'PERLIO = perlio -DDEBUGGING'
                                                    ],
-                                       'os' => 'HP-UX',
                                        'nbte' => 0,
+                                       'os' => 'HP-UX',
                                        'ccver' => 'A.10.32.30',
                                        'nbc' => 5,
                                        'smoke' => '17048',
                                        'id' => '170482',
+                                       'file' => 't/rpt/799.hm.rpt.17046',
                                        'archi' => ' ',
                                        'cc' => 'HPc'
                                      },
@@ -844,12 +862,13 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                                      'PERLIO = stdio  -DDEBUGGING',
                                                      'PERLIO = perlio -DDEBUGGING'
                                                    ],
-                                       'os' => 'HP-UX',
                                        'nbte' => 0,
+                                       'os' => 'HP-UX',
                                        'ccver' => '3.0.4',
                                        'nbc' => 5,
                                        'smoke' => '17048',
                                        'id' => '170483',
+                                       'file' => 't/rpt/799.hm.rpt.17046',
                                        'archi' => ' ',
                                        'cc' => 'gcc'
                                      },
@@ -873,12 +892,13 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                                      'PERLIO = stdio  -DDEBUGGING',
                                                      'PERLIO = perlio -DDEBUGGING'
                                                    ],
-                                       'os' => 'AIX',
                                        'nbte' => 0,
+                                       'os' => 'AIX',
                                        'ccver' => 'vac 5.0.2.4',
                                        'nbc' => 9,
                                        'smoke' => '17021',
                                        'id' => '170214',
+                                       'file' => 't/rpt/799.hm.rpt.17046',
                                        'archi' => ' ',
                                        'cc' => 'vac'
                                      },
@@ -900,12 +920,13 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                                      'PERLIO = stdio  -DDEBUGGING',
                                                      'PERLIO = perlio -DDEBUGGING'
                                                    ],
-                                       'os' => 'AIX',
                                        'nbte' => 0,
+                                       'os' => 'AIX',
                                        'ccver' => '3.0.4',
                                        'nbc' => 7,
                                        'smoke' => '16984',
                                        'id' => '169845',
+                                       'file' => 't/rpt/799.hm.rpt.17046',
                                        'archi' => ' ',
                                        'cc' => 'gcc'
                                      },
@@ -925,12 +946,13 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                                      'PERLIO = stdio  -DDEBUGGING',
                                                      'PERLIO = perlio -DDEBUGGING'
                                                    ],
-                                       'os' => 'AIX',
                                        'nbte' => 0,
+                                       'os' => 'AIX',
                                        'ccver' => 'xlc 3.1.4.10',
                                        'nbc' => 5,
                                        'smoke' => '17048',
                                        'id' => '170486',
+                                       'file' => 't/rpt/799.hm.rpt.17046',
                                        'archi' => ' ',
                                        'cc' => 'xlc'
                                      },
@@ -967,6 +989,7 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
     lib/Test/Harness/t/strap-analyze.....FAILED at test 2
     lib/warnings.........................FAILED at test 403
 ',
+                                       'file' => 't/rpt/799.hm.rpt.17046',
                                        'archi' => ' ',
                                        'cc' => 'gcc'
                                      }
@@ -995,12 +1018,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'B.11.11.06',
                                         'nbc' => 12,
                                         'smoke' => '18358',
                                         'id' => '183580',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -1027,12 +1051,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.3',
                                         'nbc' => 12,
                                         'smoke' => '18358',
                                         'id' => '183581',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1051,12 +1076,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'A.10.32.30',
                                         'nbc' => 4,
                                         'smoke' => '18358',
                                         'id' => '183582',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -1075,12 +1101,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.2  ',
                                         'nbc' => 4,
                                         'smoke' => '18358',
                                         'id' => '183583',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1103,12 +1130,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => 'vac 5.0.2.6',
                                         'nbc' => 8,
                                         'smoke' => '18358',
                                         'id' => '183584',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'vac'
                                       },
@@ -1127,12 +1155,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => '3.1.1',
                                         'nbc' => 4,
                                         'smoke' => '18358',
                                         'id' => '183585',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1159,12 +1188,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'B.11.11.06',
                                         'nbc' => 12,
                                         'smoke' => '18354',
                                         'id' => '183546',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -1191,12 +1221,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.3',
                                         'nbc' => 12,
                                         'smoke' => '18354',
                                         'id' => '183547',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1215,12 +1246,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'A.10.32.30',
                                         'nbc' => 4,
                                         'smoke' => '18354',
                                         'id' => '183548',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -1239,12 +1271,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.2  ',
                                         'nbc' => 4,
                                         'smoke' => '18354',
                                         'id' => '183549',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1267,12 +1300,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => 'vac 5.0.2.6',
                                         'nbc' => 8,
                                         'smoke' => '18354',
                                         'id' => '1835410',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'vac'
                                       },
@@ -1291,12 +1325,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => '3.1.1',
                                         'nbc' => 4,
                                         'smoke' => '18354',
                                         'id' => '1835411',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1323,12 +1358,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'B.11.11.06',
                                         'nbc' => 12,
                                         'smoke' => '18351',
                                         'id' => '1835112',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -1355,12 +1391,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.3',
                                         'nbc' => 12,
                                         'smoke' => '18351',
                                         'id' => '1835113',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1379,12 +1416,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'A.10.32.30',
                                         'nbc' => 4,
                                         'smoke' => '18351',
                                         'id' => '1835114',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -1403,12 +1441,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.2  ',
                                         'nbc' => 4,
                                         'smoke' => '18351',
                                         'id' => '1835115',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1431,12 +1470,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => 'vac 5.0.2.6',
                                         'nbc' => 8,
                                         'smoke' => '18351',
                                         'id' => '1835116',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'vac'
                                       },
@@ -1455,12 +1495,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => '3.1.1',
                                         'nbc' => 4,
                                         'smoke' => '18351',
                                         'id' => '1835117',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1487,12 +1528,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'B.11.11.06',
                                         'nbc' => 12,
                                         'smoke' => '18350',
                                         'id' => '1835018',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -1519,12 +1561,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.3',
                                         'nbc' => 12,
                                         'smoke' => '18350',
                                         'id' => '1835019',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1543,12 +1586,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'A.10.32.30',
                                         'nbc' => 4,
                                         'smoke' => '18350',
                                         'id' => '1835020',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -1567,12 +1611,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.2  ',
                                         'nbc' => 4,
                                         'smoke' => '18350',
                                         'id' => '1835021',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1595,12 +1640,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => 'vac 5.0.2.6',
                                         'nbc' => 8,
                                         'smoke' => '18350',
                                         'id' => '1835022',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'vac'
                                       },
@@ -1621,12 +1667,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => '3.1.1',
                                         'nbc' => 6,
                                         'smoke' => '18350',
                                         'id' => '1835023',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1653,12 +1700,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'B.11.11.06',
                                         'nbc' => 12,
                                         'smoke' => '18346',
                                         'id' => '1834624',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -1685,12 +1733,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.3',
                                         'nbc' => 12,
                                         'smoke' => '18346',
                                         'id' => '1834625',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1709,12 +1758,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => 'A.10.32.30',
                                         'nbc' => 4,
                                         'smoke' => '18346',
                                         'id' => '1834626',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'HPc'
                                       },
@@ -1733,12 +1783,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'HP-UX',
                                         'nbte' => 0,
+                                        'os' => 'HP-UX',
                                         'ccver' => '3.2  ',
                                         'nbc' => 4,
                                         'smoke' => '18346',
                                         'id' => '1834627',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       },
@@ -1761,12 +1812,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => 'vac 5.0.2.6',
                                         'nbc' => 8,
                                         'smoke' => '18346',
                                         'id' => '1834628',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'vac'
                                       },
@@ -1787,12 +1839,13 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                                       'PERLIO = stdio  -DDEBUGGING',
                                                       'PERLIO = perlio -DDEBUGGING'
                                                     ],
-                                        'os' => 'AIX',
                                         'nbte' => 0,
+                                        'os' => 'AIX',
                                         'ccver' => '3.1.1',
                                         'nbc' => 6,
                                         'smoke' => '18346',
                                         'id' => '1834629',
+                                        'file' => 't/rpt/2005.hm.rpt.18358',
                                         'archi' => ' ',
                                         'cc' => 'gcc'
                                       }

@@ -29,8 +29,77 @@ $rep = {
                                             'nbc' => 12,
                                             'smoke' => '18358',
                                             'id' => '1981',
+                                            'file' => 't/rpt/1981.normal.rpt.18358',
                                             'archi' => 'i386',
                                             'cc' => 'cc'
+                                          }
+                                        ],
+         'rpt/7084.normal.rpt.18666' => [
+                                          {
+                                            'nbco' => 0,
+                                            'build' => {
+                                                         '-Duseshrplib' => 'F F F F',
+                                                         ' ' => 'F F F F',
+                                                         '-Duseithreads' => 'F F F F'
+                                                       },
+                                            'osver' => '1.5.3 ',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING'
+                                                        ],
+                                            'nbte' => '27',
+                                            'os' => 'netbsd',
+                                            'ccver' => 'egcs-2.91.66 19990314 (egcs-1.1.2 release)',
+                                            'nbc' => 3,
+                                            'smoke' => '18666',
+                                            'id' => '7084',
+                                            'failure' => 'netbsd      [stdio/perlio]-Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+netbsd      [stdio       ]-Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc -Duseithreads
+    t/op/pack............................FAILED at test 187
+    ext/IO/lib/IO/t/io_xs................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+    t/op/pack............................FAILED at test 187
+    ext/IO/lib/IO/t/io_xs................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+    lib/Math/BigInt/t/mbi_rand...........FAILED at test 90
+netbsd      [perlio      ]-Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc -Duseithreads
+    t/op/pack............................FAILED at test 187
+    ext/IO/lib/IO/t/io_xs................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+    t/op/pack............................FAILED at test 187
+    ext/IO/lib/IO/t/io_xs................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc -Duseithreads
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+netbsd      [stdio/perlio]-Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc -Duseshrplib
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc -Duseshrplib
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+',
+                                            'file' => 't/rpt/7084.normal.rpt.18666',
+                                            'archi' => 'sparc',
+                                            'cc' => 'gcc'
                                           }
                                         ],
          'rpt/2131.normal.rpt.18468' => [
@@ -59,6 +128,7 @@ $rep = {
                                             'nbc' => 8,
                                             'smoke' => '18468',
                                             'id' => '2131',
+                                            'file' => 't/rpt/2131.normal.rpt.18468',
                                             'archi' => 'IP22',
                                             'cc' => '??'
                                           }
@@ -88,6 +158,7 @@ $rep = {
                                             'nbc' => 5,
                                             'smoke' => '18669',
                                             'id' => '2582',
+                                            'file' => 't/rpt/2582.normal.rpt.18669',
                                             'archi' => 'i386',
                                             'cc' => 'cc'
                                           }
@@ -122,6 +193,7 @@ $rep = {
                                             'nbc' => 12,
                                             'smoke' => '18346',
                                             'id' => '1943',
+                                            'file' => 't/rpt/1943.normal.rpt.18346',
                                             'archi' => 'i386',
                                             'cc' => 'cc'
                                           }
