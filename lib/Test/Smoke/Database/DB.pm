@@ -2,8 +2,16 @@ package Test::Smoke::Database::DB;
 
 # Test::Smoke::Database::DB
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/19 10:37:24 $
+# $Date: 2003/11/07 17:34:53 $
 # $Log: DB.pm,v $
+# Revision 1.8  2003/11/07 17:34:53  alian
+# Change display at import
+#
+# Revision 1.7  2003/09/16 15:41:50  alian
+#  - Update parsing to parse 5.6.1 report
+#  - Change display for lynx
+#  - Add top smokers
+#
 # Revision 1.6  2003/08/19 10:37:24  alian
 # Release 1.14:
 #  - FORMAT OF DATABASE UPDATED ! (two cols added, one moved).
@@ -47,7 +55,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.6 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.8 $ ' =~ /(\d+\.\d+)/)[0];
 use vars qw/$debug $verbose $limit/;
 #$limite = 0;
 
@@ -199,11 +207,22 @@ sub read_smokers(\%) {
   my $req =" select distinct author from builds where date > DATE_SUB(NOW(), INTERVAL 6 MONTH)";
   my $ref = $self->{DBH}->selectcol_arrayref($req) || return undef;
   foreach (@$ref) {
-    $req = "select distinct os,osver,archi,cc,ccver from builds where author='$_' ".
-      " and date > DATE_SUB(NOW(), INTERVAL 6 MONTH) order by 1,2,3,4,5";
+    $req = "select distinct os,osver,archi,cc,ccver, count(*) from builds where author='$_' ".
+      " and date > DATE_SUB(NOW(), INTERVAL 6 MONTH) group by 1,2,3,4,5 order by 1,2,3,4,5";
     $smokers{$_} = $self->{DBH}->selectall_arrayref($req) || return undef;
   }
   return \%smokers;
+}
+
+#------------------------------------------------------------------------------
+# read_top_smokers
+#------------------------------------------------------------------------------
+sub read_top_smokers{
+  my $self = shift;
+  my $lim = shift || 20;
+  my $req = "select distinct author,count(*) from builds where date ".
+    "group by 1 order by 2 desc limit $lim";
+  return $self->{DBH}->selectall_arrayref($req) || undef;
 }
 
 #------------------------------------------------------------------------------
@@ -265,9 +284,9 @@ sub add_to_db(\%\%) {
     }
   }
   my $pass = (($nbcf || $nbcm || $nbcc) ? 0 : 1);
-  printf( "\t =>%25s %s %5d (%s) %s\n",
+  printf( "\t =>%25s %s %5s (%s) %s\n",
 	  $ref->{os}." ".$ref->{osver}, ($pass ? "PASS" : "FAIL"),
-	  $ref->{smoke}, basename($ref->{file}), $ref->{date}) if $verbose;
+	  $ref->{version}, basename($ref->{file}), $ref->{date}) if $verbose;
   # Ajout des infos sur le host
   my $v2 = ($ref->{matrix} ? join("|", @{$ref->{matrix}}) : '');
   my $req = "INSERT INTO builds(";
@@ -384,7 +403,7 @@ reason is printed on STDERR.
 
 =head1 VERSION
 
-$Revision: 1.6 $
+$Revision: 1.8 $
 
 =head1 AUTHOR
 

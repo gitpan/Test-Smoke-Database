@@ -1,4 +1,169 @@
 $rep = {
+         'rpt/2131.normal.rpt.18468' => [
+                                          {
+                                            'nbte' => 0,
+                                            'smoke' => 18468,
+                                            'version' => '5.9.0',
+                                            'nbco' => 0,
+                                            'date' => '2003-01-13 05:01:37',
+                                            'file' => 't/rpt/2131.normal.rpt.18468',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING'
+                                                        ],
+                                            'build' => {
+                                                         '-Duseperlio' => 'O O O O',
+                                                         '-Duseperlio -Dusemorebits' => 'O O O O',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Duselongdouble' => 'O O O O',
+                                                         '-Duseperlio -Duse64bitint' => 'O O O O',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Duse64bitint' => 'O O O O',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Dusemorebits' => 'O O ? ?',
+                                                         '-Dusethreads -Duseithreads -Duseperlio' => 'O O O O',
+                                                         '-Duseperlio -Duselongdouble' => 'O O O O'
+                                                       },
+                                            'os' => 'irix',
+                                            'ccver' => '??',
+                                            'cc' => '??',
+                                            'archi' => 'IP22',
+                                            'id' => '2131',
+                                            'osver' => '6.5 6.5.16m',
+                                            'nbc' => 8
+                                          }
+                                        ],
+         'rpt/2582.normal.rpt.18669' => [
+                                          {
+                                            'nbte' => 0,
+                                            'smoke' => '18669',
+                                            'nbco' => 0,
+                                            'date' => '2003-02-08 12:46:47',
+                                            'version' => '5.9.0',
+                                            'file' => 't/rpt/2582.normal.rpt.18669',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'LC_ALL = nl_NL.utf8',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING',
+                                                          'LC_ALL = nl_NL.utf8 -DDEBUGGING'
+                                                        ],
+                                            'build' => {
+                                                         ' ' => 'O O O O O O',
+                                                         '-Uuseperlio' => 'O - - O - -',
+                                                         '-Duseithreads -Duse64bitint' => 'O O O O O O',
+                                                         '-Duse64bitint' => 'O O O O O O',
+                                                         '-Duseithreads' => 'O O O O O O'
+                                                       },
+                                            'os' => 'linux',
+                                            'ccver' => '2.95.3',
+                                            'cc' => 'gcc',
+                                            'archi' => 'i386',
+                                            'id' => '2582',
+                                            'osver' => '2.4.18',
+                                            'nbc' => 5
+                                          }
+                                        ],
+         'rpt/4120.normal.rpt.17566' => [
+                                          {
+                                            'nbte' => 0,
+                                            'nbco' => 0,
+                                            'date' => '2003-04-17 09:24:57',
+                                            'file' => 't/rpt/4120.normal.rpt.17566',
+                                            'author' => 'alian@cpan.org',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING'
+                                                        ],
+                                            'os' => 'solaris',
+                                            'ccver' => '2.95.3',
+                                            'cc' => 'gcc',
+                                            'archi' => 'sun4',
+                                            'id' => '4120',
+                                            'smoke' => '17566',
+                                            'version' => '5.9.0',
+                                            'build' => {
+                                                         ' ' => 'O O O O',
+                                                         '-Duseithreads -Duse64bitint' => 'O O O O',
+                                                         '-Duse64bitint' => 'O O O O',
+                                                         '-Duseithreads' => 'O O O O'
+                                                       },
+                                            'osver' => '2.7',
+                                            'nbc' => 4
+                                          }
+                                        ],
+         'rpt/7084.normal.rpt.18666' => [
+                                          {
+                                            'nbte' => 34,
+                                            'nbco' => 0,
+                                            'date' => '2003-07-30 15:13',
+                                            'file' => 't/rpt/7084.normal.rpt.18666',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING'
+                                                        ],
+                                            'os' => 'netbsd',
+                                            'ccver' => '2.91.66',
+                                            'cc' => 'gcc',
+                                            'failure' => 'netbsd      [stdio/perlio]-Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+netbsd      [stdio       ]-Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc -Duseithreads
+    t/op/pack............................FAILED at test 187
+    ext/IO/lib/IO/t/io_xs................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+    t/op/pack............................FAILED at test 187
+    ext/IO/lib/IO/t/io_xs................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+    lib/Math/BigInt/t/mbi_rand...........FAILED at test 90
+netbsd      [perlio      ]-Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc -Duseithreads
+    t/op/pack............................FAILED at test 187
+    ext/IO/lib/IO/t/io_xs................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+    t/op/pack............................FAILED at test 187
+    ext/IO/lib/IO/t/io_xs................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc -Duseithreads
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+netbsd      [stdio/perlio]-Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc -Duseshrplib
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
+              (cont) -Dcc=/usr/local/bin/gcc -Duseshrplib
+    t/op/pack............................FAILED at test 187
+    ext/IPC/SysV/t/sem...................FAILED at test 1
+',
+                                            'archi' => 'sparc',
+                                            'id' => '7084',
+                                            'smoke' => '18666',
+                                            'version' => '5.9.0',
+                                            'build' => {
+                                                         ' ' => 'F F F F',
+                                                         '-Duseshrplib' => 'F F F F',
+                                                         '-Duseithreads' => 'F F F F'
+                                                       },
+                                            'osver' => '1.5.3',
+                                            'nbc' => 3
+                                          }
+                                        ],
          'rpt/1169.normal.rpt.17850' => [
                                           {
                                             'nbte' => 64,
@@ -14,6 +179,7 @@ $rep = {
                                                           'PERLIO = perlio -DDEBUGGING'
                                                         ],
                                             'build' => {
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Duse64bitall' => '- - t t',
                                                          '-Duseperlio -Duse64bitall' => 't t F F',
                                                          '-Duseperlio' => 'F F m m',
                                                          '-Duseperlio -Dusemorebits' => '- - F F',
@@ -21,6 +187,7 @@ $rep = {
                                                          '-Duseperlio -Duse64bitall -Duselongdouble' => 'F F t t',
                                                          '-Dusethreads -Duseithreads -Duseperlio -Duse64bitint' => 'F F - -',
                                                          '-Dusethreads -Duseithreads -Duseperlio -Dusemorebits' => 't t F F',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Duse64bitall -Duselongdouble' => '- - t t',
                                                          '-Dusethreads -Duseithreads -Duseperlio' => 'F F t t',
                                                          '-Duseperlio -Duselongdouble' => 't t F F'
                                                        },
@@ -115,72 +282,7 @@ irix         stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads -Duseperlio
                                             'archi' => 'IP28',
                                             'id' => '1169',
                                             'osver' => '6.5 6.5.16m',
-                                            'nbc' => 9
-                                          }
-                                        ],
-         'rpt/2131.normal.rpt.18468' => [
-                                          {
-                                            'nbte' => 0,
-                                            'smoke' => 18468,
-                                            'version' => '5.9.0',
-                                            'nbco' => 0,
-                                            'date' => '2003-01-13 05:01:37',
-                                            'file' => 't/rpt/2131.normal.rpt.18468',
-                                            'matrix' => [
-                                                          'PERLIO = stdio',
-                                                          'PERLIO = perlio',
-                                                          'PERLIO = stdio  -DDEBUGGING',
-                                                          'PERLIO = perlio -DDEBUGGING'
-                                                        ],
-                                            'build' => {
-                                                         '-Duseperlio' => 'O O O O',
-                                                         '-Duseperlio -Dusemorebits' => 'O O O O',
-                                                         '-Dusethreads -Duseithreads -Duseperlio -Duselongdouble' => 'O O O O',
-                                                         '-Duseperlio -Duse64bitint' => 'O O O O',
-                                                         '-Dusethreads -Duseithreads -Duseperlio -Duse64bitint' => 'O O O O',
-                                                         '-Dusethreads -Duseithreads -Duseperlio -Dusemorebits' => 'O O ? ?',
-                                                         '-Dusethreads -Duseithreads -Duseperlio' => 'O O O O',
-                                                         '-Duseperlio -Duselongdouble' => 'O O O O'
-                                                       },
-                                            'os' => 'irix',
-                                            'ccver' => '??',
-                                            'cc' => '??',
-                                            'archi' => 'IP22',
-                                            'id' => '2131',
-                                            'osver' => '6.5 6.5.16m',
-                                            'nbc' => 8
-                                          }
-                                        ],
-         'rpt/2582.normal.rpt.18669' => [
-                                          {
-                                            'nbte' => 0,
-                                            'smoke' => '18669',
-                                            'nbco' => 0,
-                                            'date' => '2003-02-08 12:46:47',
-                                            'version' => '5.9.0',
-                                            'file' => 't/rpt/2582.normal.rpt.18669',
-                                            'matrix' => [
-                                                          'PERLIO = stdio',
-                                                          'PERLIO = perlio',
-                                                          'LC_ALL = nl_NL.utf8',
-                                                          'PERLIO = stdio  -DDEBUGGING',
-                                                          'PERLIO = perlio -DDEBUGGING',
-                                                          'LC_ALL = nl_NL.utf8 -DDEBUGGING'
-                                                        ],
-                                            'build' => {
-                                                         ' ' => 'O O O O O O',
-                                                         '-Uuseperlio' => 'O - - O - -',
-                                                         '-Duseithreads -Duse64bitint' => 'O O O O O O',
-                                                         '-Duse64bitint' => 'O O O O O O',
-                                                         '-Duseithreads' => 'O O O O O O'
-                                                       },
-                                            'os' => 'linux',
-                                            'ccver' => '2.95.3',
-                                            'cc' => 'gcc',
-                                            'archi' => 'i386',
-                                            'id' => '2582',
-                                            'osver' => '2.4.18',
-                                            'nbc' => 5
+                                            'nbc' => 11
                                           }
                                         ],
          'rpt/7636.normal.rpt.18667' => [
@@ -246,6 +348,35 @@ hpux        [stdio/perlio]-DDEBUGGING -Dcc=gcc
                                             'nbc' => 6
                                           }
                                         ],
+         'rpt/5.6.1.normal.rpt.18670' => [
+                                           {
+                                             'nbte' => 0,
+                                             'nbco' => 0,
+                                             'date' => '2003-09-15 15:47',
+                                             'file' => 't/rpt/5.6.1.normal.rpt.18670',
+                                             'author' => 'merijn@l1.procura.nl',
+                                             'matrix' => [
+                                                           'no debugging',
+                                                           '-DDEBUGGING'
+                                                         ],
+                                             'os' => 'linux',
+                                             'ccver' => '3.3.1',
+                                             'cc' => 'gcc',
+                                             'archi' => 'i386',
+                                             'id' => '1',
+                                             'smoke' => '18670',
+                                             'version' => '5.6.1',
+                                             'build' => {
+                                                          '-Duselargefiles' => 'O O',
+                                                          '-Duselongdouble' => 'O O',
+                                                          ' ' => 'O O',
+                                                          '-Dusemorebits' => 'O O',
+                                                          '-Duse64bitint' => 'O O'
+                                                        },
+                                             'osver' => '2.4.20',
+                                             'nbc' => 5
+                                           }
+                                         ],
          'rpt/1943.normal.rpt.18346' => [
                                           {
                                             'nbte' => 0,
@@ -281,76 +412,6 @@ hpux        [stdio/perlio]-DDEBUGGING -Dcc=gcc
                                             'id' => '1943',
                                             'osver' => '3.2',
                                             'nbc' => 12
-                                          }
-                                        ],
-         'rpt/7084.normal.rpt.18666' => [
-                                          {
-                                            'nbte' => 34,
-                                            'nbco' => 0,
-                                            'date' => '2003-07-30 15:13',
-                                            'file' => 't/rpt/7084.normal.rpt.18666',
-                                            'matrix' => [
-                                                          'PERLIO = stdio',
-                                                          'PERLIO = perlio',
-                                                          'PERLIO = stdio  -DDEBUGGING',
-                                                          'PERLIO = perlio -DDEBUGGING'
-                                                        ],
-                                            'os' => 'netbsd',
-                                            'ccver' => '2.91.66',
-                                            'cc' => 'gcc',
-                                            'failure' => 'netbsd      [stdio/perlio]-Dcf_email=alian@cpan.org
-              (cont) -Dcc=/usr/local/bin/gcc
-    t/op/pack............................FAILED at test 187
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-    t/op/pack............................FAILED at test 187
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
-              (cont) -Dcc=/usr/local/bin/gcc
-    t/op/pack............................FAILED at test 187
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-netbsd      [stdio       ]-Dcf_email=alian@cpan.org
-              (cont) -Dcc=/usr/local/bin/gcc -Duseithreads
-    t/op/pack............................FAILED at test 187
-    ext/IO/lib/IO/t/io_xs................FAILED at test 0
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-    t/op/pack............................FAILED at test 187
-    ext/IO/lib/IO/t/io_xs................FAILED at test 0
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-    lib/Math/BigInt/t/mbi_rand...........FAILED at test 90
-netbsd      [perlio      ]-Dcf_email=alian@cpan.org
-              (cont) -Dcc=/usr/local/bin/gcc -Duseithreads
-    t/op/pack............................FAILED at test 187
-    ext/IO/lib/IO/t/io_xs................FAILED at test 0
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-    t/op/pack............................FAILED at test 187
-    ext/IO/lib/IO/t/io_xs................FAILED at test 0
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
-              (cont) -Dcc=/usr/local/bin/gcc -Duseithreads
-    t/op/pack............................FAILED at test 187
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-netbsd      [stdio/perlio]-Dcf_email=alian@cpan.org
-              (cont) -Dcc=/usr/local/bin/gcc -Duseshrplib
-    t/op/pack............................FAILED at test 187
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-    t/op/pack............................FAILED at test 187
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
-              (cont) -Dcc=/usr/local/bin/gcc -Duseshrplib
-    t/op/pack............................FAILED at test 187
-    ext/IPC/SysV/t/sem...................FAILED at test 1
-',
-                                            'archi' => 'sparc',
-                                            'id' => '7084',
-                                            'smoke' => '18666',
-                                            'version' => '5.9.0',
-                                            'build' => {
-                                                         ' ' => 'F F F F',
-                                                         '-Duseshrplib' => 'F F F F',
-                                                         '-Duseithreads' => 'F F F F'
-                                                       },
-                                            'osver' => '1.5.3',
-                                            'nbc' => 3
                                           }
                                         ],
          'rpt/1981.normal.rpt.18358' => [
