@@ -2,8 +2,11 @@ package Test::Smoke::Database::Graph;
 
 # module Test::Smoke::Database - Create graph about smoke database
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/02 12:38:27 $
+# $Date: 2003/08/06 18:50:42 $
 # $Log: Graph.pm,v $
+# Revision 1.6  2003/08/06 18:50:42  alian
+# New interfaces with DB.pm & Display.pm
+#
 # Revision 1.5  2003/08/02 12:38:27  alian
 # Minor typo
 #
@@ -38,7 +41,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(prompt);
-$VERSION = ('$Revision: 1.5 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.6 $ ' =~ /(\d+\.\d+)/)[0];
 
 my $debug = 0;
 my $font = '/usr/X11R6/share/enlightenment/themes/Blue_OS/ttfonts/arial.ttf';
@@ -374,7 +377,8 @@ sub create_html {
   my $i=0;
   print STDERR "Create $mt.html\n" if ($self->{opts}->{debug});
   open(STATS,">$mt.html") or die "Can't create $mt.html:$!\n";
-  print STATS $self->{dbsmoke}->header_html.$c->h2($$ref{$mt})."Current result - ";
+  print STATS $self->{dbsmoke}->HTML->header_html.
+    $c->h2($$ref{$mt})."Current result - ";
   foreach my $mt2 (keys %$ref) {
     print STATS $c->a({-href=>"$mt2.html"},$$ref{$mt2})." - ";
   }
@@ -523,7 +527,7 @@ Construct a new Test::Smoke::Database::Graph object and return it.
 
 =head1 VERSION
 
-$Revision: 1.5 $
+$Revision: 1.6 $
 
 =head1 AUTHOR
 

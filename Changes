@@ -1,5 +1,14 @@
 Revision history for Perl extension Test::Smoke::Database.
 
+1.12  2003/08/08 14:27:59  alian
+ - Update POD documentation
+ - Add proto to methods
+ - New interfaces with DB.pm & Display.pm
+ - Use only dbi method like selectrow_arrayref
+ - Speed up display method
+ - Fix some SQL request in update_db
+ - Use eval for GD::Graph
+
 1.8  2003/07/30 22:07:34  alian
  - Split code for parsing
  - Increase code average from 20% to 85%. Tks to Devel::Cover

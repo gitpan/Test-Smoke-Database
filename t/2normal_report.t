@@ -31,7 +31,7 @@ plan tests => $tt+3;
 copy("t/rpt/response.good","t/rpt/response.rpt");
 
 # no file return undef
-ok(!Test::Smoke::Database::Parsing::parse_rpt, 
+ok(!Test::Smoke::Database::Parsing::parse_rpt(undef), 
    'Test::Smoke::Database::Parsing::parse_rpt without file');
 # no existent file return undef
 ok(!Test::Smoke::Database::Parsing::parse_rpt('t/mlkmlkmlk'),

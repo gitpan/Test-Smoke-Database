@@ -30,7 +30,7 @@ plan tests => $tt+2;
 my $t = { opts => { } };
 
 # no file return undef
-ok(!Test::Smoke::Database::Parsing::parse_hm_brand_rpt, 
+ok(!Test::Smoke::Database::Parsing::parse_hm_brand_rpt(undef), 
    'Test::Smoke::Database::Parsing::parse_hm_brand_rpt without file');
 # no existent file return undef
 ok(!Test::Smoke::Database::Parsing::parse_hm_brand_rpt('t/mlkmlkmlk'),

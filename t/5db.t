@@ -46,6 +46,7 @@ my $t = new Test::Smoke::Database({user     => $user,
                                    debug    => 0,
                                    limit    => 0,
                                    dir      => "t/rpt",
+				   cgi      => new CGI
                                   });
 ok($t, "Test::Smoke::Database defined with a database");
 my $cmd = "$^X -Iblib/lib blib/script/admin_smokedb --user=$user --database=$db ";
@@ -58,17 +59,17 @@ cmp_ok($t->parse_import, "==", 58, "Parsing reports by parse_import");
 cmp_ok(system($cmd.'--clear'),'==', 0, "admin_smokedb can clear database");
 
 my %res;
-ok(!$t->add_to_db, "Test::Smoke::Database->add_to_db null");
+ok(!$t->db->add_to_db, "Test::Smoke::Database->add_to_db null");
 
 foreach my $f (keys %$rep) {
- cmp_ok($t->add_to_db($rep->{$f}[0]),'==',1, 
+ cmp_ok($t->db->add_to_db($rep->{$f}[0]),'==',1, 
 	"Test::Smoke::Database->add_to_db $f");
 }
-cmp_ok($t->nb, '==', scalar keys %$rep, 
-	"Test::Smoke::Database->nb return good result");
+cmp_ok($t->db->nb, '==', scalar keys %$rep, 
+	"Test::Smoke::Database->db->nb return good result");
 
-ok($t->filter, "Test::Smoke::Database->filter return something");
-ok($t->display, "Test::Smoke::Database->filter return something");
+ok($t->HTML->filter, "Test::Smoke::Database->HTML->filter return something");
+ok($t->HTML->display, "Test::Smoke::Database->HTML->filter return something");
 
 # graph tests. Need GD-Graph.
 eval("use GD::Graph::mixed");

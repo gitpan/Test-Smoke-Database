@@ -1,8 +1,17 @@
 package Test::Smoke::Database::Parsing;
 
 # Copyright 200x A.Barbet alian@cpan.org  All rights reserved.
-# $Date: 2003/08/02 12:38:09 $
+# $Date: 2003/08/07 18:01:06 $
 # $Log: Parsing.pm,v $
+# Revision 1.5  2003/08/07 18:01:06  alian
+# Remove =20 at end of line
+#
+# Revision 1.4  2003/08/06 19:20:51  alian
+# Add proto to methods
+#
+# Revision 1.3  2003/08/06 18:50:42  alian
+# New interfaces with DB.pm & Display.pm
+#
 # Revision 1.2  2003/08/02 12:38:09  alian
 # Remove unused package
 #
@@ -20,7 +29,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.2 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.5 $ ' =~ /(\d+\.\d+)/)[0];
 
 #------------------------------------------------------------------------------
 # parse_import
@@ -52,7 +61,7 @@ sub parse_import {
 	  next if (!$_->{id} or $k{$_->{id}});
 	  print STDERR "Add a H.M. Brand report\n"
 	    if ($self->{opts}->{debug});
-	  $self->add_to_db($_) && $nbo++;
+	  $self->db->add_to_db($_) && $nbo++;
 	  $k{$_->{id}}=1;
 	}
       } elsif ($ref == -2) {
@@ -71,7 +80,7 @@ sub parse_import {
     else {
       # Add it to database
       print STDERR "Add report $_\n" if ($self->{opts}->{debug});
-      $self->add_to_db($ref) && $nbo++;
+      $self->db->add_to_db($ref) && $nbo++;
     }
   }
   print scalar(localtime),": $nbo reports imported from $nb files\n" 
@@ -82,7 +91,7 @@ sub parse_import {
 #------------------------------------------------------------------------------
 # parse_hm_brand_rpt
 #------------------------------------------------------------------------------
-sub parse_hm_brand_rpt {
+sub parse_hm_brand_rpt($) {
   my $file = shift;
   return if (!$file);
   if (!-r $file) { warn "Can't found $file"; return; }
@@ -217,7 +226,7 @@ sub parse_hm_brand_rpt {
 #------------------------------------------------------------------------------
 # parse_rpt
 #------------------------------------------------------------------------------
-sub parse_rpt {
+sub parse_rpt($) {
   my $file = shift;
   my ($nbr,$fail,$col,$content)=(0);
   return if (!$file);
@@ -232,6 +241,7 @@ sub parse_rpt {
   foreach my $l (@content) {
     chomp($l);
     $l=~s/=3D/=/g;
+    $l=~s/=20$/=/g;
     if ($l=~/=$/) { chop($l); $r=1; }
     if ($r) { $cont.=$l; $r=0; }
     else { $cont.=$l."\n"; }
@@ -391,7 +401,7 @@ Return undef if no file or if file doesn't exist;
 
 =head1 VERSION
 
-$Revision: 1.2 $
+$Revision: 1.5 $
 
 =head1 AUTHOR
 

@@ -1,6 +1,8 @@
 Changes
 lib/Test/Smoke/Database.pm
 lib/Test/Smoke/Database/Graph.pm
+lib/Test/Smoke/Database/Display.pm
+lib/Test/Smoke/Database/DB.pm
 lib/Test/Smoke/Database/Parsing.pm
 lib/Test/Smoke/Database/FAQ.pod
 bin/admin_smokedb

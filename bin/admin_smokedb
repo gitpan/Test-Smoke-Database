@@ -2,8 +2,8 @@
 #
 # Simple perl example to interface with module Test::Smoke::Database
 # Copyright 200x A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/07/19 18:12:16 $
-# $Revision: 1.7 $
+# $Date: 2003/08/08 14:27:59 $
+# $Revision: 1.10 $
 #
 
 use strict;
@@ -30,11 +30,15 @@ update builds set archi='sparc' where os='linux' and osver='2.2.19' and archi='?
 update builds set archi='ppc' where os='linux' and osver='2.2.16'  and archi='??';
 update builds set archi='ppc'where os='linux' and osver='2.4.18' and ccver='2.95.4' and archi='??';
 update builds set archi=' ' where os='AIX'or os='HP-UX' or os like 'irix%' and archi='??';
+update builds set os='cygwin' where os like 'cygwin%';
 update builds set archi='i386' where archi='??' or os='cygwin';
 update builds set osver='4.6-STABLE' where os='freebsd';
 update builds set os='linux' where os='Red Hat Linux 8.0';
+update builds set os='dec_osf' where os='osf1';
+update builds set os='MSWin32' where os like 'windows%';
 update builds set os='solaris' where os like 'SunOS%';
 update builds set os='MSWin32' where os='WIN32';
+update builds set os='bsdos' where os='bsd/os';
 EOF
 
 # SQL request to clear db
@@ -100,7 +104,7 @@ EOF
 
 my @options = qw/clear suck import dir=s verbose nntp_server=s create drop
                  user=s password=s database=s help man graph
-                 min_smoke=i debug/;
+                 min_smoke=i debug static/;
 
 GetOptions( \%opts, @options) or pod2usage( -verbose => 1, -exitval => 1 );
 $opts{help}  and pod2usage( -verbose => 1, -exitval => 0 );
@@ -115,13 +119,13 @@ mkdir $opts{dir}, 0755 if (!-e $opts{dir});
 print "I use $opts{dir} for store reports\n" if ($debug);
 
 # Drop needed tables
-$d->rundb($dropdb) if ($opts{drop});
+$d->db->rundb($dropdb) if ($opts{drop});
 
 # Create needed tables
-$d->rundb($createdb) if ($opts{create});
+$d->db->rundb($createdb) if ($opts{create});
 
 # clear database
-$d->rundb($cleardb) if ($opts{clear});
+$d->db->rundb($cleardb) if ($opts{clear});
 
 # Suck perl.daily-build.reports
 $d->suck_ng() if ($opts{suck});
@@ -134,11 +138,14 @@ if ($opts{import}) {
   $d->parse_import();
 
   # Update architecture for report before Test-Smoke-1.16
-  $d->rundb($update_archi);
+  $d->db->rundb($update_archi);
 }
 # Create graph
 $opts{min_smoke}=0 if (!$opts{min_smoke});
 $d->build_graph($opts{min_smoke}) if ($opts{graph});
+
+
+__END__
 
 =pod
 
@@ -168,9 +175,14 @@ Then you must do:
 
   admin_smokedb --suck --import
 
-for create a complete smoke database. You can add this sequence to your
-crontab daily. You can now lauch your browser yo browse database with
-smoke_db.cgi.
+for create a complete smoke database. It will take some times as it will fetch
+all reports from the newsgroup since the beginning of the smoke story. 
+You can then launch your browser with smoke_db.cgi.
+
+For a crontab use, do something like this:
+
+  CGI_BASE=/perl/smoke
+  0 8,19 * * * /usr/bin/admin_smokedb --suck --import --user=root --graph -v
 
 =head1 OPTIONS
 
@@ -202,7 +214,9 @@ Fetch new report from perl.daily-build.reports
 
 =item B<--graph> [ B<--min_smoke=>I<no_smoke> ]
 
-Build with GD::Graph graph about smoke
+Build with GD::Graph graph about smoke. Build them in current directory,
+with the help of the environnement variable CGI_BASE for base url in statics
+files created.
 
 =back
 
@@ -236,12 +250,10 @@ L<Test::Smoke::Database>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>
 
 =head1 VERSION
 
-$Revision: 1.7 $
+$Revision: 1.10 $
 
 =head1 AUTHOR
 
 Alain BARBET with some help from Abe Timmerman
 
 =cut
-
-__END__
