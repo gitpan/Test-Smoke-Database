@@ -56,9 +56,17 @@ A:link, A:visited {
 	  color: #FFFFFF;
 	  background: red;
   }
-.orange A:link, .orange A:visited, .orange {
-	  background: orange;
-  }
+.makeTestFail A:link, .makeTestFail A:visited, .makeTestFail {
+  background: orange;
+}
+.confFail A:link, .confFail A:visited, .confFail {
+  background: red;
+}
+.makeFail A:link, .makeFail A:visited, .makeFail {
+  background:  yellow;
+}
+.makeOk {
+}
 
 TD {
   margin: 0;
@@ -94,10 +102,9 @@ DT {
 
 TH {
   background: #bbbbbb;
-  color: inherit;
+/*  color: inherit;*/
 /*  padding: 0.4ex 1ex;*/
   text-align: left;
-  font-size: 80%;
 }
 
 TH A:link, TH A:visited {

@@ -1,5 +1,16 @@
 Revision history for Perl extension Test::Smoke::Database.
 
+1.6  2003/02/16 18:47:04  alian
+ - FORMAT OF DATABASE UPDATED !
+ - Update summary table: add number of configure failed, number of make failed.
+ - Add legend after summary table
+ - Add parsing/display of matrice, as Test::Smoke 1.16_15+ can report more than
+ 4 columns
+ - Correct a bug that add a 'Failure:' in HM Brand Report
+ - Add stats about CPAN testers
+ - Change default limit for CGI: 18600.
+ - Update test files, add some reports.
+
 1.5  2003/02/10 00:58:05  alian
  - Add feature of graph
  - Correct Irix report parsing (no os version)

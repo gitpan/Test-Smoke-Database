@@ -1,58 +1,129 @@
 $rep = {
-         'rpt/1943.normal.rpt.18346' => [
-                                          {
-                                            'nbte' => 0,
-                                            'smoke' => '18346',
-                                            'nbco' => 0,
-                                            'build' => {
-                                                         '-Duseithreads -Duse64bitall -Duselongdouble' => 'm m m m',
-                                                         ' ' => 'O O O O',
-                                                         '-Dusemorebits' => 'O O O O',
-                                                         '-Duseithreads -Dusemorebits' => 'm m m m',
-                                                         '-Duseithreads -Duse64bitint' => 'm m m m',
-                                                         '-Duse64bitint' => 'O O O O',
-                                                         '-Duseithreads' => 'm m m m',
-                                                         '-Duseithreads -Duselongdouble' => 'm m m m',
-                                                         '-Duselongdouble' => 'O O O O',
-                                                         '-Duse64bitall' => 'O O O O',
-                                                         '-Duseithreads -Duse64bitall' => 'm m m m',
-                                                         '-Duse64bitall -Duselongdouble' => 'O O O O'
-                                                       },
-                                            'os' => 'openbsd',
-                                            'ccver' => '2.95.3 20010125 ',
-                                            'cc' => 'cc',
-                                            'archi' => 'i386',
-                                            'id' => '1943',
-                                            'osver' => '3.2 ',
-                                            'nbc' => 12
-                                          }
-                                        ],
          'rpt/1981.normal.rpt.18358' => [
                                           {
-                                            'nbte' => 0,
-                                            'smoke' => '18358',
                                             'nbco' => 0,
                                             'build' => {
-                                                         '-Duseithreads -Duse64bitall -Duselongdouble' => 'O O O O',
-                                                         ' ' => 'O O O O',
-                                                         '-Dusemorebits' => 'O O O O',
                                                          '-Duseithreads -Dusemorebits' => 'O O O O',
-                                                         '-Duseithreads -Duse64bitint' => 'O O O O',
+                                                         '-Dusemorebits' => 'O O O O',
+                                                         '-Duselongdouble' => 'O O O O',
                                                          '-Duse64bitint' => 'O O O O',
+                                                         '-Duseithreads -Duse64bitint' => 'O O O O',
+                                                         ' ' => 'O O O O',
                                                          '-Duseithreads' => 'O O O O',
                                                          '-Duseithreads -Duselongdouble' => 'O O O O',
-                                                         '-Duselongdouble' => 'O O O O',
-                                                         '-Duse64bitall' => 'O O O O',
                                                          '-Duseithreads -Duse64bitall' => 'O O O O',
+                                                         '-Duse64bitall' => 'O O O O',
+                                                         '-Duseithreads -Duse64bitall -Duselongdouble' => 'O O O O',
                                                          '-Duse64bitall -Duselongdouble' => 'O O O O'
                                                        },
-                                            'os' => 'linux',
-                                            'ccver' => '2.96 20000731 (Red Hat Linux 7.2 2.96-112.7.2)',
-                                            'cc' => 'cc',
-                                            'archi' => 'i386',
-                                            'id' => '1981',
                                             'osver' => '2.4.17-1 ',
-                                            'nbc' => 12
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING'
+                                                        ],
+                                            'os' => 'linux',
+                                            'nbte' => 0,
+                                            'ccver' => '2.96 20000731 (Red Hat Linux 7.2 2.96-112.7.2)',
+                                            'nbc' => 12,
+                                            'smoke' => '18358',
+                                            'id' => '1981',
+                                            'archi' => 'i386',
+                                            'cc' => 'cc'
+                                          }
+                                        ],
+         'rpt/2131.normal.rpt.18468' => [
+                                          {
+                                            'nbco' => 0,
+                                            'build' => {
+                                                         '-Duseperlio -Duselongdouble' => 'O O O O',
+                                                         '-Dusethreads -Duseithreads -Duseperlio' => 'O O O O',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Dusemorebits' => 'O O ? ?',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Duselongdouble' => 'O O O O',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Duse64bitint' => 'O O O O',
+                                                         '-Duseperlio -Dusemorebits' => 'O O O O',
+                                                         '-Duseperlio -Duse64bitint' => 'O O O O',
+                                                         '-Duseperlio' => 'O O O O'
+                                                       },
+                                            'osver' => '6.5 6.5.16m',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING'
+                                                        ],
+                                            'os' => 'irix',
+                                            'nbte' => 0,
+                                            'ccver' => '??',
+                                            'nbc' => 8,
+                                            'smoke' => '18468',
+                                            'id' => '2131',
+                                            'archi' => 'IP22',
+                                            'cc' => '??'
+                                          }
+                                        ],
+         'rpt/2582.normal.rpt.18669' => [
+                                          {
+                                            'nbco' => 0,
+                                            'build' => {
+                                                         '-Duse64bitint' => 'O O O O O O',
+                                                         '-Duseithreads -Duse64bitint' => 'O O O O O O',
+                                                         ' ' => 'O O O O O O',
+                                                         '-Uuseperlio' => 'O - - O - -',
+                                                         '-Duseithreads' => 'O O O O O O'
+                                                       },
+                                            'osver' => '2.4.18-4gb ',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'LC_ALL = nl_NL.utf8',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING',
+                                                          'LC_ALL = nl_NL.utf8 -DDEBUGGING'
+                                                        ],
+                                            'os' => 'linux',
+                                            'nbte' => 0,
+                                            'ccver' => '2.95.3 20010315 (SuSE)',
+                                            'nbc' => 5,
+                                            'smoke' => '18669',
+                                            'id' => '2582',
+                                            'archi' => 'i386',
+                                            'cc' => 'cc'
+                                          }
+                                        ],
+         'rpt/1943.normal.rpt.18346' => [
+                                          {
+                                            'nbco' => 0,
+                                            'build' => {
+                                                         '-Duseithreads -Dusemorebits' => 'm m m m',
+                                                         '-Dusemorebits' => 'O O O O',
+                                                         '-Duselongdouble' => 'O O O O',
+                                                         '-Duse64bitint' => 'O O O O',
+                                                         '-Duseithreads -Duse64bitint' => 'm m m m',
+                                                         ' ' => 'O O O O',
+                                                         '-Duseithreads' => 'm m m m',
+                                                         '-Duseithreads -Duselongdouble' => 'm m m m',
+                                                         '-Duseithreads -Duse64bitall' => 'm m m m',
+                                                         '-Duse64bitall' => 'O O O O',
+                                                         '-Duseithreads -Duse64bitall -Duselongdouble' => 'm m m m',
+                                                         '-Duse64bitall -Duselongdouble' => 'O O O O'
+                                                       },
+                                            'osver' => '3.2 ',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING'
+                                                        ],
+                                            'os' => 'openbsd',
+                                            'nbte' => 0,
+                                            'ccver' => '2.95.3 20010125 ',
+                                            'nbc' => 12,
+                                            'smoke' => '18346',
+                                            'id' => '1943',
+                                            'archi' => 'i386',
+                                            'cc' => 'cc'
                                           }
                                         ]
        };

@@ -2,8 +2,8 @@
 #
 # Simple perl example to interface with module Test::Smoke::Database
 # Copyright 200x A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/02/10 00:47:47 $
-# $Revision: 1.5 $
+# $Date: 2003/02/16 16:24:51 $
+# $Revision: 1.6 $
 #
 
 use strict;
@@ -34,6 +34,7 @@ update builds set archi='i386' where archi='??' or os='cygwin';
 update builds set osver='4.6-STABLE' where os='freebsd';
 update builds set os='linux' where os='Red Hat Linux 8.0';
 update builds set os='solaris' where os like 'SunOS%';
+update builds set os='MSWin32' where os='WIN32';
 EOF
 
 # SQL request to clear db
@@ -61,9 +62,13 @@ CREATE TABLE builds (
   ccver varchar(50) NOT NULL default '',
   date datetime NOT NULL default '0000-00-00 00:00:00',
   smoke int(7) unsigned NOT NULL default '0',
-  nbc int(3) unsigned NOT NULL default '0',
+  nbc int(2) unsigned NOT NULL default '0',
   nbco int(3) unsigned NOT NULL default '0',
+  nbcm int(3) unsigned NOT NULL default '0',
+  nbcc int(3) unsigned NOT NULL default '0',
+  nbcf int(3) unsigned NOT NULL default '0',
   nbte int(3) unsigned NOT NULL default '0',
+  matrix varchar(200) NOT NULL default '',
   PRIMARY KEY  (id),
   KEY os (os),
   KEY osver (osver),
@@ -77,7 +82,7 @@ CREATE TABLE configure (
   id int(9) unsigned NOT NULL auto_increment,
   idbuild int(9) unsigned NOT NULL default '0',
   configure varchar(250) NOT NULL default '',
-  result varchar(8) NOT NULL default '',
+  result char(16) NOT NULL default '',
   PRIMARY KEY  (id),
   KEY idbuild (idbuild)
 ) TYPE=MyISAM;
@@ -231,7 +236,7 @@ L<Test::Smoke::Database>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>
 
 =head1 VERSION
 
-$Revision: 1.5 $
+$Revision: 1.6 $
 
 =head1 AUTHOR
 
