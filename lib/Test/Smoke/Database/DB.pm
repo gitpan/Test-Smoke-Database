@@ -2,8 +2,14 @@ package Test::Smoke::Database::DB;
 
 # Test::Smoke::Database::DB
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/11/07 17:34:53 $
+# $Date: 2004/04/19 17:49:35 $
 # $Log: DB.pm,v $
+# Revision 1.10  2004/04/19 17:49:35  alian
+# fix on warnings
+#
+# Revision 1.9  2004/04/14 22:35:43  alian
+# display address of cgi at end of run
+#
 # Revision 1.8  2003/11/07 17:34:53  alian
 # Change display at import
 #
@@ -51,11 +57,12 @@ use DBI;
 use Data::Dumper;
 use Carp qw(cluck);
 use File::Basename;
+use Sys::Hostname;
 require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.8 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.10 $ ' =~ /(\d+\.\d+)/)[0];
 use vars qw/$debug $verbose $limit/;
 #$limite = 0;
 
@@ -80,7 +87,10 @@ sub new   {
 #------------------------------------------------------------------------------
 sub DESTROY {
   $_[0]->{DBH}->disconnect if ($_[0]->{DBH});
-  print scalar(localtime),": Finished\n" if $verbose;
+  if ($verbose) {
+    print scalar(localtime),": Over. Consult result at:\nhttp://",
+      ($ENV{SERVER_NAME} || hostname()),"/cgi-bin/smoke_db.cgi\n";
+  }
 }
 
 #------------------------------------------------------------------------------
@@ -240,7 +250,8 @@ sub distinct(\%$) {
 #------------------------------------------------------------------------------
 sub nb(\%) {
   my $self = shift;
-  my $req = "select count(*) from builds where smoke >= $limit";
+  my $req = "select count(*) from builds";
+  $req .=" where smoke >= $limit" if $limit;
   return $self->one_shot($req);
 }
 
@@ -295,16 +306,19 @@ sub add_to_db(\%\%) {
     "VALUES (";
   $req.= "$ref->{id}," if ($ref->{id});
   $req.= <<EOF;
-
 '$ref->{os}',
 '$ref->{osver}',
 '$cc',
 '$ccf',
-'$ref->{date}',
-$ref->{smoke},
-'$ref->{version}',
-'$ref->{author}',
-$ref->{nbc},
+EOF
+  $req.= ($ref->{date} ? "'$ref->{date}'" : 'NOW()');
+  $req.= <<EOF;
+,$ref->{smoke},
+'$ref->{version}','
+EOF
+  $req.= ($ref->{author} ? $ref->{author} : 'anonymous');
+  $req.= <<EOF;
+',$ref->{nbc},
 $nbco,
 $nbcf,
 $nbcm,
@@ -313,7 +327,7 @@ $ref->{nbte},
 '$ref->{archi}')
 EOF
 
-  print $req,"\n" if $debug;
+  print STDERR $req if $debug;
   my $st = $self->{DBH}->prepare($req);
   if (!$st->execute) {
     print STDERR "SQL: $req\n", Data::Dumper->Dump([$ref]);
@@ -403,7 +417,7 @@ reason is printed on STDERR.
 
 =head1 VERSION
 
-$Revision: 1.8 $
+$Revision: 1.10 $
 
 =head1 AUTHOR
 

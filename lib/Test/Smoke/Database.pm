@@ -2,8 +2,14 @@ package Test::Smoke::Database;
 
 # Test::Smoke::Database - Add / parse /display perl reports smoke database
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/11/07 17:42:22 $
+# $Date: 2004/04/19 17:48:23 $
 # $Log: Database.pm,v $
+# Revision 1.18  2004/04/19 17:48:23  alian
+# update to 1.17
+#
+# Revision 1.17  2004/04/14 22:37:47  alian
+# change url for eg of cgi
+#
 # Revision 1.16  2003/11/07 17:42:22  alian
 # Avoid warnings when create graph
 #
@@ -13,7 +19,6 @@ package Test::Smoke::Database;
 #  - Add top smokers
 #
 # Revision 1.14  2003/08/19 10:37:24  alian
-# Release 1.14:
 #  - FORMAT OF DATABASE UPDATED ! (two cols added, one moved).
 #  - Add a 'version' field to filter/parser (Eg: All perl-5.8.1 report)
 #  - Use the field 'date' into filter/parser (Eg: All report after 07/2003)
@@ -45,7 +50,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 my $limite = 18600;
 #$limite = 0;
@@ -58,7 +63,7 @@ sub new($$)   {
   my $self = {};
   bless $self, $class;
   $self->{opts} = shift || {};
-  my $driver = "DBI:mysql:database=".$self->{opts}->{database}.
+  my $driver = "DBI:mysql:database=".($self->{opts}->{database} || 'test').
     ";host=localhost;port=3306";
   if (!$self->{opts}->{no_dbconnect}) {
     $self->{DBH} = DBI->connect($driver,
@@ -259,7 +264,8 @@ L<Test::Smoke::Database::Display>.
 =head1 SEE ALSO
 
 L<admin_smokedb>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>,
-L<http://www.alianwebserver.com/perl/smoke/smoke_db.cgi>
+L<http://cpanplus.keradel.com/cgi-bin/smoke_db.cgi>, 
+L<http://db.test-smoke.org/>
 
 =head1 METHODS
 
@@ -305,7 +311,7 @@ after B<fetch> method.
 
 =head1 VERSION
 
-$Revision: 1.16 $
+$Revision: 1.18 $
 
 =head1 AUTHOR
 

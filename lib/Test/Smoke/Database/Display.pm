@@ -2,8 +2,11 @@ package Test::Smoke::Database::Display;
 
 # Test::Smoke::Database::Display - 
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/11/07 17:34:25 $
+# $Date: 2004/04/19 17:50:09 $
 # $Log: Display.pm,v $
+# Revision 1.9  2004/04/19 17:50:09  alian
+# fix on warnings
+#
 # Revision 1.8  2003/11/07 17:34:25  alian
 # Change display at import
 #
@@ -54,7 +57,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.8 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.9 $ ' =~ /(\d+\.\d+)/)[0];
 
 use vars qw/$debug $verbose/;
 
@@ -75,6 +78,7 @@ sub new   {
   $self->{CGI} = $indexer->{opts}->{cgi};
   $self->{DB} = $indexer->{DB};
   $limite = $indexer->{opts}->{limit};
+  $ENV{SCRIPT_NAME}='localhost' if !$ENV{SCRIPT_NAME};
   return $self;
 }
 
@@ -240,7 +244,7 @@ sub display(\%$$$$$$) {
 	    # Matrice
 	    my $matrixe;
 	    my $y=0;
-	    my @ltmp = split(/\|/, $matrix);
+	    my @ltmp = split(/\|/, $matrix || " ");
 
 	    # debut des tableaux erreurs et details
 	    my $de = "\n<a name=\"$id\"></a> <table width=\"600\" class=\"box\">".
@@ -417,7 +421,7 @@ sub smokers {
 sub cw($$) {
   my ($word, $size)= @_;
   $size = 10 if !$size;
-  return $word.("&nbsp;" x ($size - length($word)));
+  return ($word || "").("&nbsp;" x ($size - ($word ? length($word) :0 )));
 }
 
 #------------------------------------------------------------------------------
@@ -493,7 +497,7 @@ Return the main HTML screen with summary
 
 =head1 VERSION
 
-$Revision: 1.8 $
+$Revision: 1.9 $
 
 =head1 AUTHOR
 

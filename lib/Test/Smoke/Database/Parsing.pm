@@ -1,8 +1,14 @@
 package Test::Smoke::Database::Parsing;
 
 # Copyright 200x A.Barbet alian@cpan.org  All rights reserved.
-# $Date: 2003/11/07 17:42:22 $
+# $Date: 2004/04/19 15:15:38 $
 # $Log: Parsing.pm,v $
+# Revision 1.14  2004/04/19 15:15:38  alian
+# fix on warnings
+#
+# Revision 1.13  2004/04/14 22:30:49  alian
+# parse 1.19 style reports
+#
 # Revision 1.12  2003/11/07 17:42:22  alian
 # Avoid warnings when create graph
 #
@@ -48,7 +54,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.12 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.14 $ ' =~ /(\d+\.\d+)/)[0];
 
 my $moii = qr/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/;
 my $date = qr/^Date: \w{0,3},? {0,2}(\d{1,2}) ($moii) (\d\d\d\d) (\d\d:\d\d:?\d?\d?)/;
@@ -327,6 +333,22 @@ sub parse_rpt($) {
       $irix=0;
       $h{osver} = $1 if ($l=~/^ - (.*)$/);
     }
+
+    # @20040125: 1.19 style reports
+    elsif ($l=~/Automated smoke report for .* patch (\d+)$/) {
+      $h{smoke} = $1;
+    }
+    elsif ($l=~m!^.+:\s+.*\((.+)(?:/\d+ cpus?)?\)$!) {
+      $h{archi} = $1;
+    }
+    elsif ($l=~/^\s+on\s+(.*) - (.*)$/) {
+      ($h{os}, $h{osver}) = ($1, $2);
+    }
+    elsif ($l=~/^\s+using\s+(.*) version (.*)$/) {
+      ($h{cc}, $h{ccver}) = ($1, $2);
+    }
+    # End 1.19 style for now
+
     # os osver cc ccver
     elsif ($l=~/on (.*) using (.*) version (.*)$/) {
       ($h{os}, $h{cc},$h{ccver},$h{osver}) = ($1,$2,$3,"??");
@@ -488,14 +510,21 @@ sub update_ref(\%) {
 
   # perl tested (version) - For report before Test::Smoke 1.17
   if (!$ref->{version} || $ref->{version} eq '5.?.?') {
-    if ($ref->{smoke}>17675) {
+    if ($ref->{smoke}>17675 && $ref->{smoke}<22318) {
       $ref->{version} = '5.9.0';
+    } elsif ($ref->{smoke}>17675 && $ref->{smoke}<22523) {
+      $ref->{version} = '5.9.1';
+    } elsif ($ref->{smoke}>17675) {
+      $ref->{version} = '5.9.2';
     } else { $ref->{version} = '5.8.0'; }
   }
 
   # date: rewrite it for mysql
-  if ($ref->{date}=~$date) {
-    $ref->{date}= sprintf("%4d-%02d-%02d %s",$3, $month{$2}, $1, $4); # 1997-10-04 22:23:00;
+  if ($ref->{date} && $ref->{date}=~$date) { # 1997-10-04 22:23:00
+    $ref->{date}= sprintf("%4d-%02d-%02d %s",$3, $month{$2}, $1, $4);
+  } else {
+ #    print STDERR "bad date for ",Data::Dumper->Dump( [$ref] )
+ #     if ($self->{opts}->{debug});
   }
 
   # os
@@ -516,6 +545,12 @@ sub update_ref(\%) {
       $ref->{author} = 'merijn@l1.procura.nl';
     }
   }
+
+  # remove -Uuseperlio for blead
+  if ($ref->{version} =~/^5\.9/ && $ref->{build}) {
+    delete $ref->{build}{'-Uuseperlio'} if ($ref->{build}{'-Uuseperlio'});
+  }
+
   return $ref;
 }
 
@@ -573,7 +608,7 @@ from buggy reports.
 
 =head1 VERSION
 
-$Revision: 1.12 $
+$Revision: 1.14 $
 
 =head1 AUTHOR
 

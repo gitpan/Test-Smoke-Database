@@ -18,7 +18,7 @@ my @file2 = qw!3_nb_smoke.png 5_configure_by_os.png 7_conftested.png
 my %file3 = ( "last50/4_nb_configure.png" => 1,
 	      "last50/3_nb_smoke.png"     => 1 );
 my @dir = qw!0 17500 last50!;
-my $nbii = 62; # number of parsed reports
+my $nbii = 64; # number of parsed reports
 
 my $rep; 
 
