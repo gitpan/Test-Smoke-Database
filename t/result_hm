@@ -1,678 +1,653 @@
 $rep = {
-         '2005.hm.rpt.18358' => [
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18358',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duse64bitall' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'B.11.11.06',
-                                    'cc' => 'HPc',
-                                    'id' => '183580',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18358',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duse64bitall' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.3   32-bit',
-                                    'cc' => 'gcc',
-                                    'id' => '183581',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18358',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'A.10.32.30',
-                                    'cc' => 'HPc',
-                                    'id' => '183582',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18358',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.2  ',
-                                    'cc' => 'gcc',
-                                    'id' => '183583',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18358',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => 'vac 5.0.2.6',
-                                    'cc' => 'vac',
-                                    'id' => '183584',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 8
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18358',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O      ',
-                                                 '-Duse64bitint' => 'O O O O  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => '3.1.1',
-                                    'cc' => 'gcc',
-                                    'id' => '183585',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18354',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duse64bitall' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'B.11.11.06',
-                                    'cc' => 'HPc',
-                                    'id' => '183546',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18354',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duse64bitall' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.3   32-bit',
-                                    'cc' => 'gcc',
-                                    'id' => '183547',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18354',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'A.10.32.30',
-                                    'cc' => 'HPc',
-                                    'id' => '183548',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18354',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.2  ',
-                                    'cc' => 'gcc',
-                                    'id' => '183549',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18354',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => 'vac 5.0.2.6',
-                                    'cc' => 'vac',
-                                    'id' => '1835410',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 8
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18354',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O ?  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => '3.1.1',
-                                    'cc' => 'gcc',
-                                    'id' => '1835411',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 9
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18351',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duse64bitall' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'B.11.11.06',
-                                    'cc' => 'HPc',
-                                    'id' => '1835112',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18351',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duse64bitall' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.3   32-bit',
-                                    'cc' => 'gcc',
-                                    'id' => '1835113',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18351',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'A.10.32.30',
-                                    'cc' => 'HPc',
-                                    'id' => '1835114',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18351',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.2  ',
-                                    'cc' => 'gcc',
-                                    'id' => '1835115',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18351',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O O  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => 'vac 5.0.2.6',
-                                    'cc' => 'vac',
-                                    'id' => '1835116',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 8
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18351',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Dusethreads -Duseithreads' => 'O O O ?  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => '3.1.1',
-                                    'cc' => 'gcc',
-                                    'id' => '1835117',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 9
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18350',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duse64bitall' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'B.11.11.06',
-                                    'cc' => 'HPc',
-                                    'id' => '1835018',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18350',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duse64bitall' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.3   32-bit',
-                                    'cc' => 'gcc',
-                                    'id' => '1835019',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18350',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'A.10.32.30',
-                                    'cc' => 'HPc',
-                                    'id' => '1835020',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18350',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.2  ',
-                                    'cc' => 'gcc',
-                                    'id' => '1835021',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18350',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => 'vac 5.0.2.6',
-                                    'cc' => 'vac',
-                                    'id' => '1835022',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 8
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18350',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint' => 'O O O O  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => '3.1.1',
-                                    'cc' => 'gcc',
-                                    'id' => '1835023',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 6
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18346',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duse64bitall' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'B.11.11.06',
-                                    'cc' => 'HPc',
-                                    'id' => '1834624',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18346',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duse64bitall' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'O O O O  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.3   32-bit',
-                                    'cc' => 'gcc',
-                                    'id' => '1834625',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18346',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'A.10.32.30',
-                                    'cc' => 'HPc',
-                                    'id' => '1834626',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18346',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.2  ',
-                                    'cc' => 'gcc',
-                                    'id' => '1834627',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18346',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Dusemorebits' => 'O O O O  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint' => 'O O O O  ',
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => 'vac 5.0.2.6',
-                                    'cc' => 'vac',
-                                    'id' => '1834628',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 8
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18346',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'O O O O  ',
-                                                 ' ' => 'O O O O  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Dusethreads -Duseithreads' => 'm m m m  ',
-                                                 '-Duse64bitint' => 'O O O O  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => '3.1.1',
-                                    'cc' => 'gcc',
-                                    'id' => '1834629',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 6
-                                  }
-                                ],
-         '1506.hm.rpt.18042' => [
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18042',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 ' ' => 'Failures:',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Dusemorebits' => 'F F F F  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Duse64bitint' => 'F F F F  ',
-                                                 '-Duselongdouble' => 'F F F F  ',
-                                                 '-Duse64bitall' => 'F F F F  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'F F F F  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'B.11.11.06',
-                                    'cc' => 'HPc',
-                                    'id' => '180420',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 360,
-                                    'smoke' => '18042',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 ' ' => 'F F F F  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Dusemorebits' => 'F F F F  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Duse64bitint' => 'F F F F  ',
-                                                 '-Duselongdouble' => 'F F F F  ',
-                                                 '-Duse64bitall' => 'F F F F  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Duse64bitall -Duselongdouble' => 'F F F F  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.2   32-bit',
-                                    'cc' => 'gcc',
-                                    'failure' => 'HP-UX 11.00  stdio/perlio     -DDEBUGGING  
+         'rpt/2005.hm.rpt.18358' => [
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18358',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duse64bitall' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'B.11.11.06',
+                                        'cc' => 'HPc',
+                                        'id' => '183580',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18358',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duse64bitall' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.3   32-bit',
+                                        'cc' => 'gcc',
+                                        'id' => '183581',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18358',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'A.10.32.30',
+                                        'cc' => 'HPc',
+                                        'id' => '183582',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18358',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.2  ',
+                                        'cc' => 'gcc',
+                                        'id' => '183583',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18358',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => 'vac 5.0.2.6',
+                                        'cc' => 'vac',
+                                        'id' => '183584',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 8
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18358',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O      ',
+                                                     '-Duse64bitint' => 'O O O O  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => '3.1.1',
+                                        'cc' => 'gcc',
+                                        'id' => '183585',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18354',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duse64bitall' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'B.11.11.06',
+                                        'cc' => 'HPc',
+                                        'id' => '183546',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18354',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duse64bitall' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.3   32-bit',
+                                        'cc' => 'gcc',
+                                        'id' => '183547',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18354',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'A.10.32.30',
+                                        'cc' => 'HPc',
+                                        'id' => '183548',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18354',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.2  ',
+                                        'cc' => 'gcc',
+                                        'id' => '183549',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18354',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => 'vac 5.0.2.6',
+                                        'cc' => 'vac',
+                                        'id' => '1835410',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 8
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18354',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O ?  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => '3.1.1',
+                                        'cc' => 'gcc',
+                                        'id' => '1835411',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 9
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18351',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duse64bitall' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'B.11.11.06',
+                                        'cc' => 'HPc',
+                                        'id' => '1835112',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18351',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duse64bitall' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.3   32-bit',
+                                        'cc' => 'gcc',
+                                        'id' => '1835113',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18351',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'A.10.32.30',
+                                        'cc' => 'HPc',
+                                        'id' => '1835114',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18351',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.2  ',
+                                        'cc' => 'gcc',
+                                        'id' => '1835115',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18351',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'O O O O  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O O  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => 'vac 5.0.2.6',
+                                        'cc' => 'vac',
+                                        'id' => '1835116',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 8
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18351',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Dusethreads -Duseithreads' => 'O O O ?  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => '3.1.1',
+                                        'cc' => 'gcc',
+                                        'id' => '1835117',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 9
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18350',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duse64bitall' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'B.11.11.06',
+                                        'cc' => 'HPc',
+                                        'id' => '1835018',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18350',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duse64bitall' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.3   32-bit',
+                                        'cc' => 'gcc',
+                                        'id' => '1835019',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18350',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'A.10.32.30',
+                                        'cc' => 'HPc',
+                                        'id' => '1835020',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18350',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.2  ',
+                                        'cc' => 'gcc',
+                                        'id' => '1835021',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18350',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => 'vac 5.0.2.6',
+                                        'cc' => 'vac',
+                                        'id' => '1835022',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 8
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18350',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint' => 'O O O O  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => '3.1.1',
+                                        'cc' => 'gcc',
+                                        'id' => '1835023',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 6
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18346',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duse64bitall' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'B.11.11.06',
+                                        'cc' => 'HPc',
+                                        'id' => '1834624',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18346',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duse64bitall' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'O O O O  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.3   32-bit',
+                                        'cc' => 'gcc',
+                                        'id' => '1834625',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18346',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'A.10.32.30',
+                                        'cc' => 'HPc',
+                                        'id' => '1834626',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18346',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.2  ',
+                                        'cc' => 'gcc',
+                                        'id' => '1834627',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18346',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Dusemorebits' => 'O O O O  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint' => 'O O O O  ',
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => 'vac 5.0.2.6',
+                                        'cc' => 'vac',
+                                        'id' => '1834628',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 8
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18346',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'O O O O  ',
+                                                     ' ' => 'O O O O  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Dusethreads -Duseithreads' => 'm m m m  ',
+                                                     '-Duse64bitint' => 'O O O O  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => '3.1.1',
+                                        'cc' => 'gcc',
+                                        'id' => '1834629',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 6
+                                      }
+                                    ],
+         'rpt/1506.hm.rpt.18042' => [
+                                      {
+                                        'nbte' => 360,
+                                        'smoke' => '18042',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     ' ' => 'Failures:',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Dusemorebits' => 'F F F F  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Duse64bitint' => 'F F F F  ',
+                                                     '-Duselongdouble' => 'F F F F  ',
+                                                     '-Duse64bitall' => 'F F F F  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'F F F F  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'B.11.11.06',
+                                        'cc' => 'HPc',
+                                        'failure' => 'HP-UX 11.00  stdio/perlio     -DDEBUGGING  
 HP-UX 11.00  stdio/perlio     -DDEBUGGING  
 HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitint
     lib/Net/Ping/t/450_service...........FAILED at test 2
@@ -745,24 +720,122 @@ HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Duselongdouble -Dusethr
     lib/Net/t/smtp.......................FAILED at test 0
 
 ',
-                                    'id' => '180421',
-                                    'osver' => '11.00',
-                                    'nbc' => 12
-                                  },
-                                  {
-                                    'nbte' => 105,
-                                    'smoke' => '18042',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'F F F F  ',
-                                                 ' ' => 'F F F F  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Dusethreads -Duseithreads' => 'F F F F  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => 'A.10.32.30',
-                                    'cc' => 'HPc',
-                                    'failure' => 'HP-UX 10.20  stdio/perlio     -DDEBUGGING  
+                                        'id' => '180420',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 360,
+                                        'smoke' => '18042',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     ' ' => 'F F F F  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Dusemorebits' => 'F F F F  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Duse64bitint' => 'F F F F  ',
+                                                     '-Duselongdouble' => 'F F F F  ',
+                                                     '-Duse64bitall' => 'F F F F  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Duse64bitall -Duselongdouble' => 'F F F F  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.2   32-bit',
+                                        'cc' => 'gcc',
+                                        'failure' => 'HP-UX 11.00  stdio/perlio     -DDEBUGGING  
+HP-UX 11.00  stdio/perlio     -DDEBUGGING  
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitint
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitint
+    ext/DB_File/t/db-btree...............FAILED at test 0
+    ext/DB_File/t/db-hash................FAILED at test 0
+    ext/DB_File/t/db-recno...............FAILED at test 0
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall
+    ext/DB_File/t/db-btree...............FAILED at test 0
+    ext/DB_File/t/db-hash................FAILED at test 0
+    ext/DB_File/t/db-recno...............FAILED at test 0
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duselongdouble
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duselongdouble
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Dusemorebits
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Dusemorebits
+    ext/DB_File/t/db-btree...............FAILED at test 0
+    ext/DB_File/t/db-hash................FAILED at test 0
+    ext/DB_File/t/db-recno...............FAILED at test 0
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Duselongdouble
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Duselongdouble
+    ext/DB_File/t/db-btree...............FAILED at test 0
+    ext/DB_File/t/db-hash................FAILED at test 0
+    ext/DB_File/t/db-recno...............FAILED at test 0
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitint -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitint -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+    lib/Net/t/smtp.......................FAILED at test 0
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+    lib/Net/t/smtp.......................FAILED at test 0
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duselongdouble -Dusethreads -Duseithreads
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duselongdouble -Dusethreads -Duseithreads
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Dusemorebits -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Dusemorebits -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+    lib/Net/t/smtp.......................FAILED at test 0
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Duselongdouble -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Duselongdouble -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+    lib/Net/t/smtp.......................FAILED at test 0
+
+',
+                                        'id' => '180421',
+                                        'osver' => '11.00',
+                                        'nbc' => 12
+                                      },
+                                      {
+                                        'nbte' => 105,
+                                        'smoke' => '18042',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'F F F F  ',
+                                                     ' ' => 'F F F F  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Dusethreads -Duseithreads' => 'F F F F  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => 'A.10.32.30',
+                                        'cc' => 'HPc',
+                                        'failure' => 'HP-UX 10.20  stdio/perlio     -DDEBUGGING  
 HP-UX 10.20  stdio/perlio     -DDEBUGGING  
 HP-UX 10.20  stdio/perlio     -DDEBUGGING -Duselongdouble
 HP-UX 10.20  stdio/perlio     -DDEBUGGING -Duselongdouble
@@ -787,108 +860,133 @@ HP-UX 10.20  perlio           -DDEBUGGING -Duselongdouble -Dusethreads -Duseithr
     lib/Net/Ping/t/450_service...........FAILED at test 2
 
 ',
-                                    'id' => '180422',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18042',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'F F F F  ',
-                                                 ' ' => 'F F F F  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Dusethreads -Duseithreads' => 'F F F F  '
-                                               },
-                                    'os' => 'HP-UX',
-                                    'ccver' => '3.2  ',
-                                    'cc' => 'gcc',
-                                    'id' => '180423',
-                                    'osver' => '10.20',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18042',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 ' ' => 'F F F F  ',
-                                                 '-Dusemorebits' => 'F F F F  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Duse64bitint' => 'F F F F  ',
-                                                 '-Duselongdouble' => 'F F F F  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Dusethreads -Duseithreads' => 'F F F F  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => 'vac 5.0.2.5',
-                                    'cc' => 'vac',
-                                    'id' => '180424',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 8
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18042',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 ' ' => 'F F F F  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitint' => 'F F F F  ',
-                                                 '-Duselongdouble' => 'F F F F  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Dusethreads -Duseithreads' => 'F ? ? ?  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => '3.1.1',
-                                    'cc' => 'gcc',
-                                    'id' => '180425',
-                                    'osver' => '4.3.3',
-                                    'nbc' => 9
-                                  },
-                                  {
-                                    'nbte' => 0,
-                                    'smoke' => '18042',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Duselongdouble' => 'F F F F  ',
-                                                 ' ' => 'F F F F  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
-                                                 '-Dusethreads -Duseithreads' => 'F F F F  '
-                                               },
-                                    'os' => 'AIX',
-                                    'ccver' => 'xlc 3.1.4.10',
-                                    'cc' => 'xlc',
-                                    'id' => '180426',
-                                    'osver' => '4.2.1',
-                                    'nbc' => 4
-                                  },
-                                  {
-                                    'nbte' => 974,
-                                    'smoke' => '18042',
-                                    'nbco' => 0,
-                                    'build' => {
-                                                 '-Dusemorebits -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 ' ' => 'F F F F  ',
-                                                 '-Duse64bitall -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Dusemorebits' => 'F F F F  ',
-                                                 '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitint -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitint' => 'F F F F  ',
-                                                 '-Duselongdouble' => 'F F F F  ',
-                                                 '-Duse64bitall' => '. . . .  ',
-                                                 '-Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
-                                                 '-Duse64bitall -Duselongdouble' => '. . . .  '
-                                               },
-                                    'os' => 'cygwin',
-                                    'ccver' => '3.2-1',
-                                    'cc' => 'gcc',
-                                    'failure' => 'Cygwin 1.3   stdio            -DDEBUGGING  
+                                        'id' => '180422',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 105,
+                                        'smoke' => '18042',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'F F F F  ',
+                                                     ' ' => 'F F F F  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Dusethreads -Duseithreads' => 'F F F F  '
+                                                   },
+                                        'os' => 'HP-UX',
+                                        'ccver' => '3.2  ',
+                                        'cc' => 'gcc',
+                                        'failure' => 'HP-UX 10.20  stdio/perlio     -DDEBUGGING  
+HP-UX 10.20  stdio/perlio     -DDEBUGGING  
+HP-UX 10.20  stdio/perlio     -DDEBUGGING -Duselongdouble
+HP-UX 10.20  stdio/perlio     -DDEBUGGING -Duselongdouble
+HP-UX 10.20  stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 10.20  stdio            -DDEBUGGING -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 10.20  perlio           -DDEBUGGING -Dusethreads -Duseithreads
+    t/op/rand............................FAILED at test 5
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 10.20  stdio/perlio     -DDEBUGGING -Duselongdouble -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 10.20  stdio            -DDEBUGGING -Duselongdouble -Dusethreads -Duseithreads
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+HP-UX 10.20  perlio           -DDEBUGGING -Duselongdouble -Dusethreads -Duseithreads
+    t/op/rand............................FAILED at test 5
+    lib/Net/Ping/t/450_service...........FAILED at test 2
+
+',
+                                        'id' => '180423',
+                                        'osver' => '10.20',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18042',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     ' ' => 'F F F F  ',
+                                                     '-Dusemorebits' => 'F F F F  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Duse64bitint' => 'F F F F  ',
+                                                     '-Duselongdouble' => 'F F F F  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Dusethreads -Duseithreads' => 'F F F F  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => 'vac 5.0.2.5',
+                                        'cc' => 'vac',
+                                        'id' => '180424',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 8
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18042',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     ' ' => 'F F F F  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitint' => 'F F F F  ',
+                                                     '-Duselongdouble' => 'F F F F  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Dusethreads -Duseithreads' => 'F ? ? ?  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => '3.1.1',
+                                        'cc' => 'gcc',
+                                        'id' => '180425',
+                                        'osver' => '4.3.3',
+                                        'nbc' => 9
+                                      },
+                                      {
+                                        'nbte' => 0,
+                                        'smoke' => '18042',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Duselongdouble' => 'F F F F  ',
+                                                     ' ' => 'F F F F  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => 'F F F F  ',
+                                                     '-Dusethreads -Duseithreads' => 'F F F F  '
+                                                   },
+                                        'os' => 'AIX',
+                                        'ccver' => 'xlc 3.1.4.10',
+                                        'cc' => 'xlc',
+                                        'id' => '180426',
+                                        'osver' => '4.2.1',
+                                        'nbc' => 4
+                                      },
+                                      {
+                                        'nbte' => 974,
+                                        'smoke' => '18042',
+                                        'nbco' => 0,
+                                        'build' => {
+                                                     '-Dusemorebits -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     ' ' => 'F F F F  ',
+                                                     '-Duse64bitall -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Dusemorebits' => 'F F F F  ',
+                                                     '-Duse64bitall -Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitint -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitint' => 'F F F F  ',
+                                                     '-Duselongdouble' => 'F F F F  ',
+                                                     '-Duse64bitall' => '. . . .  ',
+                                                     '-Duselongdouble -Dusethreads -Duseithreads' => '? ? ? ?  ',
+                                                     '-Duse64bitall -Duselongdouble' => '. . . .  '
+                                                   },
+                                        'os' => 'cygwin',
+                                        'ccver' => '3.2-1',
+                                        'cc' => 'gcc',
+                                        'failure' => 'Cygwin 1.3   stdio            -DDEBUGGING  
     ext/DB_File/t/db-btree...............FAILED at test 166
     ext/DB_File/t/db-hash................FAILED at test 129
     ext/Socket/socketpair................FAILED at test 27
@@ -1055,10 +1153,10 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
     lib/warnings.........................FAILED at test 413
 
 ',
-                                    'id' => '180427',
-                                    'osver' => '1.3.13',
-                                    'nbc' => 11
-                                  }
-                                ]
+                                        'id' => '180427',
+                                        'osver' => '1.3.13',
+                                        'nbc' => 11
+                                      }
+                                    ]
        };
 

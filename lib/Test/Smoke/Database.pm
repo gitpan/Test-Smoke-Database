@@ -2,8 +2,11 @@ package Test::Smoke::Database;
 
 # module Test::Smoke::Database - Add / parse /display perl reports smoke database
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/01/05 01:15:55 $
+# $Date: 2003/01/05 21:45:55 $
 # $Log: Database.pm,v $
+# Revision 1.4  2003/01/05 21:45:55  alian
+# Fix for parsing hm. brand reports with 5.6, fix test with 5.6
+#
 # Revision 1.3  2003/01/05 01:15:55  alian
 # - Add a special parser for HM Brand's reports
 # - Remove --rename option
@@ -25,7 +28,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(prompt);
-$VERSION = ('$Revision: 1.3 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.4 $ ' =~ /(\d+\.\d+)/)[0];
 
 my $limite = 18013;
 #$limite = 0;
@@ -405,7 +408,7 @@ sub parse_hm_brand_rpt {
   my ($self,$file)=@_;
   return if (!$file);
   if (!-r $file) { warn "Can't found $file"; return; }
-  my (@lr,$last,$header);
+  my (@lr,%last,$header);
   open(FILE,$file) or die "Can't read $file:$!\n";
   my @content = <FILE>;
   close(FILE);
@@ -423,12 +426,17 @@ sub parse_hm_brand_rpt {
   foreach my $l (split(/\n/, $cont)) {
     $l.="\n";
     my $i = $origI;
+    foreach my $a (@lr) {
+      if (!$a or !ref($a)) { delete $lr[$i]; next;}
+      $i++;
+    }
+    $i = $origI;
     if ($l=~/MULTIPART_MIXED_/) { $origI = $#lr+1; $ok=0; }
     $ok = 1 if ($l=~/^ HP-UX/ && !$ok);
     if (!$ok) { $header.= $l; next;} # skip header
     if ($ok<5) {$l=~s/\s+/ /g; }
     if ($ok ==1) { # os
-      foreach (split(/ /,$l)) { push(@lr, { os => $_ }) if ($_); } $ok++;}
+      foreach (split(/ /,$l)) { push(@lr, +{ os => $_ }) if ($_); } $ok++;}
     elsif ($ok == 2) { # osver
       foreach (split(/ /,$l)) { $lr[$i++]->{osver} = $_ if ($_); } $ok++;}
     elsif ($ok == 3) { # cc
@@ -439,7 +447,7 @@ sub parse_hm_brand_rpt {
     } elsif ($ok == 5) { $ok++; next; } # line of -
     # line of speed result
     elsif ($ok >5 && (($l=~/^\d/) or ($l=~/^ \d/))) {
-      for my $i (0..$nbI) { delete $lr[$origI+$i]; }
+     for my $i (0..$nbI) { delete $lr[$origI+$i]; }
     }
     # line of result
     elsif ($ok >5 && ($l=~/^O/ || $l=~/^F/ || $l=~/^m/)) {
@@ -462,18 +470,25 @@ sub parse_hm_brand_rpt {
     # errors
     elsif ($ok > 6) {
       my ($r,%ln)=(0);
-      foreach (@lr) {
-	next if (!$_->{os} && !$_->{osver});
-	if ($_->{os} eq "cygwin") {
-	  $ln{$i++} = $_->{os}." ".substr($_->{osver},0,3);
-	} else { $ln{$i++} = $_->{os}." ".$_->{osver}; }
+      foreach my $a (@lr) {
+#	print "Dump:",Data::Dumper->Dump([ $a ]),"\n";
+#	print $a,"\n";
+	next if (!$a->{os} && !$a->{osver});
+	if ($a->{os} eq "cygwin") {
+	  $ln{$i++} = $a->{os}." ".substr($a->{osver},0,3);
+	} else { $ln{$i++} = $a->{os}." ".$a->{osver}; }
       }
       foreach my $n (keys %ln) {
-	if ($l=~/^$ln{$n}/i) { $lr[$n]->{failure}.=$l; $last =$n; $r=1; last;}
+	if ($l=~/^$ln{$n}/i) {
+	  $lr[$n]->{failure}.=$l if ($lr[$n]);
+	  $last{$n}=1;
+	  $r=1; #last;
+	}
       }
       if (!$r) {
-	if ($l=~/^\s+/ && defined($last)) { $lr[$last]->{failure}.=$l; }
-	else { undef $last; }
+	if ($l=~/^\s+/ && %last) {
+	  foreach (keys %last) { $lr[$_]->{failure}.=$l if ($lr[$_]);  }
+	} else { undef %last; }
       }
     }
   }
@@ -481,7 +496,7 @@ sub parse_hm_brand_rpt {
   $ok=-1;
   foreach my $r (@lr) {
     $ok++;
-    if (!$r->{smoke}) { delete $lr[$ok]; next; }
+    if (!ref($r) or !$r->{smoke}) { delete $lr[$ok]; next; }
     $r->{osver} = $1 if ($r->{osver}=~/^(.*)-\d/);
     # Try to guess cc version
     my $name = $r->{os}.' '.$r->{osver};
@@ -889,7 +904,7 @@ after B<fetch> method.
 
 =head1 VERSION
 
-$Revision: 1.3 $
+$Revision: 1.4 $
 
 =head1 AUTHOR
 

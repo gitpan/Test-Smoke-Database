@@ -29,7 +29,7 @@ plan tests => $tt;
 my $t = new Test::Smoke::Database({no_dbconnect => 1, verbose => 1});
 my %res;
 foreach my $f (keys %$rep) {
-  my @lr = $t->parse_rpt("rpt/$f");
+  my @lr = $t->parse_rpt($f);
   if ($ARGV[0]) { $res{$f}=\@lr; next; }
   else {
     my $nb=0;

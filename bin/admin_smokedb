@@ -10,7 +10,7 @@ use strict;
 use Getopt::Long;
 use Pod::Usage;
 use Test::Smoke::Database;
-
+$|=1;
 # Default value
 my %opts =
   ( 'dir'         => $ENV{HOME}.'/.perl.daily-build.reports',
