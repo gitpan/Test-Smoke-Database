@@ -1,8 +1,17 @@
 package Test::Smoke::Database::Parsing;
 
 # Copyright 200x A.Barbet alian@cpan.org  All rights reserved.
-# $Date: 2003/08/07 18:01:06 $
+# $Date: 2003/08/15 15:48:40 $
 # $Log: Parsing.pm,v $
+# Revision 1.8  2003/08/15 15:48:40  alian
+# Speedup for update_ref & some pod doc
+#
+# Revision 1.7  2003/08/15 15:12:28  alian
+# Update update_ref with SQL request from admin_smokedb
+#
+# Revision 1.6  2003/08/14 08:48:35  alian
+# Don't save line with only t | ? | -
+#
 # Revision 1.5  2003/08/07 18:01:06  alian
 # Remove =20 at end of line
 #
@@ -29,7 +38,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.5 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.8 $ ' =~ /(\d+\.\d+)/)[0];
 
 #------------------------------------------------------------------------------
 # parse_import
@@ -65,7 +74,7 @@ sub parse_import {
 	  $k{$_->{id}}=1;
 	}
       } elsif ($ref == -2) {
-	warn "\tSeems to be a DEAD report, will be unlink\n"
+	warn "\t".basename($_)." Seems to be a DEAD report, will be unlink\n"
 	  if ($self->{opts}->{verbose});
 	unlink $_;
       } elsif ($ref == -3) {
@@ -104,6 +113,8 @@ sub parse_hm_brand_rpt($) {
   my $cont; my $re = 0;
   foreach my $l (@content) {
     chomp($l);
+    $l=~s/=3D/=/g;
+    $l=~s/=20$/ /g;
     if ($l=~/\=$/) { chop($l); $re=1; }
     if ($re) { $cont.=$l; $re=0; }
     else { $cont.=$l."\n"; }
@@ -190,7 +201,14 @@ sub parse_hm_brand_rpt($) {
   foreach my $r (@lr) {
     $ok++;
     if (!ref($r) or !$r->{smoke}) { delete $lr[$ok]; next; }
-    $r->{osver} = $1 if ($r->{osver}=~/^(.*)-\d/);
+    $r->{file}=$file;
+    $r->{archi}= ' ';
+    $r->{matrix} = [
+		    'PERLIO = stdio',
+		    'PERLIO = perlio',
+		    'PERLIO = stdio  -DDEBUGGING',
+		    'PERLIO = perlio -DDEBUGGING'
+		   ];
     # Try to guess cc version
     my $name = $r->{os}.' '.$r->{osver};
     if (!$r->{ccver} && $header=~m/$name[^ ]*  \s*([^\n]*)\n/i) {
@@ -201,25 +219,12 @@ sub parse_hm_brand_rpt($) {
 	  if ($lr[$ok+1]->{os} && $lr[$ok+1]->{os} eq $r->{os});
       } else { $r->{ccver} = $v; }
     }
-    # Set others values
-    $r->{file} = $file;
-    $r->{nbc} = scalar keys %{$r->{build}};
-    $r->{nbco} = 0;
-    $r->{nbte} = 0 if (!$r->{nbte});
-    $r->{id} = $r->{smoke}.$ok;
     if ($r->{ccver} && $r->{ccver}=~/^(.*?)\s+32-bit$/) {
-      $r->{ccver} = $1; 
-    } elsif (!$r->{ccver}) { $r->{ccver}= ' '; }
-    $r->{cc} = ' ' if (!$r->{cc});
-    $r->{osver} = ' ' if (!$r->{osver});
-    $r->{archi}= ' ';
-    $r->{matrix} = [
-		    'PERLIO = stdio',
-		    'PERLIO = perlio',
-		    'PERLIO = stdio  -DDEBUGGING',
-		    'PERLIO = perlio -DDEBUGGING'
-		   ];
+      $r->{ccver} = $1;
+    }
+    $r->{id} = $r->{smoke}.$ok;
   }
+  foreach (@lr) { update_ref($_, 1); }
   return @lr;
 }
  
@@ -238,10 +243,11 @@ sub parse_rpt($) {
   my $r = 0;
   # Rebuild report wrapped by mail to 72c
   my $cont;
+  my $have_result = 0;
   foreach my $l (@content) {
     chomp($l);
     $l=~s/=3D/=/g;
-    $l=~s/=20$/=/g;
+    $l=~s/=20$/ /g;
     if ($l=~/=$/) { chop($l); $r=1; }
     if ($r) { $cont.=$l; $r=0; }
     else { $cont.=$l."\n"; }
@@ -293,9 +299,10 @@ sub parse_rpt($) {
     # A line of result
     elsif (($l=~/^($re{3,}(?:\w|-|\?)) +(-.+)$/)
 	    || ($l=~/^($re{3,}(?:\w|-|\?))$/)) {
-      next if (!$1 or $1 eq '? ? ? ?' or $1 eq 't t t t');
-      my $c = $2; 
-      $c=' ' if (!$c);
+      my $ree = qr/[\?\-t]\s/;
+      next if (!$1 or $1=~/$ree{3,3}[\?\-t]/ );
+      $have_result = 1;
+      my $c = ( $2 ? $2 : ' ');
       $h{"build"}{$c} = $1;
     }
     # Matrix
@@ -309,47 +316,122 @@ sub parse_rpt($) {
     }
     elsif ($l=~/Failures(.*):/) { $fail=1; }
   }
-#    if ($h{os}=~/irix/i) { print Data::Dumper->Dump( [ \%h]); }
-#  print $h{failure},"\n";
-  # Valid report have os and build
+
+  # Valid report have os and build and build lines
   if ($h{build} && $h{os}) {
-    # ccver
-    if (!$h{ccver}) { $h{ccver}="??"; }
-    else {
-      $h{ccver}=~s/\(prerelease\)//g;
-      $h{ccver}=~s/\(release\)//g;
-    }
-    # Number of failed test
-    $h{nbte} = 0 if (!$h{nbte});
-    # cc
-    if (!$h{cc}) { $h{cc}="??"; }
-    elsif ($h{cc}=~m!/([^/]*)$!) { $h{cc}=$1 }
-    # Number of configure run
-    $h{nbc} = scalar keys %{$h{build}};
-    $h{nbco} = 0;
-    # Try to set the archi
-    if ($h{osver}=~m!^(.*)\((.*)/.*\)! or $h{osver}=~m!^(.*)\((.*)\)!) {
-      $h{osver} = $1;
-      $h{archi} = $2;
-      if ($h{archi}=~m!^([^-]*)-!) { $h{archi} = $1; }
-      $h{archi} = "i386" if ($h{archi}=~/86$/);
-    } else {$h{archi}= '??';}
-    if ($h{os}=~/^irix/ && $h{osver}=~/^(.*) (IP\d*)/) {
-      $h{osver}=$1; $h{archi}=$2;
-    }
     @{$h{matrix}}=reverse @{$h{matrix}} if ($h{matrix});
-#    $h{report}= $content;
     $h{id}=$1 if (($file=~/(\d+)\.rpt/ or
-		  $file=~/(\d+)\.normal\.rpt/));
-    return \%h
+		   $file=~/(\d+)\.normal\.rpt/));
+    return update_ref(\%h);
   }
   # More than 8 lines beginning with '>', seems to be a reply
   if ($nbr>8) {
     warn "$file seems to be a reply\n";
     return -2;
+  } elsif (!$have_result && (!$col || $col != -1)) {
+    return -2;
   }
 #  elsif ($col && (!$h{os} || !$h{) { warn "$file have no build or os\n"; }
   return ($col ? $col : undef);
+}
+
+#------------------------------------------------------------------------------
+# update_ref
+#------------------------------------------------------------------------------
+sub update_ref(\%) {
+  my $ref = shift;
+  my $mj = shift || 0;
+
+  # Number of failed test
+  $ref->{nbte} = 0 if (!$ref->{nbte});
+
+  # Os
+  $ref->{os} = lc($ref->{os});
+  if ($ref->{os} eq 'WIN32') {
+    $ref->{os}='MSWin32';
+  } elsif ($ref->{os}=~m!windows!) {
+    $ref->{os}='MSWin32';
+  } elsif ($ref->{os}=~/^cygwin/) {
+    $ref->{os}='cygwin';
+  } elsif ($ref->{os} eq 'red hat linux 8.0') {
+    $ref->{os}='linux';
+  } elsif ($ref->{os} eq 'osf1') {
+    $ref->{os}='dec_osf';
+  } elsif ($ref->{os}=~/^sunos/ ) {
+    $ref->{os}='solaris';
+  } elsif ($ref->{os} eq 'bsd/os') {
+    $ref->{os}='bsdos';
+  } elsif ($ref->{os} eq 'hpux') {
+    $ref->{os}='hp-ux';
+  }
+
+  # cc
+  if (!$ref->{cc}) { $ref->{cc}="??"; }
+  elsif ($ref->{cc}=~m!/([^/]*)$!) { $ref->{cc}=$1; }
+  elsif ($ref->{cc}=~m/^\s?(.*)\s?$/) { $ref->{cc}=$1; }
+
+  # Guess if we use gcc
+  my $isgcc = ($ref->{cc}=~/gcc/ ? 1 : 0);
+  $isgcc = 1 if (!$isgcc && $ref->{cc}=~/cc/ && ( $ref->{ccver}=~/^2\.9/ ||
+						  $ref->{ccver}=~/^3\./));
+  $isgcc = 1 if !$isgcc and $ref->{ccver} and $ref->{ccver}=~/^egcs-/;
+
+  # ccver
+  if (!$ref->{ccver} || $ref->{ccver}=~m!cc: Error:!) {
+    $ref->{ccver}="??" if !$mj;
+  } else { # cut of long info about gcc
+    $ref->{ccver}=~s/3\.2-/3.2./g;
+    $ref->{ccver}=~s/^egcs-//g;
+    $ref->{ccver} = $1 if ($isgcc && $ref->{ccver}=~/^([\d\.]+) /);
+    $ref->{ccver}=~s/\(prerelease\)//g;
+    $ref->{ccver}=~s/\(release\)//g;
+  }
+
+  # cc (2) => Extract ccache info from cc and append it to ccver
+  if ($ref->{cc}=~/^ccache (.*)/) {
+    $ref->{cc}=$1; $ref->{ccver}.=' (ccache)';
+  }
+  $ref->{cc} = 'gcc' if $isgcc;
+
+  # Number of configure run
+  $ref->{nbc} = scalar keys %{$ref->{build}};
+  $ref->{nbco} = 0;
+
+  # Try to set the archi
+  if ($ref->{osver}=~m!^(.*)\((.*)/.*\)! or $ref->{osver}=~m!^(.*)\((.*)\)!) {
+    $ref->{osver} = $1;
+    $ref->{archi} = $2;
+    if ($ref->{archi}=~m!^([^-]*)-!) { $ref->{archi} = $1; }
+    $ref->{archi} = "i386" if ($ref->{archi}=~/86$/ or
+			       $ref->{os} eq 'cygwin'or
+			       $ref->{os} eq 'mswin32');
+  } else { # set architecture for report before 1.16 of Test-Smoke
+    if ( ($ref->{os} eq 'solaris') or
+         ($ref->{os} eq 'NetBSD' and $ref->{osver} eq '1.5.3') or
+	 ($ref->{os} eq 'linux' and $ref->{osver} eq '2.2.19')) {
+      $ref->{archi} ='sparc';
+    } elsif ($ref->{os} eq 'linux' and ( $ref->{osver} eq '2.2.16' or $ref->{osver} eq '2.4.18')) {
+      $ref->{archi} ='ppc';
+    } elsif ($ref->{os} eq 'dec_osf') {
+      $ref->{archi} = 'alpha';
+    } elsif ($ref->{os}=~/^irix/ && $ref->{osver}=~/^(.*) (IP\d*)/) {
+      $ref->{osver}=$1; $ref->{archi}=$2;
+    } elsif ($ref->{os} eq 'aix') {
+      $ref->{archi} = 'aix';
+    } elsif ($ref->{os}=~/HP-UX/i or $ref->{os}=~/^irix/i) {
+      $ref->{archi} = ' ';
+    } else { $ref->{archi}= 'i386'; }
+  }
+
+  # Os version
+  if (!$ref->{osver}) { $ref->{osver} = ( $ref->{os} eq 'freebsd' ? '4.6-STABLE' : ' ' ); }
+  $ref->{osver} = ' ' if ();
+  $ref->{osver} = $1 if $ref->{osver}=~m!^([^\(]*)!;
+  $ref->{osver} = $1 if $ref->{osver}=~m!^(.*?)\s*$!;
+  $ref->{osver} = $1 if $ref->{osver}=~/^(.*)-\d/;
+  $ref->{osver} = $1.'SP'.$2 if $ref->{osver}=~/^(.*)Service Pack (.*)$/;
+
+  return $ref;
 }
 
 __END__
@@ -365,8 +447,8 @@ Test::Smoke::Database::Parsing - Routine for parsing Test::Smoke reports
 
 =head1 SYNOPSIS
 
-  $ admin_smokedb --create --suck --import --update_archi
-  $ lynx http://localhost/cgi-bin/smokedb.cgi
+  my $d = new Test::Smoke::Database(...);
+  $d->parse_import();
 
 =head1 SEE ALSO
 
@@ -397,11 +479,16 @@ Do a specific parsing for H.M Brand report I<file>. (his report is multi-col).
 Return a list of reference of report to use with add_db.
 Return undef if no file or if file doesn't exist;
 
+=item B<update_ref> I<ref of hash>
+
+Update the reference to set particular values to cc, ccver, arch name, etc from 
+buggy reports.
+
 =back
 
 =head1 VERSION
 
-$Revision: 1.5 $
+$Revision: 1.8 $
 
 =head1 AUTHOR
 

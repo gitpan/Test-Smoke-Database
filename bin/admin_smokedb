@@ -2,8 +2,8 @@
 #
 # Simple perl example to interface with module Test::Smoke::Database
 # Copyright 200x A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/08 14:27:59 $
-# $Revision: 1.10 $
+# $Date: 2003/08/15 15:12:28 $
+# $Revision: 1.12 $
 #
 
 use strict;
@@ -21,25 +21,6 @@ my %opts =
     'password'    => '',
     'database'    => 'smoke'
   );
-
-# SQL request to set architecture for report before 1.16 of Test-Smoke
-my $update_archi = <<EOF;
-update builds set archi='sparc' where os='solaris' and archi='??';
-update builds set archi='sparc' where os='NetBSD' and osver='1.5.3' and archi='??';
-update builds set archi='sparc' where os='linux' and osver='2.2.19' and archi='??';
-update builds set archi='ppc' where os='linux' and osver='2.2.16'  and archi='??';
-update builds set archi='ppc'where os='linux' and osver='2.4.18' and ccver='2.95.4' and archi='??';
-update builds set archi=' ' where os='AIX'or os='HP-UX' or os like 'irix%' and archi='??';
-update builds set os='cygwin' where os like 'cygwin%';
-update builds set archi='i386' where archi='??' or os='cygwin';
-update builds set osver='4.6-STABLE' where os='freebsd';
-update builds set os='linux' where os='Red Hat Linux 8.0';
-update builds set os='dec_osf' where os='osf1';
-update builds set os='MSWin32' where os like 'windows%';
-update builds set os='solaris' where os like 'SunOS%';
-update builds set os='MSWin32' where os='WIN32';
-update builds set os='bsdos' where os='bsd/os';
-EOF
 
 # SQL request to clear db
 my $cleardb = <<EOF;
@@ -134,16 +115,11 @@ $d->suck_ng() if ($opts{suck});
 $d->rename_rpt() if ($opts{rename});
 
 # Parse & import
-if ($opts{import}) {
-  $d->parse_import();
+$d->parse_import() if ($opts{import});
 
-  # Update architecture for report before Test-Smoke-1.16
-  $d->db->rundb($update_archi);
-}
 # Create graph
 $opts{min_smoke}=0 if (!$opts{min_smoke});
 $d->build_graph($opts{min_smoke}) if ($opts{graph});
-
 
 __END__
 
@@ -250,7 +226,7 @@ L<Test::Smoke::Database>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>
 
 =head1 VERSION
 
-$Revision: 1.10 $
+$Revision: 1.12 $
 
 =head1 AUTHOR
 

@@ -2,8 +2,14 @@ package Test::Smoke::Database::Display;
 
 # Test::Smoke::Database::Display - 
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/08 13:58:09 $
+# $Date: 2003/08/15 16:08:16 $
 # $Log: Display.pm,v $
+# Revision 1.5  2003/08/15 16:08:16  alian
+# Display link for X status
+#
+# Revision 1.4  2003/08/15 15:10:03  alian
+# Update html for be able to browse database with lynx
+#
 # Revision 1.3  2003/08/08 13:58:09  alian
 # Update display limit
 #
@@ -17,14 +23,14 @@ package Test::Smoke::Database::Display;
 use Carp;
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
-use CGI qw/:standard/;
+use CGI qw/:standard -no_xhtml/;
 use Data::Dumper;
 use Carp qw(cluck);
 require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.3 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.5 $ ' =~ /(\d+\.\d+)/)[0];
 
 use vars qw/$debug $verbose/;
 
@@ -142,15 +148,15 @@ sub display(\%$$$$$$) {
   $summary = "
 <table class=box width=\"90%\"><tr><td>
 <table border=\"1\" width=\"100%\" class=\"box2\">".
-  Tr(th("Os"), th("Os version"), th("Archi"), th("Compiler"), 
-     th("Version compiler"), th("Last smoke"), th(a({-href=>'#legend'},"(1)")),
-     th(table({-align=>"left",-border=>0, -width=>'100%'},
-	      Tr(td({-width=>"15"},a({-href=>'#legend'},"(2)")),
-		 td({-width=>"15"},a({-href=>'#legend'},"(3)")),
-		 td({-width=>"15"},a({-href=>'#legend'},"(4)")),
-		 td({-width=>"15"},a({-href=>'#legend'},"(5)")),
-		 td({-width=>"15"},a({-href=>'#legend'},"(6)")),
-		))), th("(7)"))."\n";
+  Tr(th("Os".('&nbsp;' x 5)), th("Os version".('&nbsp;' x 5)), 
+     th("Archi" .('&nbsp;' x 3)), th("Compiler"), 
+     th("Version compiler"), th("Patchlevel"), th(a({-href=>'#legend'},"(1)")),
+     th({-width=>"15"},a({-href=>'#legend'},"(2)")),
+     th({-width=>"15"},a({-href=>'#legend'},"(3)")),
+     th({-width=>"15"},a({-href=>'#legend'},"(4)")),
+     th({-width=>"15"},a({-href=>'#legend'},"(5)")),
+     th({-width=>"15"},a({-href=>'#legend'},"(6)")),
+     th("(7)"))."\n";
   my $ref = $self->db->read_all;
   my ($lasta,$lastosv,$lastcc,$lastccv,$lastar,$oss,$osvv,$ccc,$ccvv,$arr)=
     (" "," "," "," "," ");
@@ -222,7 +228,7 @@ sub display(\%$$$$$$) {
 		  my $u = $ENV{SCRIPT_NAME}."?failure=1&smoke=$smoke";
 		  $u.=$self->compl_url if ($self->compl_url);
 		  $u.="#$id" if ($id);
-		  if ($v eq 'F') {
+		  if ( ($v eq 'F') or ($v eq 'X')) {
 		    $v= a({-href=>$u},$v); $r=0; $r2=0;
 		  } elsif ($v eq 'm' or $v eq 'c') {
 		    $classe="red";
@@ -237,24 +243,28 @@ sub display(\%$$$$$$) {
 		if (!param('want_smoke') or !$r2);
 	    }
 	    # Sommaire
-	    if ($lasta ne $os) { $oss = $os; $lasta = $os; $class=($i++)%2;}
-	    else { $oss=" "; }
-	    if ($lastcc ne $cc) { $ccc = $cc; $lastcc = $cc; }
-	    else { $ccc=" "; }
-	    if ($lastccv ne $ccver) { $ccvv = $ccver; $lastccv = $ccvv; }
-	    else { $ccvv=" "; }
-	    if ($lastosv ne $osver) { $osvv = $osver; $lastosv = $osver; }
-	    else { $osvv=" "; }
-	    if ($lastar ne $ar) { $arr = $ar; $lastar = $ar; }
-	    else { $arr=" "; }
+	    if ($lasta ne $os) {
+	      $oss = cw($os,7); $lasta = $os; $class=($i++)%2;
+	    } else { $oss=cw(undef,7); }
+	    if ($lastcc ne $cc) {
+	      $ccc = cw($cc,8); $lastcc = $cc; }
+	    else { $ccc=cw(undef,8); }
+	    if ($lastccv ne $ccver) {
+	      $ccvv = cw($ccver,18); $lastccv = $ccvv; 
+	    } else { $ccvv=cw(undef,18); }
+	    if ($lastosv ne $osver) {
+	      $osvv = cw($osver,15); $lastosv = $osver; 
+	    } else { $osvv=cw(undef, 15); }
+	    if ($lastar ne $ar) { $arr = cw($ar,7); $lastar = $ar; }
+	    else { $arr=cw(undef,7); }
 	    if ($nbt) {
 	      my $u = $ENV{SCRIPT_NAME}."?failure=1&smoke=$smoke";
 	      $u.=$self->compl_url if ($self->compl_url);
 	      $u.="#$id" if ($id);
-	      $nbt=a({-href=>$u,-class=>'red'},$nbt);
+	      $nbt=a({-href=>$u,-class=>'red'},cn($nbt));
 	      $nbt = td({-align=>"center", -class=>'red'},$nbt);
 	    }
-	    else { $nbt=td({-align=>"center"},0); }
+	    else { $nbt=td({-align=>"center"},cn(0)); }
 	    my $u = $ENV{SCRIPT_NAME}."?last=1&smoke=$smoke";
 	    $u.= $self->compl_url if ($self->compl_url);
 	    $u.="#$id" if ($id);
@@ -265,21 +275,17 @@ sub display(\%$$$$$$) {
 	    $summary.=Tr({-class=>"mod".$class},
 			 td({-class=>"os"},$oss),
 			 td({-class=>"osver"},$osvv),
-			 td({-class=>"archi"},$arr),
+			 td({-class=>"archi"},$arr."&nbsp;"),
 			 td({-class=>"cc"},$ccc),
 			 td({-class=>"ccver"},$ccvv),
 			 td({-class=>"smoke"},a({-href=>$u}, $smoke)),
-			 td({-class=>"configure"},table(Tr(td($nbc)))),
-			 td(table
-			    ({-class=>$ss,-align=>"left",
-			      -border=>0, -width=>'100%'},
-			     Tr(td({-width=>"15"},$nbtt),
-				td({-width=>"15"},$nbto),
-				td({-width=>"15"},$nbcc),
-				td({-width=>"15"},$nbcm),
-				td({-width=>"15"},$nbcf),
-			       ))),
-			 $nbt."\n");
+			 td({-class=>"configure"},cn($nbc)),
+			 td({-class=>$ss,-width=>"15"},cn($nbtt)),
+			 td({-class=>$ss,-width=>"15"},cn($nbto)),
+			 td({-class=>$ss,-width=>"15"},cn($nbcc)),
+			 td({-class=>$ss,-width=>"15"},cn($nbcm)),
+			 td({-class=>$ss,-width=>"15"},cn($nbcf)),
+			 $nbt)."\n";
 	    $lastsuccessful = $smoke if ($nbto == $nbtt && ($smoke>$lastsuccessful));
 	  }
 	  }
@@ -290,7 +296,7 @@ sub display(\%$$$$$$) {
   $summary.=<<EOF;
 </table></td></tr></table>
 <div class=box>
-<a name="legend">
+<a name="legend"></a>
 <h2>Legend</h2>
 <ol>
   <li>Number of configure run</li>
@@ -313,6 +319,22 @@ EOF
 		     td($lastsmoke),td($lastsuccessful)));
   $summary = $resume.$summary;
   return (\$summary,\$details,\$failure);
+}
+
+#------------------------------------------------------------------------------
+# cw
+#------------------------------------------------------------------------------
+sub cw($$) {
+  my ($word, $size)= @_;
+  $size = 10 if !$size;
+  return $word.("&nbsp;" x ($size - length($word)));
+}
+
+#------------------------------------------------------------------------------
+# cn
+#------------------------------------------------------------------------------
+sub cn($) {
+  return ( ($_[0] <10) ? '&nbsp;'.$_[0] : $_[0]);
 }
 
 #------------------------------------------------------------------------------
@@ -381,7 +403,7 @@ Return the main HTML screen with summary
 
 =head1 VERSION
 
-$Revision: 1.3 $
+$Revision: 1.5 $
 
 =head1 AUTHOR
 

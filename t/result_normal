@@ -1,60 +1,237 @@
 $rep = {
-         'rpt/1981.normal.rpt.18358' => [
+         'rpt/1169.normal.rpt.17850' => [
                                           {
+                                            'nbte' => 71,
+                                            'smoke' => '17850',
                                             'nbco' => 0,
-                                            'build' => {
-                                                         '-Duseithreads -Dusemorebits' => 'O O O O',
-                                                         '-Dusemorebits' => 'O O O O',
-                                                         '-Duselongdouble' => 'O O O O',
-                                                         '-Duse64bitint' => 'O O O O',
-                                                         '-Duseithreads -Duse64bitint' => 'O O O O',
-                                                         ' ' => 'O O O O',
-                                                         '-Duseithreads' => 'O O O O',
-                                                         '-Duseithreads -Duselongdouble' => 'O O O O',
-                                                         '-Duseithreads -Duse64bitall' => 'O O O O',
-                                                         '-Duse64bitall' => 'O O O O',
-                                                         '-Duseithreads -Duse64bitall -Duselongdouble' => 'O O O O',
-                                                         '-Duse64bitall -Duselongdouble' => 'O O O O'
-                                                       },
-                                            'osver' => '2.4.17-1 ',
+                                            'file' => 't/rpt/1169.normal.rpt.17850',
                                             'matrix' => [
                                                           'PERLIO = stdio',
                                                           'PERLIO = perlio',
                                                           'PERLIO = stdio  -DDEBUGGING',
                                                           'PERLIO = perlio -DDEBUGGING'
                                                         ],
-                                            'os' => 'linux',
+                                            'build' => {
+                                                         '-Duseperlio -Duse64bitall' => 't t F F',
+                                                         '-Duseperlio' => 'F F m m',
+                                                         '-Duseperlio -Dusemorebits' => '- - F F',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Duselongdouble' => 't t F F',
+                                                         '-Duseperlio -Duse64bitall -Duselongdouble' => 'F F t t',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Duse64bitint' => 'F F - -',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Dusemorebits' => 't t F F',
+                                                         '-Dusethreads -Duseithreads -Duseperlio' => 'F F t t',
+                                                         '-Duseperlio -Duselongdouble' => 't t F F'
+                                                       },
+                                            'os' => 'irix64',
+                                            'ccver' => 'MIPSpro Compilers: Version 7.3.1.3m',
+                                            'cc' => 'cc -64',
+                                            'failure' => 'irix         stdio            -Duseperlio
+    ext/Encode/t/Aliases.................FAILED at test 18
+    ext/Encode/t/at-cn...................FAILED at test 1
+    ext/Encode/t/CJKT....................FAILED at test 17
+    ext/Encode/t/guess...................FAILED at test 14
+    ext/Encode/t/perlio..................FAILED at test 1
+    lib/CPAN/t/loadme....................FAILED at test 1
+    lib/ExtUtils/t/Constant..............FAILED at test 3
+.../lib/CPAN/t/loadme..........dubiousD. FAILED test 1
+irix         perlio           -Duseperlio
+    ext/Encode/t/Aliases.................FAILED at test 18
+    ext/Encode/t/at-cn...................FAILED at test 1
+    ext/Encode/t/CJKT....................FAILED at test 17
+    ext/Encode/t/guess...................FAILED at test 14
+    ext/Encode/t/perlio..................FAILED at test 1
+irix         stdio            -DDEBUGGING -Duseperlio -Duse64bitall
+    t/lib/1_compile......................FAILED at test 6
+    ext/IPC/SysV/ipcsysv.................FAILED at test 0
+    ext/IPC/SysV/t/msg...................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 0
+    ext/Safe/safe1.......................FAILED at test 0
+    ext/Safe/safe2.......................FAILED at test 0
+    ext/Storable/t/code..................FAILED at test 1
+    lib/bignum/t/bignum..................FAILED at test 1
+    lib/CPAN/t/loadme....................FAILED at test 1
+    lib/CPAN/t/Nox.......................FAILED at test 1
+    lib/CPAN/t/vcmp......................FAILED at test 0
+    lib/IPC/SysV.........................FAILED at test 0
+.../t/lib/1_compile.........FAILED test 6
+.../lib/CPAN/t/loadme.......dubiousD. FAILED test 1
+irix         perlio           -DDEBUGGING -Duseperlio -Duse64bitall
+    t/lib/1_compile......................FAILED at test 6
+    ext/IPC/SysV/ipcsysv.................FAILED at test 0
+    ext/IPC/SysV/t/msg...................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 0
+    ext/Safe/safe1.......................FAILED at test 0
+    ext/Safe/safe2.......................FAILED at test 0
+    ext/Storable/t/code..................FAILED at test 1
+    lib/bignum/t/bignum..................FAILED at test 1
+    lib/CPAN/t/loadme....................FAILED at test 1
+    lib/CPAN/t/Nox.......................FAILED at test 1
+    lib/CPAN/t/vcmp......................FAILED at test 0
+    lib/ExtUtils/t/Constant..............FAILED at test 3
+    lib/ExtUtils/t/Embed.................FAILED at test 1
+    lib/IPC/SysV.........................FAILED at test 0
+    lib/Unicode/UCD......................FAILED at test 161
+.../t/lib/1_compile............FAILED test 6
+.../lib/CPAN/t/loadme..........dubiousD. FAILED test 1
+irix         stdio/perlio     -DDEBUGGING -Duseperlio -Duselongdouble
+irix         stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
+irix         stdio/perlio     -Duseperlio -Duse64bitall -Duselongdouble
+    t/base/num...........................FAILED at test 48
+.../t/base/num....FAILED test 48
+irix         stdio            -Dusethreads -Duseithreads -Duseperlio
+    ext/Encode/t/Aliases.................FAILED at test 32
+    ext/Encode/t/at-tw...................FAILED at test 1
+    ext/Encode/t/CJKT....................FAILED at test 1
+    ext/Encode/t/guess...................FAILED at test 14
+    lib/Unicode/UCD......................FAILED at test 161
+irix         perlio           -Dusethreads -Duseithreads -Duseperlio
+    ext/Encode/t/Aliases.................FAILED at test 32
+    ext/Encode/t/at-tw...................FAILED at test 1
+    ext/Encode/t/CJKT....................FAILED at test 1
+    ext/Encode/t/guess...................FAILED at test 14
+    lib/Text/Balanced/t/extmul...........FAILED at test 0
+    lib/Unicode/UCD......................FAILED at test 161
+irix         stdio            -Dusethreads -Duseithreads -Duseperlio -Duse64bitint
+    ext/IPC/SysV/ipcsysv.................FAILED at test 0
+    ext/IPC/SysV/t/msg...................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 0
+    lib/ExtUtils/t/Constant..............FAILED at test 3
+    lib/IPC/SysV.........................FAILED at test 0
+    lib/Unicode/UCD......................FAILED at test 161
+irix         perlio           -Dusethreads -Duseithreads -Duseperlio -Duse64bitint
+    ext/IPC/SysV/ipcsysv.................FAILED at test 0
+    ext/IPC/SysV/t/msg...................FAILED at test 0
+    ext/IPC/SysV/t/sem...................FAILED at test 0
+    lib/IPC/SysV.........................FAILED at test 0
+    lib/Text/Balanced/t/extmul...........FAILED at test 0
+    lib/Unicode/UCD......................FAILED at test 161
+irix         stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads -Duseperlio -Duselongdouble
+irix         stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads -Duseperlio -Dusemorebits
+    t/base/num...........................FAILED at test 48
+.../t/base/num....FAILED test 48
+',
+                                            'archi' => 'IP28',
+                                            'id' => '1169',
+                                            'osver' => '6.5 6.5.16m',
+                                            'nbc' => 9
+                                          }
+                                        ],
+         'rpt/2131.normal.rpt.18468' => [
+                                          {
                                             'nbte' => 0,
-                                            'ccver' => '2.96 20000731 (Red Hat Linux 7.2 2.96-112.7.2)',
-                                            'nbc' => 12,
-                                            'smoke' => '18358',
-                                            'id' => '1981',
-                                            'file' => 't/rpt/1981.normal.rpt.18358',
+                                            'smoke' => '18468',
+                                            'nbco' => 0,
+                                            'file' => 't/rpt/2131.normal.rpt.18468',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING'
+                                                        ],
+                                            'build' => {
+                                                         '-Duseperlio' => 'O O O O',
+                                                         '-Duseperlio -Dusemorebits' => 'O O O O',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Duselongdouble' => 'O O O O',
+                                                         '-Duseperlio -Duse64bitint' => 'O O O O',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Duse64bitint' => 'O O O O',
+                                                         '-Dusethreads -Duseithreads -Duseperlio -Dusemorebits' => 'O O ? ?',
+                                                         '-Dusethreads -Duseithreads -Duseperlio' => 'O O O O',
+                                                         '-Duseperlio -Duselongdouble' => 'O O O O'
+                                                       },
+                                            'os' => 'irix',
+                                            'ccver' => '??',
+                                            'cc' => '??',
+                                            'archi' => 'IP22',
+                                            'id' => '2131',
+                                            'osver' => '6.5 6.5.16m',
+                                            'nbc' => 8
+                                          }
+                                        ],
+         'rpt/2582.normal.rpt.18669' => [
+                                          {
+                                            'nbte' => 0,
+                                            'smoke' => '18669',
+                                            'nbco' => 0,
+                                            'file' => 't/rpt/2582.normal.rpt.18669',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'LC_ALL = nl_NL.utf8',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING',
+                                                          'LC_ALL = nl_NL.utf8 -DDEBUGGING'
+                                                        ],
+                                            'build' => {
+                                                         ' ' => 'O O O O O O',
+                                                         '-Uuseperlio' => 'O - - O - -',
+                                                         '-Duseithreads -Duse64bitint' => 'O O O O O O',
+                                                         '-Duse64bitint' => 'O O O O O O',
+                                                         '-Duseithreads' => 'O O O O O O'
+                                                       },
+                                            'os' => 'linux',
+                                            'ccver' => '2.95.3',
+                                            'cc' => 'gcc',
                                             'archi' => 'i386',
-                                            'cc' => 'cc'
+                                            'id' => '2582',
+                                            'osver' => '2.4.18',
+                                            'nbc' => 5
+                                          }
+                                        ],
+         'rpt/1943.normal.rpt.18346' => [
+                                          {
+                                            'nbte' => 0,
+                                            'smoke' => '18346',
+                                            'nbco' => 0,
+                                            'file' => 't/rpt/1943.normal.rpt.18346',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING'
+                                                        ],
+                                            'build' => {
+                                                         '-Duseithreads -Duse64bitall -Duselongdouble' => 'm m m m',
+                                                         ' ' => 'O O O O',
+                                                         '-Dusemorebits' => 'O O O O',
+                                                         '-Duseithreads -Dusemorebits' => 'm m m m',
+                                                         '-Duseithreads -Duse64bitint' => 'm m m m',
+                                                         '-Duse64bitint' => 'O O O O',
+                                                         '-Duseithreads' => 'm m m m',
+                                                         '-Duseithreads -Duselongdouble' => 'm m m m',
+                                                         '-Duselongdouble' => 'O O O O',
+                                                         '-Duse64bitall' => 'O O O O',
+                                                         '-Duseithreads -Duse64bitall' => 'm m m m',
+                                                         '-Duse64bitall -Duselongdouble' => 'O O O O'
+                                                       },
+                                            'os' => 'openbsd',
+                                            'ccver' => '2.95.3',
+                                            'cc' => 'gcc',
+                                            'archi' => 'i386',
+                                            'id' => '1943',
+                                            'osver' => '3.2',
+                                            'nbc' => 12
                                           }
                                         ],
          'rpt/7084.normal.rpt.18666' => [
                                           {
+                                            'nbte' => 27,
+                                            'smoke' => '18666',
                                             'nbco' => 0,
-                                            'build' => {
-                                                         '-Duseshrplib' => 'F F F F',
-                                                         ' ' => 'F F F F',
-                                                         '-Duseithreads' => 'F F F F'
-                                                       },
-                                            'osver' => '1.5.3 ',
+                                            'file' => 't/rpt/7084.normal.rpt.18666',
                                             'matrix' => [
                                                           'PERLIO = stdio',
                                                           'PERLIO = perlio',
                                                           'PERLIO = stdio  -DDEBUGGING',
                                                           'PERLIO = perlio -DDEBUGGING'
                                                         ],
-                                            'nbte' => '27',
+                                            'build' => {
+                                                         ' ' => 'F F F F',
+                                                         '-Duseshrplib' => 'F F F F',
+                                                         '-Duseithreads' => 'F F F F'
+                                                       },
                                             'os' => 'netbsd',
-                                            'ccver' => 'egcs-2.91.66 19990314 (egcs-1.1.2 release)',
-                                            'nbc' => 3,
-                                            'smoke' => '18666',
-                                            'id' => '7084',
+                                            'ccver' => '2.91.66',
+                                            'cc' => 'gcc',
                                             'failure' => 'netbsd      [stdio/perlio]-Dcf_email=alian@cpan.org
               (cont) -Dcc=/usr/local/bin/gcc
     t/op/pack............................FAILED at test 187
@@ -97,105 +274,45 @@ netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
     t/op/pack............................FAILED at test 187
     ext/IPC/SysV/t/sem...................FAILED at test 1
 ',
-                                            'file' => 't/rpt/7084.normal.rpt.18666',
                                             'archi' => 'sparc',
-                                            'cc' => 'gcc'
+                                            'id' => '7084',
+                                            'osver' => '1.5.3',
+                                            'nbc' => 3
                                           }
                                         ],
-         'rpt/2131.normal.rpt.18468' => [
+         'rpt/1981.normal.rpt.18358' => [
                                           {
+                                            'nbte' => 0,
+                                            'smoke' => '18358',
                                             'nbco' => 0,
-                                            'build' => {
-                                                         '-Duseperlio -Duselongdouble' => 'O O O O',
-                                                         '-Dusethreads -Duseithreads -Duseperlio' => 'O O O O',
-                                                         '-Dusethreads -Duseithreads -Duseperlio -Dusemorebits' => 'O O ? ?',
-                                                         '-Dusethreads -Duseithreads -Duseperlio -Duselongdouble' => 'O O O O',
-                                                         '-Dusethreads -Duseithreads -Duseperlio -Duse64bitint' => 'O O O O',
-                                                         '-Duseperlio -Dusemorebits' => 'O O O O',
-                                                         '-Duseperlio -Duse64bitint' => 'O O O O',
-                                                         '-Duseperlio' => 'O O O O'
-                                                       },
-                                            'osver' => '6.5 6.5.16m',
+                                            'file' => 't/rpt/1981.normal.rpt.18358',
                                             'matrix' => [
                                                           'PERLIO = stdio',
                                                           'PERLIO = perlio',
                                                           'PERLIO = stdio  -DDEBUGGING',
                                                           'PERLIO = perlio -DDEBUGGING'
                                                         ],
-                                            'os' => 'irix',
-                                            'nbte' => 0,
-                                            'ccver' => '??',
-                                            'nbc' => 8,
-                                            'smoke' => '18468',
-                                            'id' => '2131',
-                                            'file' => 't/rpt/2131.normal.rpt.18468',
-                                            'archi' => 'IP22',
-                                            'cc' => '??'
-                                          }
-                                        ],
-         'rpt/2582.normal.rpt.18669' => [
-                                          {
-                                            'nbco' => 0,
                                             'build' => {
-                                                         '-Duse64bitint' => 'O O O O O O',
-                                                         '-Duseithreads -Duse64bitint' => 'O O O O O O',
-                                                         ' ' => 'O O O O O O',
-                                                         '-Uuseperlio' => 'O - - O - -',
-                                                         '-Duseithreads' => 'O O O O O O'
-                                                       },
-                                            'osver' => '2.4.18-4gb ',
-                                            'matrix' => [
-                                                          'PERLIO = stdio',
-                                                          'PERLIO = perlio',
-                                                          'LC_ALL = nl_NL.utf8',
-                                                          'PERLIO = stdio  -DDEBUGGING',
-                                                          'PERLIO = perlio -DDEBUGGING',
-                                                          'LC_ALL = nl_NL.utf8 -DDEBUGGING'
-                                                        ],
-                                            'os' => 'linux',
-                                            'nbte' => 0,
-                                            'ccver' => '2.95.3 20010315 (SuSE)',
-                                            'nbc' => 5,
-                                            'smoke' => '18669',
-                                            'id' => '2582',
-                                            'file' => 't/rpt/2582.normal.rpt.18669',
-                                            'archi' => 'i386',
-                                            'cc' => 'cc'
-                                          }
-                                        ],
-         'rpt/1943.normal.rpt.18346' => [
-                                          {
-                                            'nbco' => 0,
-                                            'build' => {
-                                                         '-Duseithreads -Dusemorebits' => 'm m m m',
-                                                         '-Dusemorebits' => 'O O O O',
-                                                         '-Duselongdouble' => 'O O O O',
-                                                         '-Duse64bitint' => 'O O O O',
-                                                         '-Duseithreads -Duse64bitint' => 'm m m m',
+                                                         '-Duseithreads -Duse64bitall -Duselongdouble' => 'O O O O',
                                                          ' ' => 'O O O O',
-                                                         '-Duseithreads' => 'm m m m',
-                                                         '-Duseithreads -Duselongdouble' => 'm m m m',
-                                                         '-Duseithreads -Duse64bitall' => 'm m m m',
+                                                         '-Dusemorebits' => 'O O O O',
+                                                         '-Duseithreads -Dusemorebits' => 'O O O O',
+                                                         '-Duseithreads -Duse64bitint' => 'O O O O',
+                                                         '-Duse64bitint' => 'O O O O',
+                                                         '-Duseithreads' => 'O O O O',
+                                                         '-Duseithreads -Duselongdouble' => 'O O O O',
+                                                         '-Duselongdouble' => 'O O O O',
                                                          '-Duse64bitall' => 'O O O O',
-                                                         '-Duseithreads -Duse64bitall -Duselongdouble' => 'm m m m',
+                                                         '-Duseithreads -Duse64bitall' => 'O O O O',
                                                          '-Duse64bitall -Duselongdouble' => 'O O O O'
                                                        },
-                                            'osver' => '3.2 ',
-                                            'matrix' => [
-                                                          'PERLIO = stdio',
-                                                          'PERLIO = perlio',
-                                                          'PERLIO = stdio  -DDEBUGGING',
-                                                          'PERLIO = perlio -DDEBUGGING'
-                                                        ],
-                                            'os' => 'openbsd',
-                                            'nbte' => 0,
-                                            'ccver' => '2.95.3 20010125 ',
-                                            'nbc' => 12,
-                                            'smoke' => '18346',
-                                            'id' => '1943',
-                                            'file' => 't/rpt/1943.normal.rpt.18346',
+                                            'os' => 'linux',
+                                            'ccver' => '2.96',
+                                            'cc' => 'gcc',
                                             'archi' => 'i386',
-                                            'cc' => 'cc'
+                                            'id' => '1981',
+                                            'osver' => '2.4.17',
+                                            'nbc' => 12
                                           }
                                         ]
        };

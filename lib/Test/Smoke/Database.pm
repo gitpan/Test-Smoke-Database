@@ -2,8 +2,11 @@ package Test::Smoke::Database;
 
 # Test::Smoke::Database - Add / parse /display perl reports smoke database
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/08 14:27:59 $
+# $Date: 2003/08/15 15:55:07 $
 # $Log: Database.pm,v $
+# Revision 1.13  2003/08/15 15:55:07  alian
+# Use a correct VERSION
+#
 # Revision 1.12  2003/08/08 14:27:59  alian
 # Update POD documentation
 #
@@ -65,7 +68,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.12 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = '1.13';
 
 my $limite = 18600;
 #$limite = 0;
@@ -318,7 +321,7 @@ after B<fetch> method.
 
 =head1 VERSION
 
-$Revision: 1.12 $
+$Revision: 1.13 $
 
 =head1 AUTHOR
 

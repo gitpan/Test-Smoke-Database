@@ -9,6 +9,7 @@ my %make = (
 			    'News::NNTPClient' =>0,
 			    'Data::Dumper'=>0,
 			    'DBD::mysql'=>0,
+			    'Test::More'=>0
 #		    	    'GD::Graph'=>0 not mandatory
 			   },
     'EXE_FILES'         => [ 'bin/admin_smokedb' ],

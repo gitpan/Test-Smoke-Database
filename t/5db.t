@@ -54,7 +54,7 @@ $cmd.=" --password=$password " if ($password);
 
 cmp_ok(system($cmd.'--create'),'==', 0, "admin_smokedb can create database");
 
-cmp_ok($t->parse_import, "==", 58, "Parsing reports by parse_import");
+cmp_ok($t->parse_import, "==", 59, "Parsing reports by parse_import");
 
 cmp_ok(system($cmd.'--clear'),'==', 0, "admin_smokedb can clear database");
 

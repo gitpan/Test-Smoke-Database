@@ -2,8 +2,11 @@ package Test::Smoke::Database::Graph;
 
 # module Test::Smoke::Database - Create graph about smoke database
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/06 18:50:42 $
+# $Date: 2003/08/15 15:50:40 $
 # $Log: Graph.pm,v $
+# Revision 1.7  2003/08/15 15:50:40  alian
+# Group smoke for graph
+#
 # Revision 1.6  2003/08/06 18:50:42  alian
 # New interfaces with DB.pm & Display.pm
 #
@@ -41,7 +44,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(prompt);
-$VERSION = ('$Revision: 1.6 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.7 $ ' =~ /(\d+\.\d+)/)[0];
 
 my $debug = 0;
 my $font = '/usr/X11R6/share/enlightenment/themes/Blue_OS/ttfonts/arial.ttf';
@@ -70,9 +73,12 @@ sub new   {
 #------------------------------------------------------------------------------
 sub percent_configure {
   my $self = shift;
-  my $request = "select smoke,os,(sum(nbco)/sum(nbco+nbcf+nbcc+nbcm))*100 from builds ";
+  my $request = "select (floor(smoke/10))*10,
+                         os,
+                         (sum(nbco)/sum(nbco+nbcf+nbcc+nbcm))*100 
+                 from builds ";
   $request.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
-  $request.="group by smoke,os order by smoke";
+  $request.="group by 1,os order by 1";
   my (%l,%tt);
   my $st = $self->{DBH}->prepare($request);
   $st->execute || print STDERR $request,"<br>";
@@ -94,7 +100,7 @@ sub percent_configure {
     $my_graph->set_legend("","% of successful make test");
     $my_graph->set( 
 		   title           => '% of successful make test for '
-		                      .$os. ' by smoke',
+		                      .$os. ' by 10 smoke',
 		   y_max_value     => 100,
 		   y_tick_number   => 10,
 		   x_label_skip    => ($#l2)/ 10,
@@ -115,14 +121,15 @@ sub percent_configure {
 #------------------------------------------------------------------------------
 sub percent_configure_all {
   my $self = shift;
-  my $request = "select smoke,(sum(nbco)/sum(nbco+nbcf+nbcc+nbcm))*100 from builds ";
+  my $request = "select (floor(smoke/20))*20,
+                        (sum(nbco)/sum(nbco+nbcf+nbcc+nbcm))*100 from builds ";
   $request.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
-  $request.="group by smoke order by smoke";
+  $request.="group by 1 order by 1";
   my $ref = $self->fetch_array($request);
   my $my_graph = GD::Graph::area->new(1000,300);
   $my_graph->set_legend("","% of successful make test");
   $my_graph->set( 
-		 title           => '% of successful make test',
+		 title           => '% of successful make test for 20 smoke',
 		 y_max_value     => 100,
 		 y_tick_number   => 10,
 		 x_label_skip    => (scalar @{@{$ref}[0]})/8,,
@@ -143,16 +150,18 @@ sub percent_configure_all {
 #------------------------------------------------------------------------------
 sub configure_per_smoke {
   my $self = shift;
-  my $req ="select smoke,sum(nbco+nbcf+nbcc+nbcm),sum(nbco) from builds ";
+  my $req ="select (floor(smoke/20))*20,
+                   sum(nbco+nbcf+nbcc+nbcm),
+                   sum(nbco) from builds ";
   $req.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
-  $req.="group by smoke order by smoke";
+  $req.="group by 1 order by 1";
   my $ref = $self->fetch_array($req);
   my $my_graph = GD::Graph::mixed->new(1000,300);
   $my_graph->set_legend("make test run","make test pass all tests");
   $my_graph->set(
 		 y_label         => 'make test run',
-		 title           => 'make test run/pass all tests by smoke',
-		 y_max_value     => 1000,
+		 title           => 'make test run/pass all tests for 20 smoke',
+		 y_max_value     => 5000,
 		 y_tick_number   => 10,
 		 x_label_skip    => (scalar @{@{$ref}[0]})/8,
 		 types => [qw(lines area )],
@@ -251,16 +260,16 @@ sub smoke_per_os {
 #------------------------------------------------------------------------------
 sub os_by_smoke {
   my $self = shift;
-  my $req = "select smoke,count(distinct os) from builds ";
+  my $req = "select (floor(smoke/20))*20,count(distinct os) from builds ";
   $req.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
-  $req.="group by smoke order by smoke";
+  $req.="group by 1 order by 1";
   my $ref = $self->fetch_array($req);
   my $my_graph = GD::Graph::area->new(1000,300);
   $my_graph->set_legend("","os tested");
   $my_graph->set(
-		 title           => 'Number of os by smoke',
-		 y_max_value     => 10,
-		 y_tick_number   => 10,
+		 title           => 'Number of os each 20 smoke',
+		 y_max_value     => 15,
+		 y_tick_number   => 15,
 		 x_label_skip    => scalar @{@{$ref}[0]}/10,,
 		 y_label_position => 0,
 		 axis_space => 20,
@@ -527,7 +536,7 @@ Construct a new Test::Smoke::Database::Graph object and return it.
 
 =head1 VERSION
 
-$Revision: 1.6 $
+$Revision: 1.7 $
 
 =head1 AUTHOR
 

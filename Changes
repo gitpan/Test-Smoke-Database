@@ -1,5 +1,15 @@
 Revision history for Perl extension Test::Smoke::Database.
 
+1.13  2003/08/15 15:55:07  alian
+ - Add a test of report with 't' and '-' on the same line. Now these line
+   are no longer registred
+ - Update HTML for be able to browse DB with Lynx
+ - Add an update_ref method that adjust buggy report
+ - Remove SQL request for update archi in admin_smokedb, now done 
+   by update_ref
+ - Add a link for 'X' status for failed test
+ - Add Test::More to prereqs
+
 1.12  2003/08/08 14:27:59  alian
  - Update POD documentation
  - Add proto to methods

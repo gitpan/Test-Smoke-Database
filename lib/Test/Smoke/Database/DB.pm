@@ -2,8 +2,14 @@ package Test::Smoke::Database::DB;
 
 # Test::Smoke::Database::DB
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/08 14:27:59 $
+# $Date: 2003/08/15 15:10:42 $
 # $Log: DB.pm,v $
+# Revision 1.5  2003/08/15 15:10:42  alian
+# Set osver here is not needed
+#
+# Revision 1.4  2003/08/14 08:48:35  alian
+# Don't save line with only t | ? | -
+#
 # Revision 1.3  2003/08/08 14:27:59  alian
 # Update POD documentation
 #
@@ -25,7 +31,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.3 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.5 $ ' =~ /(\d+\.\d+)/)[0];
 use vars qw/$debug $verbose $limit/;
 #$limite = 0;
 
@@ -204,8 +210,7 @@ sub add_to_db(\%\%) {
   my ($nbco, $nbcf, $nbcm, $nbcc)=(0,0,0,0);
   my ($cc,$ccf,$f,$r) = ($ref->{cc}||' ',$ref->{ccver} || ' ',
 			 $ref->{failure},$ref->{report});
-  foreach ($cc,$ccf,$f,$r) { s/'/\\'/g if ($_); }
-  $ref->{osver}=~s/[\s]+$//g;
+  foreach ($cc,$ccf,$f,$r) { if ($_) { s/'/\\'/g; s/^\s*//g; }}
   # Count make test ok / build fail in make / configure fail / make test fail
   foreach my $c (keys %{$$ref{build}}) {
     foreach (split(/ /,$$ref{build}{$c})) {
@@ -215,8 +220,7 @@ sub add_to_db(\%\%) {
       elsif ($_ eq 'c') { $nbcc++; }
     }
   }
-  my $pass = 1;
-  $pass = 0 if ($ref->{failure});
+  my $pass = (($nbcf || $nbcm || $nbcc) ? 0 : 1);
   printf( "\t =>%25s %s %5d (%s)\n",
 	  $ref->{os}." ".$ref->{osver}, ($pass ? "PASS" : "FAIL"),
 	  $ref->{smoke}, basename($ref->{file})) if $verbose;
@@ -335,7 +339,7 @@ reason is printed on STDERR.
 
 =head1 VERSION
 
-$Revision: 1.3 $
+$Revision: 1.5 $
 
 =head1 AUTHOR
 
