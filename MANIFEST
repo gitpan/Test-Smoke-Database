@@ -1,0 +1,10 @@
+style_cpan.css
+Changes
+lib/Test/Smoke/Database.pm
+lib/Test/Smoke/Database/FAQ.pod
+bin/admin_smokedb
+bin/smoke_db.cgi
+Makefile.PL
+MANIFEST
+README
+t/1.t

@@ -1,0 +1,240 @@
+#!/usr/bin/perl -w
+#
+# Simple perl example to interface with module Test::Smoke::Database
+# Copyright 200x A.Barbet alian@alianwebserver.com.  All rights reserved.
+# $Date: 2003/01/01 21:37:52 $
+# $Revision: 1.2 $
+#
+
+use strict;
+use Getopt::Long;
+use Pod::Usage;
+use Test::Smoke::Database;
+
+# Default value
+my %opts =
+  ( 'dir'         => $ENV{HOME}.'/.perl.daily-build.reports',
+    'nntp_server' => 'nntp.perl.org',
+    'debug'       => 0,
+    'mysql'       => 'mysql',
+    'user'        => $ENV{USER},
+    'password'    => '',
+    'database'    => 'smoke'
+  );
+
+# SQL request to set architecture for report before 1.16 of Test-Smoke
+my $update_archi = <<EOF;
+update builds set archi='i386';
+update builds set archi='sparc' where os='solaris';
+update builds set archi='sparc' where os='NetBSD' and osver='1.5.3';
+update builds set archi='sparc' where os='linux'  and osver='2.2.19';
+update builds set archi='ppc'   where os='linux'  and osver='2.2.16';
+update builds set archi='ppc'   where os='linux'  and osver='2.4.18' 
+                                                  and ccver='2.95.4';
+update builds set archi=' '     where os='AIX'    or os='HP-UX'
+                                                  or os='dec_osf'
+                                                  or os like 'irix%';
+update builds set osver='4.6-STABLE' where os='freebsd';
+EOF
+
+# SQL request to clear db
+my $cleardb = <<EOF;
+delete from configure;
+delete from builds;
+delete from data;
+EOF
+
+# SQL request to drop all tables
+my $dropdb = <<EOF;
+drop table configure;
+drop table builds;
+drop table data;
+EOF
+
+# SQL request to create db
+my $createdb = <<EOF;
+CREATE TABLE builds (
+  id int(11) unsigned NOT NULL auto_increment,
+  os varchar(20) NOT NULL default '',
+  osver varchar(30) NOT NULL default '',
+  archi varchar(10) default 'i386',
+  cc varchar(50) NOT NULL default '',
+  ccver varchar(50) NOT NULL default '',
+  date datetime NOT NULL default '0000-00-00 00:00:00',
+  smoke int(7) unsigned NOT NULL default '0',
+  nbc int(3) unsigned NOT NULL default '0',
+  nbco int(3) unsigned NOT NULL default '0',
+  nbte int(3) unsigned NOT NULL default '0',
+  PRIMARY KEY  (id),
+  KEY os (os),
+  KEY osver (osver),
+  KEY archi (archi),
+  KEY cc (cc),
+  KEY ccver (ccver),
+  KEY smoke (smoke)
+) TYPE=MyISAM;
+
+CREATE TABLE configure (
+  id int(9) unsigned NOT NULL auto_increment,
+  idbuild int(9) unsigned NOT NULL default '0',
+  configure varchar(250) NOT NULL default '',
+  result varchar(8) NOT NULL default '',
+  PRIMARY KEY  (id),
+  KEY idbuild (idbuild)
+) TYPE=MyISAM;
+
+CREATE TABLE data (
+  id int(9) unsigned NOT NULL auto_increment,
+  idbuild int(9) unsigned NOT NULL default '0',
+  failure mediumblob,
+  report mediumblob,
+  PRIMARY KEY  (id),
+  KEY idbuild (idbuild)
+) TYPE=MyISAM;
+
+EOF
+
+my @options = qw/clear suck import dir=s verbose nntp_server=s create drop
+                 user=s password=s database=s update_archi rename help man/;
+
+GetOptions( \%opts, @options) or pod2usage( -verbose => 1, -exitval => 1 );
+$opts{help}  and pod2usage( -verbose => 1, -exitval => 0 );
+$opts{man}   and pod2usage( -verbose => 2, -exitval => 0 );
+my $debug=0; $opts{debug} and $debug = 1;
+
+# Create a Test::Smoke::Database instance
+my $d = new Test::Smoke::Database(\%opts);
+
+# Directory for report
+mkdir $opts{dir}, 0755 if (!-e $opts{dir});
+print "I use $opts{dir} for store reports\n" if ($debug);
+
+# Drop needed tables
+$d->rundb($dropdb) if ($opts{drop});
+
+# Create needed tables
+$d->rundb($createdb) if ($opts{create});
+
+# clear database
+$d->rundb($cleardb) if ($opts{clear});
+
+# Suck perl.daily-build.reports
+$d->suck_ng() if ($opts{suck});
+
+# Add no of smoke in name of report
+$d->rename_rpt() if ($opts{rename});
+
+# Parse & import
+$d->parse_import() if ($opts{import});
+
+# Update architecture for report before Test-Smoke-1.16
+$d->rundb($update_archi) if ($opts{update_archi});
+
+=pod
+
+=head1 NAME
+
+admin_smokedb - Import smoke report in a mysql database
+
+=head1 SYNOSPIS
+
+admin_smokedb --clear --suck --import --dir=s --verbose --nntp_server=s 
+              --mysql=s --user=s --password=s --database=s --update_archi
+              --rename --help --man --create --drop
+
+=head1 DESCRIPTION
+
+This script help you to populate smoke database
+
+The first time you run this script, you must do:
+
+  admin_smokedb --create
+
+for create the needed mysql table. Use --user, --password, --database for
+overwrite default values.
+
+Then you must do:
+
+  admin_smokedb --rename --suck --import --update_archi
+
+for create a complete smoke database. You can add this sequence to your
+crontab daily. You can now lauch your browser yo browse database with
+smoke_db.cgi.
+
+=head1 OPTIONS
+
+Options supported at this moment:
+
+=head2 Actions
+
+=over 4
+
+=item B<--clear>
+
+Remove all reports from database
+
+=item B<--create>
+
+Create needed tables in mysql for store reports
+
+=item B<--drop>
+
+Drop tables in mysql created by this app.
+
+=item B<--import>
+
+Parse and imports reports in database
+
+=item B<--rename>
+
+Rename fetched report to add no of smoke in name of file.
+
+=item B<--suck>
+
+Fetch new report from perl.daily-build.reports
+
+=item B<--update_archi>
+
+Update row 'archi' in database for reports made before Test-Smoke-1.16.
+
+=back
+
+=head2 Others options
+
+=over 4
+
+=item B<--dir=> I<directory>
+
+Directory where store fetched reports.
+Default is HOME/.perl.daily-build.reports
+
+=item B<--nntp_server=> I<nntp host>
+
+Nntp host to use with --fetch. Default is nntp.perl.org
+
+=item B<--verbose>
+
+Display informations during execution
+
+=item B<--user=> I<user> B<--password=>s I<pass> B<--database=> I<db>
+
+Informations about mysql connection. Default is current user, no password, 
+database 'smoke'
+
+=back
+
+=head1 SEE ALSO
+
+L<Test::Smoke::Database>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>
+
+=head1 VERSION
+
+$Revision: 1.2 $
+
+=head1 AUTHOR
+
+Alain BARBET with some help from Abe Timmerman
+
+=cut
+
+__END__

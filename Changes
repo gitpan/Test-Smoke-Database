@@ -1,0 +1,6 @@
+Revision history for Perl extension Database.
+
+0.01  Mon Dec 30 11:10:48 2002
+	- original version; created by h2xs 1.22 with options
+		-X Test/Smoke/Database
+
