@@ -18,6 +18,7 @@ my @file2 = qw!3_nb_smoke.png 5_configure_by_os.png 7_conftested.png
 my %file3 = ( "last50/4_nb_configure.png" => 1,
 	      "last50/3_nb_smoke.png"     => 1 );
 my @dir = qw!0 17500 last50!;
+my $nbii = 60; 
 
 #chdir(dirname($0));
 my $rep; 
@@ -54,7 +55,7 @@ $cmd.=" --password=$password " if ($password);
 
 cmp_ok(system($cmd.'--create'),'==', 0, "admin_smokedb can create database");
 
-cmp_ok($t->parse_import, "==", 59, "Parsing reports by parse_import");
+cmp_ok($t->parse_import, "==", $nbii, "Parsing reports by parse_import");
 
 cmp_ok(system($cmd.'--clear'),'==', 0, "admin_smokedb can clear database");
 

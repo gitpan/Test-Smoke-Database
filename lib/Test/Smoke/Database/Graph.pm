@@ -2,8 +2,24 @@ package Test::Smoke::Database::Graph;
 
 # module Test::Smoke::Database - Create graph about smoke database
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/15 15:50:40 $
+# $Date: 2003/08/19 10:37:24 $
 # $Log: Graph.pm,v $
+# Revision 1.8  2003/08/19 10:37:24  alian
+# Release 1.14:
+#  - FORMAT OF DATABASE UPDATED ! (two cols added, one moved).
+#  - Add a 'version' field to filter/parser (Eg: All perl-5.8.1 report)
+#  - Use the field 'date' into filter/parser (Eg: All report after 07/2003)
+#  - Add an author field to parser, and a smoker HTML page about recent
+#    smokers and their available config.
+#  - Change how nbte (number of failed tests) is calculate
+#  - Graph are done by month, no longuer with patchlevel
+#  - Only rewrite cc if gcc. Else we lost solaris info
+#  - Remove ccache info for have less distinct compiler
+#  - Add another report to tests
+#  - Update FAQ.pod for last Test::Smoke version
+#  - Save only wanted headers for each nntp articles (and save From: field).
+#  - Move away last varchar field from builds to data
+#
 # Revision 1.7  2003/08/15 15:50:40  alian
 # Group smoke for graph
 #
@@ -44,7 +60,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(prompt);
-$VERSION = ('$Revision: 1.7 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.8 $ ' =~ /(\d+\.\d+)/)[0];
 
 my $debug = 0;
 my $font = '/usr/X11R6/share/enlightenment/themes/Blue_OS/ttfonts/arial.ttf';
@@ -73,9 +89,9 @@ sub new   {
 #------------------------------------------------------------------------------
 sub percent_configure {
   my $self = shift;
-  my $request = "select (floor(smoke/10))*10,
-                         os,
-                         (sum(nbco)/sum(nbco+nbcf+nbcc+nbcm))*100 
+  my $request = "select DATE_FORMAT(date,'%Y-%c'),
+                        os,
+                       (sum(nbco)/sum(nbco+nbcf+nbcc+nbcm))*100 
                  from builds ";
   $request.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
   $request.="group by 1,os order by 1";
@@ -100,10 +116,10 @@ sub percent_configure {
     $my_graph->set_legend("","% of successful make test");
     $my_graph->set( 
 		   title           => '% of successful make test for '
-		                      .$os. ' by 10 smoke',
+		                      .$os. ' each month',
 		   y_max_value     => 100,
 		   y_tick_number   => 10,
-		   x_label_skip    => ($#l2)/ 10,
+		   x_label_skip    => ($#l2)/ 8,
  		   legend_spacing => 40,
 		   axis_space => 20,
 		   t_margin => 40,
@@ -121,7 +137,7 @@ sub percent_configure {
 #------------------------------------------------------------------------------
 sub percent_configure_all {
   my $self = shift;
-  my $request = "select (floor(smoke/20))*20,
+  my $request = "select DATE_FORMAT(date,'%Y-%c'),
                         (sum(nbco)/sum(nbco+nbcf+nbcc+nbcm))*100 from builds ";
   $request.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
   $request.="group by 1 order by 1";
@@ -129,7 +145,7 @@ sub percent_configure_all {
   my $my_graph = GD::Graph::area->new(1000,300);
   $my_graph->set_legend("","% of successful make test");
   $my_graph->set( 
-		 title           => '% of successful make test for 20 smoke',
+		 title           => '% of successful make test each month',
 		 y_max_value     => 100,
 		 y_tick_number   => 10,
 		 x_label_skip    => (scalar @{@{$ref}[0]})/8,,
@@ -150,7 +166,7 @@ sub percent_configure_all {
 #------------------------------------------------------------------------------
 sub configure_per_smoke {
   my $self = shift;
-  my $req ="select (floor(smoke/20))*20,
+  my $req ="select DATE_FORMAT(date,'%Y-%c'),
                    sum(nbco+nbcf+nbcc+nbcm),
                    sum(nbco) from builds ";
   $req.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
@@ -160,8 +176,8 @@ sub configure_per_smoke {
   $my_graph->set_legend("make test run","make test pass all tests");
   $my_graph->set(
 		 y_label         => 'make test run',
-		 title           => 'make test run/pass all tests for 20 smoke',
-		 y_max_value     => 5000,
+		 title           => 'make test run/pass all tests each month',
+		 y_max_value     => 40000,
 		 y_tick_number   => 10,
 		 x_label_skip    => (scalar @{@{$ref}[0]})/8,
 		 types => [qw(lines area )],
@@ -260,17 +276,17 @@ sub smoke_per_os {
 #------------------------------------------------------------------------------
 sub os_by_smoke {
   my $self = shift;
-  my $req = "select (floor(smoke/20))*20,count(distinct os) from builds ";
+  my $req = "select DATE_FORMAT(date,'%Y-%c'),count(distinct os,osver,archi,cc) from builds ";
   $req.="where smoke > $self->{LIMIT} " if ($self->{LIMIT});
   $req.="group by 1 order by 1";
   my $ref = $self->fetch_array($req);
   my $my_graph = GD::Graph::area->new(1000,300);
   $my_graph->set_legend("","os tested");
   $my_graph->set(
-		 title           => 'Number of os each 20 smoke',
-		 y_max_value     => 15,
-		 y_tick_number   => 15,
-		 x_label_skip    => scalar @{@{$ref}[0]}/10,,
+		 title           => 'Number of distinct smoke machine each month',
+		 y_max_value     => 50,
+		 y_tick_number   => 10,
+		 x_label_skip    => scalar @{@{$ref}[0]}/10,
 		 y_label_position => 0,
 		 axis_space => 20,
 		 # shadows
@@ -536,7 +552,7 @@ Construct a new Test::Smoke::Database::Graph object and return it.
 
 =head1 VERSION
 
-$Revision: 1.7 $
+$Revision: 1.8 $
 
 =head1 AUTHOR
 

@@ -1,5 +1,2 @@
 - make html static report
-- Add a perl version field (blead, 5.8.x, 5.6.x)
-- Add a date field
-- Rewrite database & display method (with Class::DBI ?)
-
+- add a search feature

@@ -2,8 +2,24 @@ package Test::Smoke::Database;
 
 # Test::Smoke::Database - Add / parse /display perl reports smoke database
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/15 15:55:07 $
+# $Date: 2003/08/19 10:37:24 $
 # $Log: Database.pm,v $
+# Revision 1.14  2003/08/19 10:37:24  alian
+# Release 1.14:
+#  - FORMAT OF DATABASE UPDATED ! (two cols added, one moved).
+#  - Add a 'version' field to filter/parser (Eg: All perl-5.8.1 report)
+#  - Use the field 'date' into filter/parser (Eg: All report after 07/2003)
+#  - Add an author field to parser, and a smoker HTML page about recent
+#    smokers and their available config.
+#  - Change how nbte (number of failed tests) is calculate
+#  - Graph are done by month, no longuer with patchlevel
+#  - Only rewrite cc if gcc. Else we lost solaris info
+#  - Remove ccache info for have less distinct compiler
+#  - Add another report to tests
+#  - Update FAQ.pod for last Test::Smoke version
+#  - Save only wanted headers for each nntp articles (and save From: field).
+#  - Move away last varchar field from builds to data
+#
 # Revision 1.13  2003/08/15 15:55:07  alian
 # Use a correct VERSION
 #
@@ -68,7 +84,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 my $limite = 18600;
 #$limite = 0;
@@ -182,6 +198,7 @@ sub rename_rpt {
 #------------------------------------------------------------------------------
 sub suck_ng {
   my $self = shift;
+  my @good = qw!From Date Subject Return-Path!;
   print scalar(localtime),": Suck newsgroup on $self->{opts}->{nntp_server}\n"
     if ($self->{opts}->{verbose});
   # Find last id on dir
@@ -212,11 +229,15 @@ sub suck_ng {
     open(F,">$self->{opts}->{dir}/$first.rpt") 
       or die "Can't create $self->{opts}->{dir}/$first.rpt:$!\n";
     my @buf = $c->article($first);
-    my ($ok,$isreport,$buf)=(0,1);
+    my ($ok,$isreport,$entete,$buf)=(0,1,1);
     foreach (@buf) {
       if (/In-Reply-To/) { $isreport=0; last;}
-      next if (/From:/);
-      print F $_;
+      if (m!^$!) { $entete=0; }
+      if ($entete) {
+	foreach my $e (@good) {
+	  print F $_ if (/^$e/);
+	}
+      } else { print F $_; }
     }
     close(F);
     if (!$isreport) { unlink("$first.rpt"); }
@@ -321,7 +342,7 @@ after B<fetch> method.
 
 =head1 VERSION
 
-$Revision: 1.13 $
+$Revision: 1.14 $
 
 =head1 AUTHOR
 

@@ -1,9 +1,11 @@
 $rep = {
          'rpt/1169.normal.rpt.17850' => [
                                           {
-                                            'nbte' => 71,
-                                            'smoke' => '17850',
+                                            'nbte' => 64,
+                                            'smoke' => 17850,
+                                            'version' => '5.9.0',
                                             'nbco' => 0,
+                                            'date' => '2002-09-08 13:46:09',
                                             'file' => 't/rpt/1169.normal.rpt.17850',
                                             'matrix' => [
                                                           'PERLIO = stdio',
@@ -119,8 +121,10 @@ irix         stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads -Duseperlio
          'rpt/2131.normal.rpt.18468' => [
                                           {
                                             'nbte' => 0,
-                                            'smoke' => '18468',
+                                            'smoke' => 18468,
+                                            'version' => '5.9.0',
                                             'nbco' => 0,
+                                            'date' => '2003-01-13 05:01:37',
                                             'file' => 't/rpt/2131.normal.rpt.18468',
                                             'matrix' => [
                                                           'PERLIO = stdio',
@@ -152,6 +156,8 @@ irix         stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads -Duseperlio
                                             'nbte' => 0,
                                             'smoke' => '18669',
                                             'nbco' => 0,
+                                            'date' => '2003-02-08 12:46:47',
+                                            'version' => '5.9.0',
                                             'file' => 't/rpt/2582.normal.rpt.18669',
                                             'matrix' => [
                                                           'PERLIO = stdio',
@@ -177,12 +183,77 @@ irix         stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads -Duseperlio
                                             'nbc' => 5
                                           }
                                         ],
+         'rpt/7636.normal.rpt.18667' => [
+                                          {
+                                            'nbte' => 19,
+                                            'nbco' => 0,
+                                            'date' => '2003-08-14 11:16:52',
+                                            'file' => 't/rpt/7636.normal.rpt.18667',
+                                            'matrix' => [
+                                                          'PERLIO = stdio',
+                                                          'PERLIO = perlio',
+                                                          'PERLIO = stdio  -DDEBUGGING',
+                                                          'PERLIO = perlio -DDEBUGGING'
+                                                        ],
+                                            'os' => 'hp-ux',
+                                            'ccver' => '3.2',
+                                            'cc' => 'gcc',
+                                            'failure' => 'hpux        [stdio       ]-Dcc=gcc -Dprefix=/appl/cpc/perl/smoke
+              (cont) -Uuseperlio
+hpux        [stdio       ]-DDEBUGGING -Dcc=gcc
+              (cont) -Dprefix=/appl/cpc/perl/smoke -Uuseperlio
+    ../lib/Net/Ping/t/450_service.tFAILED 9 18
+    ../lib/Net/Ping/t/510_ping_udp.tFAILED 2
+hpux        [stdio/perlio]-Dcc=gcc -Dprefix=/appl/cpc/perl/smoke
+hpux        [stdio/perlio]-DDEBUGGING -Dcc=gcc
+              (cont) -Dprefix=/appl/cpc/perl/smoke
+hpux        [stdio       ]-Dcc=gcc -Dprefix=/appl/cpc/perl/smoke
+              (cont) -Uuseshrplib -Uuseperlio
+hpux        [stdio       ]-DDEBUGGING -Dcc=gcc
+              (cont) -Dprefix=/appl/cpc/perl/smoke -Uuseshrplib
+              (cont) -Uuseperlio
+    ../lib/Net/Ping/t/450_service.tFAILED 9 18
+    ../lib/Net/Ping/t/510_ping_udp.tFAILED 2
+hpux        [stdio/perlio]-Dcc=gcc -Dprefix=/appl/cpc/perl/smoke
+              (cont) -Uuseshrplib
+hpux        [stdio/perlio]-DDEBUGGING -Dcc=gcc
+              (cont) -Dprefix=/appl/cpc/perl/smoke -Uuseshrplib
+hpux        [stdio/perlio]-Dcc=gcc -Dprefix=/appl/cpc/perl/smoke
+              (cont) -Duseithreads
+hpux        [stdio/perlio]-DDEBUGGING -Dcc=gcc
+              (cont) -Dprefix=/appl/cpc/perl/smoke -Duseithreads
+hpux        [stdio/perlio]-Dcc=gcc -Dprefix=/appl/cpc/perl/smoke
+              (cont) -Duseithreads -Uuseshrplib
+hpux        [stdio/perlio]-DDEBUGGING -Dcc=gcc
+              (cont) -Dprefix=/appl/cpc/perl/smoke -Duseithreads
+              (cont) -Uuseshrplib
+    ../lib/Net/Ping/t/450_service.tFAILED 9 18
+    ../lib/Net/Ping/t/510_ping_udp.tFAILED 2
+',
+                                            'archi' => 'PA-RISC2.0',
+                                            'id' => '7636',
+                                            'smoke' => '18667',
+                                            'version' => '5.8.1',
+                                            'build' => {
+                                                         '-Duseithreads -Uuseshrplib' => 'F F F F',
+                                                         ' ' => 'F F F F',
+                                                         '-Uuseshrplib' => 'F F F F',
+                                                         '-Uuseshrplib -Uuseperlio' => 'F - F -',
+                                                         '-Uuseperlio' => 'F - F -',
+                                                         '-Duseithreads' => 'F F F F'
+                                                       },
+                                            'osver' => '11.00',
+                                            'nbc' => 6
+                                          }
+                                        ],
          'rpt/1943.normal.rpt.18346' => [
                                           {
                                             'nbte' => 0,
-                                            'smoke' => '18346',
+                                            'smoke' => 18346,
+                                            'version' => '5.9.0',
                                             'nbco' => 0,
                                             'file' => 't/rpt/1943.normal.rpt.18346',
+                                            'author' => 'abe@ztreet.demon.nl',
                                             'matrix' => [
                                                           'PERLIO = stdio',
                                                           'PERLIO = perlio',
@@ -214,9 +285,9 @@ irix         stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads -Duseperlio
                                         ],
          'rpt/7084.normal.rpt.18666' => [
                                           {
-                                            'nbte' => 27,
-                                            'smoke' => '18666',
+                                            'nbte' => 34,
                                             'nbco' => 0,
+                                            'date' => '2003-07-30 15:13',
                                             'file' => 't/rpt/7084.normal.rpt.18666',
                                             'matrix' => [
                                                           'PERLIO = stdio',
@@ -224,11 +295,6 @@ irix         stdio/perlio     -DDEBUGGING -Dusethreads -Duseithreads -Duseperlio
                                                           'PERLIO = stdio  -DDEBUGGING',
                                                           'PERLIO = perlio -DDEBUGGING'
                                                         ],
-                                            'build' => {
-                                                         ' ' => 'F F F F',
-                                                         '-Duseshrplib' => 'F F F F',
-                                                         '-Duseithreads' => 'F F F F'
-                                                       },
                                             'os' => 'netbsd',
                                             'ccver' => '2.91.66',
                                             'cc' => 'gcc',
@@ -276,6 +342,13 @@ netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
 ',
                                             'archi' => 'sparc',
                                             'id' => '7084',
+                                            'smoke' => '18666',
+                                            'version' => '5.9.0',
+                                            'build' => {
+                                                         ' ' => 'F F F F',
+                                                         '-Duseshrplib' => 'F F F F',
+                                                         '-Duseithreads' => 'F F F F'
+                                                       },
                                             'osver' => '1.5.3',
                                             'nbc' => 3
                                           }
@@ -283,9 +356,11 @@ netbsd      [stdio/perlio]-DDEBUGGING -Dcf_email=alian@cpan.org
          'rpt/1981.normal.rpt.18358' => [
                                           {
                                             'nbte' => 0,
-                                            'smoke' => '18358',
+                                            'smoke' => 18358,
+                                            'version' => '5.9.0',
                                             'nbco' => 0,
                                             'file' => 't/rpt/1981.normal.rpt.18358',
+                                            'author' => 'abe@ztreet.demon.nl',
                                             'matrix' => [
                                                           'PERLIO = stdio',
                                                           'PERLIO = perlio',

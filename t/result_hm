@@ -2,9 +2,12 @@ $rep = {
          'rpt/2005.hm.rpt.18358' => [
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18358',
+                                        'smoke' => 18358,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -35,9 +38,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18358',
+                                        'smoke' => 18358,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -68,9 +74,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18358',
+                                        'smoke' => 18358,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -93,9 +102,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18358',
+                                        'smoke' => 18358,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -118,9 +130,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18358',
+                                        'smoke' => 18358,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -147,9 +162,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18358',
+                                        'smoke' => 18358,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -172,9 +190,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18354',
+                                        'smoke' => 18354,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -205,9 +226,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18354',
+                                        'smoke' => 18354,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -238,9 +262,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18354',
+                                        'smoke' => 18354,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -263,9 +290,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18354',
+                                        'smoke' => 18354,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -288,9 +318,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18354',
+                                        'smoke' => 18354,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -317,9 +350,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18354',
+                                        'smoke' => 18354,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -342,9 +378,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18351',
+                                        'smoke' => 18351,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -375,9 +414,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18351',
+                                        'smoke' => 18351,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -408,9 +450,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18351',
+                                        'smoke' => 18351,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -433,9 +478,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18351',
+                                        'smoke' => 18351,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -458,9 +506,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18351',
+                                        'smoke' => 18351,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -487,9 +538,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18351',
+                                        'smoke' => 18351,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -512,9 +566,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18350',
+                                        'smoke' => 18350,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -545,9 +602,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18350',
+                                        'smoke' => 18350,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -578,9 +638,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18350',
+                                        'smoke' => 18350,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -603,9 +666,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18350',
+                                        'smoke' => 18350,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -628,9 +694,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18350',
+                                        'smoke' => 18350,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -657,9 +726,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18350',
+                                        'smoke' => 18350,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -684,9 +756,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18346',
+                                        'smoke' => 18346,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -717,9 +792,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18346',
+                                        'smoke' => 18346,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -750,9 +828,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18346',
+                                        'smoke' => 18346,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -775,9 +856,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18346',
+                                        'smoke' => 18346,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -800,9 +884,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18346',
+                                        'smoke' => 18346,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -829,9 +916,12 @@ $rep = {
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18346',
+                                        'smoke' => 18346,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-12-24 22:30:07',
                                         'file' => 't/rpt/2005.hm.rpt.18358',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -858,9 +948,12 @@ $rep = {
          'rpt/1506.hm.rpt.18042' => [
                                       {
                                         'nbte' => 32,
-                                        'smoke' => '18042',
+                                        'smoke' => 18042,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-10-22 22:35:03',
                                         'file' => 't/rpt/1506.hm.rpt.18042',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -948,9 +1041,12 @@ HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Duselongdouble -Dusethr
                                       },
                                       {
                                         'nbte' => 32,
-                                        'smoke' => '18042',
+                                        'smoke' => 18042,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-10-22 22:35:03',
                                         'file' => 't/rpt/1506.hm.rpt.18042',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1038,9 +1134,12 @@ HP-UX 11.00  stdio/perlio     -DDEBUGGING -Duse64bitall -Duselongdouble -Dusethr
                                       },
                                       {
                                         'nbte' => 8,
-                                        'smoke' => '18042',
+                                        'smoke' => 18042,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-10-22 22:35:03',
                                         'file' => 't/rpt/1506.hm.rpt.18042',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1082,9 +1181,12 @@ HP-UX 10.20  perlio           -DDEBUGGING -Duselongdouble -Dusethreads -Duseithr
                                       },
                                       {
                                         'nbte' => 8,
-                                        'smoke' => '18042',
+                                        'smoke' => 18042,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-10-22 22:35:03',
                                         'file' => 't/rpt/1506.hm.rpt.18042',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1126,9 +1228,12 @@ HP-UX 10.20  perlio           -DDEBUGGING -Duselongdouble -Dusethreads -Duseithr
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18042',
+                                        'smoke' => 18042,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-10-22 22:35:03',
                                         'file' => 't/rpt/1506.hm.rpt.18042',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1155,9 +1260,12 @@ HP-UX 10.20  perlio           -DDEBUGGING -Duselongdouble -Dusethreads -Duseithr
                                       },
                                       {
                                         'nbte' => 2,
-                                        'smoke' => '18042',
+                                        'smoke' => 18042,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-10-22 22:35:03',
                                         'file' => 't/rpt/1506.hm.rpt.18042',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1190,9 +1298,12 @@ AIX 4.3 gcc  stdio            -DDEBUGGING -Dusethreads -Duseithreads
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18042',
+                                        'smoke' => 18042,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-10-22 22:35:03',
                                         'file' => 't/rpt/1506.hm.rpt.18042',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1215,9 +1326,12 @@ AIX 4.3 gcc  stdio            -DDEBUGGING -Dusethreads -Duseithreads
                                       },
                                       {
                                         'nbte' => 134,
-                                        'smoke' => '18042',
+                                        'smoke' => 18042,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2002-10-22 22:35:03',
                                         'file' => 't/rpt/1506.hm.rpt.18042',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1392,9 +1506,12 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
          'rpt/799.hm.rpt.17046' => [
                                      {
                                        'nbte' => 0,
-                                       'smoke' => '17046',
+                                       'smoke' => 17046,
+                                       'version' => '5.8.0',
                                        'nbco' => 0,
+                                       'date' => undef,
                                        'file' => 't/rpt/799.hm.rpt.17046',
+                                       'author' => 'merijn@l1.procura.nl',
                                        'matrix' => [
                                                      'PERLIO = stdio',
                                                      'PERLIO = perlio',
@@ -1426,9 +1543,12 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                      },
                                      {
                                        'nbte' => 0,
-                                       'smoke' => '17046',
+                                       'smoke' => 17046,
+                                       'version' => '5.8.0',
                                        'nbco' => 0,
+                                       'date' => undef,
                                        'file' => 't/rpt/799.hm.rpt.17046',
+                                       'author' => 'merijn@l1.procura.nl',
                                        'matrix' => [
                                                      'PERLIO = stdio',
                                                      'PERLIO = perlio',
@@ -1460,9 +1580,12 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                      },
                                      {
                                        'nbte' => 0,
-                                       'smoke' => '17048',
+                                       'smoke' => 17048,
+                                       'version' => '5.8.0',
                                        'nbco' => 0,
+                                       'date' => undef,
                                        'file' => 't/rpt/799.hm.rpt.17046',
+                                       'author' => 'merijn@l1.procura.nl',
                                        'matrix' => [
                                                      'PERLIO = stdio',
                                                      'PERLIO = perlio',
@@ -1486,9 +1609,12 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                      },
                                      {
                                        'nbte' => 0,
-                                       'smoke' => '17048',
+                                       'smoke' => 17048,
+                                       'version' => '5.8.0',
                                        'nbco' => 0,
+                                       'date' => undef,
                                        'file' => 't/rpt/799.hm.rpt.17046',
+                                       'author' => 'merijn@l1.procura.nl',
                                        'matrix' => [
                                                      'PERLIO = stdio',
                                                      'PERLIO = perlio',
@@ -1512,9 +1638,12 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                      },
                                      {
                                        'nbte' => 0,
-                                       'smoke' => '17021',
+                                       'smoke' => 17021,
+                                       'version' => '5.8.0',
                                        'nbco' => 0,
+                                       'date' => undef,
                                        'file' => 't/rpt/799.hm.rpt.17046',
+                                       'author' => 'merijn@l1.procura.nl',
                                        'matrix' => [
                                                      'PERLIO = stdio',
                                                      'PERLIO = perlio',
@@ -1542,9 +1671,12 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                      },
                                      {
                                        'nbte' => 0,
-                                       'smoke' => '16984',
+                                       'smoke' => 16984,
+                                       'version' => '5.8.0',
                                        'nbco' => 0,
+                                       'date' => undef,
                                        'file' => 't/rpt/799.hm.rpt.17046',
+                                       'author' => 'merijn@l1.procura.nl',
                                        'matrix' => [
                                                      'PERLIO = stdio',
                                                      'PERLIO = perlio',
@@ -1570,9 +1702,12 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                      },
                                      {
                                        'nbte' => 0,
-                                       'smoke' => '17048',
+                                       'smoke' => 17048,
+                                       'version' => '5.8.0',
                                        'nbco' => 0,
+                                       'date' => undef,
                                        'file' => 't/rpt/799.hm.rpt.17046',
+                                       'author' => 'merijn@l1.procura.nl',
                                        'matrix' => [
                                                      'PERLIO = stdio',
                                                      'PERLIO = perlio',
@@ -1596,9 +1731,12 @@ Cygwin 1.3   perlio           -DDEBUGGING -Dusemorebits
                                      },
                                      {
                                        'nbte' => 2,
-                                       'smoke' => '17014',
+                                       'smoke' => 17014,
+                                       'version' => '5.8.0',
                                        'nbco' => 0,
+                                       'date' => undef,
                                        'file' => 't/rpt/799.hm.rpt.17046',
+                                       'author' => 'merijn@l1.procura.nl',
                                        'matrix' => [
                                                      'PERLIO = stdio',
                                                      'PERLIO = perlio',
@@ -1634,9 +1772,12 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
          'rpt/2568.hm.rpt.18662' => [
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18662',
+                                        'smoke' => 18662,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2003-02-06 22:30:03',
                                         'file' => 't/rpt/2568.hm.rpt.18662',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1667,9 +1808,12 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18662',
+                                        'smoke' => 18662,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2003-02-06 22:30:03',
                                         'file' => 't/rpt/2568.hm.rpt.18662',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1700,9 +1844,12 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18662',
+                                        'smoke' => 18662,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2003-02-06 22:30:03',
                                         'file' => 't/rpt/2568.hm.rpt.18662',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1725,9 +1872,12 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18662',
+                                        'smoke' => 18662,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2003-02-06 22:30:03',
                                         'file' => 't/rpt/2568.hm.rpt.18662',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1750,9 +1900,12 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                       },
                                       {
                                         'nbte' => 0,
-                                        'smoke' => '18662',
+                                        'smoke' => 18662,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2003-02-06 22:30:03',
                                         'file' => 't/rpt/2568.hm.rpt.18662',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1779,9 +1932,12 @@ Cygwin 1.3   stdio/perlio     -DDEBUGGING -Duseperlio -Dusemorebits
                                       },
                                       {
                                         'nbte' => 1,
-                                        'smoke' => '18662',
+                                        'smoke' => 18662,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2003-02-06 22:30:03',
                                         'file' => 't/rpt/2568.hm.rpt.18662',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',
@@ -1813,9 +1969,12 @@ AIX 4.3 gcc  stdio/perlio     -Dusemorebits
                                       },
                                       {
                                         'nbte' => 2,
-                                        'smoke' => '18666',
+                                        'smoke' => 18666,
+                                        'version' => '5.9.0',
                                         'nbco' => 0,
+                                        'date' => '2003-02-06 22:30:03',
                                         'file' => 't/rpt/2568.hm.rpt.18662',
+                                        'author' => 'merijn@l1.procura.nl',
                                         'matrix' => [
                                                       'PERLIO = stdio',
                                                       'PERLIO = perlio',

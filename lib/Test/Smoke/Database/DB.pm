@@ -2,8 +2,24 @@ package Test::Smoke::Database::DB;
 
 # Test::Smoke::Database::DB
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/15 15:10:42 $
+# $Date: 2003/08/19 10:37:24 $
 # $Log: DB.pm,v $
+# Revision 1.6  2003/08/19 10:37:24  alian
+# Release 1.14:
+#  - FORMAT OF DATABASE UPDATED ! (two cols added, one moved).
+#  - Add a 'version' field to filter/parser (Eg: All perl-5.8.1 report)
+#  - Use the field 'date' into filter/parser (Eg: All report after 07/2003)
+#  - Add an author field to parser, and a smoker HTML page about recent
+#    smokers and their available config.
+#  - Change how nbte (number of failed tests) is calculate
+#  - Graph are done by month, no longuer with patchlevel
+#  - Only rewrite cc if gcc. Else we lost solaris info
+#  - Remove ccache info for have less distinct compiler
+#  - Add another report to tests
+#  - Update FAQ.pod for last Test::Smoke version
+#  - Save only wanted headers for each nntp articles (and save From: field).
+#  - Move away last varchar field from builds to data
+#
 # Revision 1.5  2003/08/15 15:10:42  alian
 # Set osver here is not needed
 #
@@ -31,7 +47,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.5 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.6 $ ' =~ /(\d+\.\d+)/)[0];
 use vars qw/$debug $verbose $limit/;
 #$limite = 0;
 
@@ -90,12 +106,13 @@ sub read_all(\%) {
   my $a;
   if ($cgi->param('smoke')) { $a.="smoke =".$cgi->param('smoke'); }
   else { $a.="smoke >=$limit"; }
-  foreach my $o ('cc','ccver','os','osver','archi') {
+  foreach my $o ('cc','ccver','os','osver','archi','date','version') {
     my $v = $cgi->param($o) || $cgi->param($o.'_fil') 
       || $cgi->cookie($o) || undef;
     next if (!$v or $v eq 'All');
     $a.=" and " if ($a);
-    $a.="$o='$v' ";
+    if ($o eq 'date') { $a.="$o>'$v' "; }
+    else { $a.="$o='$v' "; }
   }
 
   # Select id of build for failure & details
@@ -109,12 +126,18 @@ sub read_all(\%) {
   }
 
   # Failure
-  my $ref_failure;
-  if ($cgi->param('failure')) {
-    $req = "select idbuild,failure from data";
+  my (%failure, %matrix);
+  if ($cgi->param('failure') || $cgi->param('last')) {
+    $req = "select idbuild,matrix";
+    $req.=",failure" if ($cgi->param('failure'));
+    $req.=" from data";
     if ($list_id) { $req.=" where idbuild in (".$list_id.")"; }
-    $ref_failure = $self->{DBH}->selectall_hashref($req, 'idbuild') ||
+    my $ref_failure = $self->{DBH}->selectall_arrayref($req) ||
       print "On $req: $DBI::errstr\n";
+    foreach my $ra (@$ref_failure) {
+      $matrix{$ra->[0]} = $ra->[1];
+      $failure{$ra->[0]} = $ra->[2] if $cgi->param('failure');
+    }
   }
 
   # Detailed results
@@ -131,7 +154,7 @@ sub read_all(\%) {
   # Each times, read config
   $req = <<EOF;
 select id,os,osver,archi,cc,ccver,date,smoke,nbc,nbco,
-       nbcm,nbcf,nbcc,nbte,matrix
+       nbcm,nbcf,nbcc,nbte
 from builds
 EOF
    $req.="where $a" if ($a);
@@ -139,7 +162,7 @@ EOF
   $st->execute || print STDERR $req,"<br>";
   my %h;
   while (my ($id,$os,$osver,$archi,$cc,$ccver,$date,$smoke,$nbc,$nbco,
-	     $nbcm,$nbcf,$nbcc,$nbte,$matrix)=
+	     $nbcm,$nbcf,$nbcc,$nbte)=
 	 $st->fetchrow_array) {
     $os=lc($os);
     $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{date}=$date;
@@ -150,16 +173,37 @@ EOF
     $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{nbcc} = $nbcc;
     $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{nbcm} = $nbcm;
     $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{nbte} = $nbte;
-    $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{matrix} = $matrix;
     $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{nbtt} =
       $nbcf + $nbcm + $nbco + $nbcc;
+    # $failure
     $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{failure} =
-      $ref_failure->{$id}{failure} if ($ref_failure->{$id});
+      $failure{$id} if ($failure{$id});
+    # build
     $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{build} = $h2{$id}
-      if ($h2{$id});
+      if $h2{$id};
+    # matrix
+    $h{$os}{$osver}{$archi}{$cc}{$ccver}{$smoke}{matrix} = $matrix{$id}
+      if $matrix{$id};
   }
   $st->finish;
   return \%h;
+}
+
+
+#------------------------------------------------------------------------------
+# read_smokers
+#------------------------------------------------------------------------------
+sub read_smokers(\%) {
+  my $self = shift;
+  my %smokers;
+  my $req =" select distinct author from builds where date > DATE_SUB(NOW(), INTERVAL 6 MONTH)";
+  my $ref = $self->{DBH}->selectcol_arrayref($req) || return undef;
+  foreach (@$ref) {
+    $req = "select distinct os,osver,archi,cc,ccver from builds where author='$_' ".
+      " and date > DATE_SUB(NOW(), INTERVAL 6 MONTH) order by 1,2,3,4,5";
+    $smokers{$_} = $self->{DBH}->selectall_arrayref($req) || return undef;
+  }
+  return \%smokers;
 }
 
 #------------------------------------------------------------------------------
@@ -221,14 +265,14 @@ sub add_to_db(\%\%) {
     }
   }
   my $pass = (($nbcf || $nbcm || $nbcc) ? 0 : 1);
-  printf( "\t =>%25s %s %5d (%s)\n",
+  printf( "\t =>%25s %s %5d (%s) %s\n",
 	  $ref->{os}." ".$ref->{osver}, ($pass ? "PASS" : "FAIL"),
-	  $ref->{smoke}, basename($ref->{file})) if $verbose;
+	  $ref->{smoke}, basename($ref->{file}), $ref->{date}) if $verbose;
   # Ajout des infos sur le host
   my $v2 = ($ref->{matrix} ? join("|", @{$ref->{matrix}}) : '');
   my $req = "INSERT INTO builds(";
   $req.= 'id,' if ($ref->{id});
-  $req.= "os,osver,cc,ccver,date,smoke,nbc,nbco,nbcf,nbcm,nbcc,nbte,archi,matrix) ".
+  $req.= "os,osver,cc,ccver,date,smoke,version,author,nbc,nbco,nbcf,nbcm,nbcc,nbte,archi) ".
     "VALUES (";
   $req.= "$ref->{id}," if ($ref->{id});
   $req.= <<EOF;
@@ -237,16 +281,17 @@ sub add_to_db(\%\%) {
 '$ref->{osver}',
 '$cc',
 '$ccf',
-NOW(),
+'$ref->{date}',
 $ref->{smoke},
+'$ref->{version}',
+'$ref->{author}',
 $ref->{nbc},
 $nbco,
 $nbcf,
 $nbcm,
 $nbcc,
 $ref->{nbte},
-'$ref->{archi}',
-'$v2')
+'$ref->{archi}')
 EOF
 
   print $req,"\n" if $debug;
@@ -265,8 +310,8 @@ EOF
   $r = ' ' if (!$r);
   $f = ' ' if (!$f);
   $req = <<EOF;
-INSERT INTO data(idbuild,failure)
-VALUES ($id, '$f')
+INSERT INTO data(idbuild,failure,matrix)
+VALUES ($id, '$f','$v2')
 EOF
     $self->rundb($req,1) || print STDERR "On $req\n";
 
@@ -339,7 +384,7 @@ reason is printed on STDERR.
 
 =head1 VERSION
 
-$Revision: 1.5 $
+$Revision: 1.6 $
 
 =head1 AUTHOR
 

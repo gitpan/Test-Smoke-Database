@@ -2,8 +2,8 @@
 #
 # cgi interface for database build with module Test::Smoke::Database
 # Copyright 200x A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/06 18:50:40 $
-# $Revision: 1.5 $
+# $Date: 2003/08/19 10:37:24 $
+# $Revision: 1.6 $
 #
 
 use CGI qw/:standard -no_xhtml/;
@@ -38,7 +38,7 @@ sub main {
   my @lc; # list of cookies
   my %v;
   my $cgi = new CGI;
-  foreach ('os','osver','cc','ccver','smoke','last_smoke','archi') {
+  foreach ('os','osver','cc','ccver','smoke','last_smoke','archi','date','version') {
     $v{$_} = $cgi->param($_) || $cgi->param($_.'_fil') || $cgi->cookie($_) || undef;
     next if (!$cgi->param($_.'_fil'));
     push(@lc,$cgi->cookie(-name=>$_,
@@ -51,6 +51,9 @@ sub main {
   print $cgi->header(-cookie=>\@lc),
 	$d->HTML->header_html;
   if (param('filter')) { print $d->HTML->filter; }
+  elsif (param('smokers')) {
+    print $d->HTML->smokers;
+  }
   else {
     my ($summary,$last_smoke,$fail)= $d->HTML->display($v{'os'}, $v{'osver'},
 					  	       $v{'archi'}, $v{'cc'},

@@ -2,8 +2,8 @@
 #
 # Simple perl example to interface with module Test::Smoke::Database
 # Copyright 200x A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/15 15:12:28 $
-# $Revision: 1.12 $
+# $Date: 2003/08/19 10:32:57 $
+# $Revision: 1.14 $
 #
 
 use strict;
@@ -39,44 +39,54 @@ EOF
 # SQL request to create db
 my $createdb = <<EOF;
 CREATE TABLE builds (
-  id int(11) unsigned NOT NULL auto_increment,
-  os varchar(20) NOT NULL default '',
-  osver varchar(30) NOT NULL default '',
-  archi varchar(10) default 'i386',
-  cc varchar(50) NOT NULL default '',
-  ccver varchar(50) NOT NULL default '',
+  id int(8) unsigned NOT NULL auto_increment,
+  os char(7) NOT NULL default '',
+  osver char(16) NOT NULL default '',
+  archi char(10) NOT NULL default 'i386',
+  cc char(20) NOT NULL default '',
+  ccver char(50) NOT NULL default '',
   date datetime NOT NULL default '0000-00-00 00:00:00',
-  smoke int(7) unsigned NOT NULL default '0',
+  smoke int(5) unsigned NOT NULL default '0',
+  version char(5) NOT NULL default '5.9.x',
+  author char(25) NOT NULL default '',
   nbc int(2) unsigned NOT NULL default '0',
-  nbco int(3) unsigned NOT NULL default '0',
-  nbcm int(3) unsigned NOT NULL default '0',
-  nbcc int(3) unsigned NOT NULL default '0',
-  nbcf int(3) unsigned NOT NULL default '0',
+  nbco int(2) unsigned NOT NULL default '0',
+  nbcm int(2) unsigned NOT NULL default '0',
+  nbcc int(2) unsigned NOT NULL default '0',
+  nbcf int(2) unsigned NOT NULL default '0',
   nbte int(3) unsigned NOT NULL default '0',
-  matrix varchar(200) NOT NULL default '',
   PRIMARY KEY  (id),
+  KEY os_osver_archi (os, osver, archi),
+  KEY os_osver_archi_smoke (os, osver, archi, smoke),
+  KEY os_archi_smoke (os, archi, smoke),
+  KEY os_osver (os, osver),
+  KEY os_archi (os, archi),
+  KEY os_smoke (os, smoke),
+  KEY archi_smoke (archi, smoke),
   KEY os (os),
   KEY osver (osver),
   KEY archi (archi),
   KEY cc (cc),
   KEY ccver (ccver),
-  KEY smoke (smoke)
+  KEY smoke (smoke),
+  KEY date (date),
+  KEY os_date (os,date)
 ) TYPE=MyISAM;
 
 CREATE TABLE configure (
   id int(9) unsigned NOT NULL auto_increment,
-  idbuild int(9) unsigned NOT NULL default '0',
+  idbuild int(8) unsigned NOT NULL default '0',
   configure varchar(250) NOT NULL default '',
-  result char(16) NOT NULL default '',
+  result char(12) NOT NULL default '',
   PRIMARY KEY  (id),
   KEY idbuild (idbuild)
 ) TYPE=MyISAM;
 
 CREATE TABLE data (
   id int(9) unsigned NOT NULL auto_increment,
-  idbuild int(9) unsigned NOT NULL default '0',
+  idbuild int(8) unsigned NOT NULL default '0',
+  matrix varchar(200) NOT NULL default '',
   failure mediumblob,
-  report mediumblob,
   PRIMARY KEY  (id),
   KEY idbuild (idbuild)
 ) TYPE=MyISAM;
@@ -226,7 +236,7 @@ L<Test::Smoke::Database>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>
 
 =head1 VERSION
 
-$Revision: 1.12 $
+$Revision: 1.14 $
 
 =head1 AUTHOR
 

@@ -1,5 +1,20 @@
 Revision history for Perl extension Test::Smoke::Database.
 
+1.14  2003/08/19 10:37:24  alian
+ - FORMAT OF DATABASE UPDATED ! (two cols added, one moved).
+ - Add a 'version' field to filter/parser (Eg: All perl-5.8.1 report)
+ - Use the field 'date' into filter/parser (Eg: All report after 07/2003)
+ - Add an author field to parser, and a smoker HTML page about recent
+   smokers and their available config.
+ - Change how nbte (number of failed tests) is calculate
+ - Graph are done by month, no longuer with patchlevel
+ - Only rewrite cc if gcc. Else we lost solaris info
+ - Remove ccache info for have less distinct compiler
+ - Add another report to tests
+ - Update FAQ.pod for last Test::Smoke version
+ - Save only wanted headers for each nntp articles (and save From: field).
+ - Move away last varchar field from builds to data
+
 1.13  2003/08/15 15:55:07  alian
  - Add a test of report with 't' and '-' on the same line. Now these line
    are no longer registred

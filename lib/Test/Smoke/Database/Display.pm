@@ -2,8 +2,24 @@ package Test::Smoke::Database::Display;
 
 # Test::Smoke::Database::Display - 
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/08/15 16:08:16 $
+# $Date: 2003/08/19 10:37:24 $
 # $Log: Display.pm,v $
+# Revision 1.6  2003/08/19 10:37:24  alian
+# Release 1.14:
+#  - FORMAT OF DATABASE UPDATED ! (two cols added, one moved).
+#  - Add a 'version' field to filter/parser (Eg: All perl-5.8.1 report)
+#  - Use the field 'date' into filter/parser (Eg: All report after 07/2003)
+#  - Add an author field to parser, and a smoker HTML page about recent
+#    smokers and their available config.
+#  - Change how nbte (number of failed tests) is calculate
+#  - Graph are done by month, no longuer with patchlevel
+#  - Only rewrite cc if gcc. Else we lost solaris info
+#  - Remove ccache info for have less distinct compiler
+#  - Add another report to tests
+#  - Update FAQ.pod for last Test::Smoke version
+#  - Save only wanted headers for each nntp articles (and save From: field).
+#  - Move away last varchar field from builds to data
+#
 # Revision 1.5  2003/08/15 16:08:16  alian
 # Display link for X status
 #
@@ -30,7 +46,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.5 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.6 $ ' =~ /(\d+\.\d+)/)[0];
 
 use vars qw/$debug $verbose/;
 
@@ -79,6 +95,8 @@ sub header_html(\%) {
    <a class=m href="$ENV{SCRIPT_NAME}?last=1;want_smoke=1">Last smoke</a> &nbsp;|&nbsp;
    <a class=m href="$ENV{SCRIPT_NAME}?failure=1">
   Last failures</a> &nbsp;|&nbsp;
+   <a class=m href="$ENV{SCRIPT_NAME}?smokers=1">
+  Smokers</a> &nbsp;|&nbsp;
    <a class=m href="$u/FAQ.html">FAQ</a> &nbsp;|&nbsp;
    <a class=m href="$u/0.html">Stats</a> &nbsp;|&nbsp;
    <a class=m href="http://qa.perl.org">About</a> &nbsp;|&nbsp;
@@ -99,13 +117,14 @@ sub filter(\%) {
   my $cgi = $d->{CGI};
   my %t =
     (
-     'os' => '1 - Os',
-     'osver' =>'2 - Version OS',
-     'archi' =>'3 - Architecture',
-     'cc'=>'4 - Compiler',
-     'ccver'=>'5 - Compiler version',
-     'smoke'=>'6 - Only this smoke',
-     'last_smoke'=>'7 - Nothing before this smoke'
+     'os'         => '1 - Os',
+     'osver'      => '2 - Version OS',
+     'archi'      => '3 - Architecture',
+     'cc'         => '4 - Compiler',
+     'ccver'      => '5 - Compiler version',
+     'smoke'      => '6 - Only this smoke',
+     'last_smoke' => '7 - Nothing before patchlevel',
+     'version'    => '8 - Perl version',
     );
   my $bi = h2("Filter").start_form({-method=>'GET'})."<table border=1><tr>";
   $bi.= hidden({-name=>'last',-value=>1}) if ($cgi->param('last'));
@@ -122,8 +141,7 @@ sub filter(\%) {
     my $v = param($o) || param($o.'_fil') || cookie($o) || undef;
     $v = $limite if (!$v and $o eq 'last_smoke');
     foreach my $name (@l) {
-      my $sname = (($o eq 'ccver') ? substr($name,0,10) : $name);
-      $sname = substr($sname,0,15) if ($o eq 'cc');
+      my $sname = (($o eq 'ccver') ? substr($name,0,15) : $name);
       if (($v and $v eq $name) or (!$v and $name eq 'Last') or
 	 ($o eq 'last_smoke' and $name eq $limite)) {
 	$bi.="<option selected value=\"$name\">$sname</option>\n";
@@ -133,6 +151,16 @@ sub filter(\%) {
     }
     $bi.="</select></td></tr>";
   }
+  $bi.="<tr>
+<td>9 - Results after date:</td>
+<td> <select name='date_fil'><option value='All'>All</option>";
+  foreach my $i (2001..2003) {
+    foreach my $j (1..12) {
+      my $d = $i.'-'.sprintf("%02d",$j) ;
+      $bi.='<option value="'.$d.'-01 00:00:00">'.$d."</option>";
+    }
+  }
+  $bi.= "</select></td></tr>";
   $bi.= Tr(td(),td(submit))."</table>".end_form;
   return $bi;
 }
@@ -321,6 +349,36 @@ EOF
   return (\$summary,\$details,\$failure);
 }
 
+
+#------------------------------------------------------------------------------
+# smokers
+#------------------------------------------------------------------------------
+sub smokers {
+  my $self = shift;
+  my $ref = $self->db->read_smokers;
+      print STDERR Data::Dumper->Dump([$ref]);
+  my $buf=Tr(th(cw("Author", 23)), th(cw("Os",15)), th(cw("Os version",15)),
+	     th(cw("Architecture",15)), th(cw("Cc",15)), th(cw("Cc version",15)));
+  my $i=0;
+  # Tab author
+  foreach my $author (keys %$ref) {
+    my $bu;
+    my $aa = $author;
+    $aa=~s/\@/ at /g;
+    # Tab config
+    foreach my $conf (@{$ref->{$author}}) {
+      $bu = $bu ? td(cw(undef, 23)) : td(cw($aa, 23));
+      # tab specs
+      foreach (@$conf) {
+	$bu.=td(cw($_, 15));
+      }
+      $buf.=Tr({-class=>'mod'.$i%2},$bu)."\n";
+    }
+    $i++;
+  }
+  return h2("Smokers in last 6 month").table({-class => 'box'}, $buf);
+}
+
 #------------------------------------------------------------------------------
 # cw
 #------------------------------------------------------------------------------
@@ -403,7 +461,7 @@ Return the main HTML screen with summary
 
 =head1 VERSION
 
-$Revision: 1.5 $
+$Revision: 1.6 $
 
 =head1 AUTHOR
 

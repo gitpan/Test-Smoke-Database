@@ -1,8 +1,24 @@
 package Test::Smoke::Database::Parsing;
 
 # Copyright 200x A.Barbet alian@cpan.org  All rights reserved.
-# $Date: 2003/08/15 15:48:40 $
+# $Date: 2003/08/19 10:37:24 $
 # $Log: Parsing.pm,v $
+# Revision 1.9  2003/08/19 10:37:24  alian
+# Release 1.14:
+#  - FORMAT OF DATABASE UPDATED ! (two cols added, one moved).
+#  - Add a 'version' field to filter/parser (Eg: All perl-5.8.1 report)
+#  - Use the field 'date' into filter/parser (Eg: All report after 07/2003)
+#  - Add an author field to parser, and a smoker HTML page about recent
+#    smokers and their available config.
+#  - Change how nbte (number of failed tests) is calculate
+#  - Graph are done by month, no longuer with patchlevel
+#  - Only rewrite cc if gcc. Else we lost solaris info
+#  - Remove ccache info for have less distinct compiler
+#  - Add another report to tests
+#  - Update FAQ.pod for last Test::Smoke version
+#  - Save only wanted headers for each nntp articles (and save From: field).
+#  - Move away last varchar field from builds to data
+#
 # Revision 1.8  2003/08/15 15:48:40  alian
 # Speedup for update_ref & some pod doc
 #
@@ -38,7 +54,12 @@ require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw();
-$VERSION = ('$Revision: 1.8 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.9 $ ' =~ /(\d+\.\d+)/)[0];
+
+my $moii = qr/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/;
+my $date = qr/^Date: \w{0,3},? {0,2}(\d{1,2}) ($moii) (\d\d\d\d) (\d\d:\d\d:?\d?\d?)/;
+my %month = ( Jan => 1, Feb => 2, Mar =>3, Apr =>4, May => 5, Jun =>6,
+	      Jul => 7, Aug => 8, Sep =>9, Oct =>10, Nov =>11, Dec=> 12);
 
 #------------------------------------------------------------------------------
 # parse_import
@@ -104,7 +125,7 @@ sub parse_hm_brand_rpt($) {
   my $file = shift;
   return if (!$file);
   if (!-r $file) { warn "Can't found $file"; return; }
-  my (@lr,%last,$header);
+  my (@lr,%last,$header,$datee);
   open(FILE,$file) or die "Can't read $file:$!\n";
   my @content = <FILE>;
   close(FILE);
@@ -115,6 +136,7 @@ sub parse_hm_brand_rpt($) {
     chomp($l);
     $l=~s/=3D/=/g;
     $l=~s/=20$/ /g;
+    if ($l=~$date) { $datee=$l; } # common date
     if ($l=~/\=$/) { chop($l); $re=1; }
     if ($re) { $cont.=$l; $re=0; }
     else { $cont.=$l."\n"; }
@@ -189,8 +211,11 @@ sub parse_hm_brand_rpt($) {
       }
       if (!$r) {
 	if ($l=~/^[ \t]+/ && %last) {
-	  foreach (keys %last) { 
-	    if ($lr[$_]) { $lr[$_]->{failure}.=$l; $lr[$_]->{nbte}++;  }
+	  foreach (keys %last) {
+	    if ($lr[$_]) {
+	      $lr[$_]->{failure}.=$l;
+	      $lr[$_]->{nbte}++ if $l=~m!^\s!;
+	    }
 	  }
 	} else { undef %last; }
       }
@@ -202,6 +227,8 @@ sub parse_hm_brand_rpt($) {
     $ok++;
     if (!ref($r) or !$r->{smoke}) { delete $lr[$ok]; next; }
     $r->{file}=$file;
+    $r->{date}=$datee;
+    $r->{author}='merijn@l1.procura.nl';
     $r->{archi}= ' ';
     $r->{matrix} = [
 		    'PERLIO = stdio',
@@ -259,9 +286,18 @@ sub parse_rpt($) {
     $content.=$l;
     chomp($l);
     $nbr++ if ($l=~/^>/);
-    if ($l=~/^From:/ && $l=~/Brand/) { $col=-1; }
-    elsif ($l=~/^From:/ && $l=~/Alian/) { $col=-3; }
+    # Author
+    if ($l=~/^From:/) {
+      if ($l=~/Brand/) { $col=-1; }
+      elsif ($l=~/Alian/) { $col=-3; }
+      $h{author} = $1 if $l=~/^From: ([^ ]+\@[^ ]+)/;
+      $h{author} = $1 if $l=~/^From: .* <([^ ]+\@[^ ]+)>/;
+    }
     elsif ($l=~/^Return-Path: <h.m.brand\@hccnet.nl>/) { $col=-1; }
+    # perl version tested
+    elsif ($l=~/^Subject: Smoke \[([^\]]{5,5})\]/) { $h{version}=$1; }
+    # Date: Sun, 29 Dec 2002 11:13:01
+    elsif ($l=~$date) {$h{date}= $l; }
     # A reply
     elsif ($l=~/^Subject: Re:/) { return -2; }
     # A report without info about os
@@ -312,7 +348,7 @@ sub parse_rpt($) {
     # Failures
     elsif ($fail) {
       $h{"failure"}.=$l."\n" if ($l);
-      $h{nbte}++ if ($l=~/\.\.\./); 
+      $h{nbte}++ if $l=~m!^\s!;
     }
     elsif ($l=~/Failures(.*):/) { $fail=1; }
   }
@@ -365,16 +401,16 @@ sub update_ref(\%) {
     $ref->{os}='hp-ux';
   }
 
-  # cc
-  if (!$ref->{cc}) { $ref->{cc}="??"; }
-  elsif ($ref->{cc}=~m!/([^/]*)$!) { $ref->{cc}=$1; }
-  elsif ($ref->{cc}=~m/^\s?(.*)\s?$/) { $ref->{cc}=$1; }
-
   # Guess if we use gcc
   my $isgcc = ($ref->{cc}=~/gcc/ ? 1 : 0);
   $isgcc = 1 if (!$isgcc && $ref->{cc}=~/cc/ && ( $ref->{ccver}=~/^2\.9/ ||
 						  $ref->{ccver}=~/^3\./));
   $isgcc = 1 if !$isgcc and $ref->{ccver} and $ref->{ccver}=~/^egcs-/;
+
+  # cc
+  if (!$ref->{cc}) { $ref->{cc}="??"; }
+  elsif ($isgcc && $ref->{cc}=~m!/([^/]*)$!) { $ref->{cc}=$1; }
+  elsif ($ref->{cc}=~m/^\s?(.*)\s?$/) { $ref->{cc}=$1; }
 
   # ccver
   if (!$ref->{ccver} || $ref->{ccver}=~m!cc: Error:!) {
@@ -388,21 +424,22 @@ sub update_ref(\%) {
   }
 
   # cc (2) => Extract ccache info from cc and append it to ccver
-  if ($ref->{cc}=~/^ccache (.*)/) {
-    $ref->{cc}=$1; $ref->{ccver}.=' (ccache)';
-  }
+  #if ($isgcc && $ref->{cc}=~/^ccache (.*)/) {
+  #  $ref->{cc}="gcc (ccache)";
+  #} else {
   $ref->{cc} = 'gcc' if $isgcc;
+  #}
 
   # Number of configure run
   $ref->{nbc} = scalar keys %{$ref->{build}};
   $ref->{nbco} = 0;
 
   # Try to set the archi
-  if ($ref->{osver}=~m!^(.*)\((.*)/.*\)! or $ref->{osver}=~m!^(.*)\((.*)\)!) {
+  if ($ref->{osver}=~m!^(.*)\(([^/]{3,10})/.*\)! or $ref->{osver}=~m!^(.*)\(([^\)]{3,10})\)!) {
     $ref->{osver} = $1;
     $ref->{archi} = $2;
-    if ($ref->{archi}=~m!^([^-]*)-!) { $ref->{archi} = $1; }
-    $ref->{archi} = "i386" if ($ref->{archi}=~/86$/ or
+#    if ($ref->{archi}=~m!^([^-]*)-!) { $ref->{archi} = $1; }
+    $ref->{archi} = "i386" if ($ref->{archi}=~/^i.86/ or
 			       $ref->{os} eq 'cygwin'or
 			       $ref->{os} eq 'mswin32');
   } else { # set architecture for report before 1.16 of Test-Smoke
@@ -431,6 +468,36 @@ sub update_ref(\%) {
   $ref->{osver} = $1 if $ref->{osver}=~/^(.*)-\d/;
   $ref->{osver} = $1.'SP'.$2 if $ref->{osver}=~/^(.*)Service Pack (.*)$/;
 
+  # perl tested (version) - For report before Test::Smoke 1.17
+  if (!$ref->{version} || $ref->{version} eq '5.?.?') {
+    if ($ref->{smoke}>17675) {
+      $ref->{version} = '5.9.0';
+    } else { $ref->{version} = '5.8.0'; }
+  }
+
+  # date: rewrite it for mysql
+  if ($ref->{date}=~$date) {
+    $ref->{date}= sprintf("%4d-%02d-%02d %s",$3, $month{$2}, $1, $4); # 1997-10-04 22:23:00;
+  }
+
+  # os
+  if ($ref->{author}) {
+    if ($ref->{author}=~/^jhi/) {
+      $ref->{author} = 'jhi@cc.hut.fi';
+    } elsif ($ref->{author}=~/^alian/ || $ref->{author}=~/^alb\@/) {
+      $ref->{author} = 'alian@cpan.org';
+    } elsif ($ref->{author}=~/^abeltje/i) {
+      $ref->{author} = 'abe@ztreet.demon.nl';
+    } elsif ($ref->{author}=~/^nwc10\@/) {
+      $ref->{author} = 'nick@ccl4.org';
+    } elsif ($ref->{author}=~/^kane\@/) {
+      $ref->{author} = 'kane@cpan.org';
+    } elsif ($ref->{author}=~/\@marimba.nl$/) {
+      $ref->{author} = 'obsd33-smoke58x@marimba.nl';
+    } elsif ($ref->{author}=~/^h\.m\.brand/) {
+      $ref->{author} = 'merijn@l1.procura.nl';
+    }
+  }
   return $ref;
 }
 
@@ -488,7 +555,7 @@ buggy reports.
 
 =head1 VERSION
 
-$Revision: 1.8 $
+$Revision: 1.9 $
 
 =head1 AUTHOR
 

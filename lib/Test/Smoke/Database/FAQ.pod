@@ -4,7 +4,7 @@ FAQ about smoke database
 
 =head1 SYNOPSIS
 
-    lynx http://www.alianwebserver.com/cgi-bin/smoke_db
+    lynx http://cpanplus.keradel.com/cgi-bin/smoke_db.cgi
 
 =head1 FAQ
 
@@ -50,12 +50,13 @@ perl development branch before the smoke tests start.
 
 =item B<How does one use it on a *nix box?>
 
-Read README. Run perl Makefile.PL.
+Read README. Run perl configsmoke.pl.
 
-=item B<How does one use it on a win32 box?>
+=item B<How does one use it on a windows box?>
 
-Get rsync(from cygwin). Read <perl_src>/README.win32
-Edit smokew32.cfg and smokew32.bat.
+Get rsync(from cygwin). Read <perl_src>/README.win32.
+Choose a compiler from Borland, MinGW, Cygwin or Visual.
+And run perl configsmoke.pl
 
 =item B<Euh... I don't see my report!>
 
