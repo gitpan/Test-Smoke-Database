@@ -2,8 +2,16 @@ package Test::Smoke::Database;
 
 # module Test::Smoke::Database - Add / parse /display perl reports smoke database
 # Copyright 2003 A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/01/05 21:45:55 $
+# $Date: 2003/02/10 00:58:05 $
 # $Log: Database.pm,v $
+# Revision 1.5  2003/02/10 00:58:05  alian
+# - Add feature of graph
+# - Correct Irix report parsing (no os version)
+# - Correct number of failed test
+# - Read archi from 1.16 report
+# - Update parsing of error of HM Brand report
+# - Update display for cgi
+#
 # Revision 1.4  2003/01/05 21:45:55  alian
 # Fix for parsing hm. brand reports with 5.6, fix test with 5.6
 #
@@ -22,13 +30,14 @@ use DBI;
 use CGI qw/:standard/;
 use News::NNTPClient;
 use Data::Dumper;
+use Test::Smoke::Database::Graph;
 use Carp qw(cluck);
 
 require Exporter;
 
 @ISA = qw(Exporter);
 @EXPORT = qw(prompt);
-$VERSION = ('$Revision: 1.4 $ ' =~ /(\d+\.\d+)/)[0];
+$VERSION = ('$Revision: 1.5 $ ' =~ /(\d+\.\d+)/)[0];
 
 my $limite = 18013;
 #$limite = 0;
@@ -60,7 +69,15 @@ sub DESTROY { $_[0]->{DBH}->disconnect if ($_[0]->{DBH}); }
 # header
 #------------------------------------------------------------------------------
 sub header_html {
-  return <<EOF;
+  my $self = shift;
+  my $u = $self->{opts}->{url_base} || $ENV{BASE} || '/perl/smoke';
+  if (!$ENV{SCRIPT_NAME}) {
+    $ENV{SCRIPT_NAME} = $ENV{CGI_BASE} || '/cgi-bin';
+    $ENV{SCRIPT_NAME}.='/smoke_db.cgi';
+  }
+  my $buf = start_html
+    (-style=>{'src'=>"$u/smokedb.css"}, -title=>"perl-current smoke results");
+  $buf.= <<EOF;
  <div class=menubar><table width="100%"><tr><td class=links>&nbsp;
    <a class=o href="$ENV{SCRIPT_NAME}">Home</a> &nbsp;|&nbsp;
    <a class=m href="$ENV{SCRIPT_NAME}?filter=1">Filter</a> &nbsp;|&nbsp;
@@ -68,13 +85,15 @@ sub header_html {
    <a class=m href="$ENV{SCRIPT_NAME}?last=1;want_smoke=1">Last smoke</a> &nbsp;|&nbsp;
    <a class=m href="$ENV{SCRIPT_NAME}?failure=1">
   Last failures</a> &nbsp;|&nbsp;
-   <a class=m href="FAQ.html">FAQ</a> &nbsp;|&nbsp;
+   <a class=m href="$u/FAQ.html">FAQ</a> &nbsp;|&nbsp;
+   <a class=m href="$u/0.html">Stats</a> &nbsp;|&nbsp;
    <a class=m href="http://qa.perl.org">About</a> &nbsp;|&nbsp;
    <a class=m href="mailto:alian\@cpan.org">Author</a> &nbsp;|&nbsp;
 </td><td align=right></td></tr></table>
 </div>
 <h1>Perl-current smoke results</h1>
 EOF
+  return $buf;
 
 }
 
@@ -88,6 +107,46 @@ sub rundb {
     next if (!$_ or $_ eq ';');
     print "mysql <-\t$_\n" if ($self->{opts}->{verbose});
     $self->{DBH}->do($_) || print "Error $_: $DBI::errstr!\n";
+  }
+}
+
+#------------------------------------------------------------------------------
+# build_graph
+#------------------------------------------------------------------------------
+sub build_graph {
+  my $self = shift;
+  my $c = new CGI;
+  # Last 50 smoke
+  my $st = $self->{DBH}->prepare('select max(smoke)-50 from builds');
+  $st->execute;
+  my ($li) = $st->fetchrow_array;
+  $st->finish;
+  # Begin, perl-5.9, last 50 smoke
+  my %limit = (0 =>'Since smoke 11613', 
+	       17500=>'Perl 5.9', 
+	       $li=>'Last 50 smoke');
+  foreach my $mt (keys %limit) {
+    print STDERR "Create $mt.html\n";
+    my $graph = new Test::Smoke::Database::Graph($self->{DBH}, $mt);
+    $graph->percent_configure();
+    $graph->percent_configure_all();
+    $graph->configure_per_os();
+    $graph->smoke_per_os();
+    $graph->configure_per_smoke();
+    $graph->os_by_smoke();
+    $graph->success_by_os();
+    open(STATS,">$mt.html") or die "Can't create $mt.html:$!\n";
+    print STATS $self->header_html.h2($limit{$mt})."Current result - ";
+    foreach my $mt2 (keys %limit) {
+      print STATS a({-href=>"$mt2.html"},$limit{$mt2})." - ";
+    }
+    print STATS hr;
+    foreach (glob("$mt/*.png")) {
+      print STATS $c->img({src => $_, align=>'center'}),"<hr>\n";
+    }
+    print STATS "Build with DBD::Mysql / GD::Graph / Test::Smoke::Database on ",
+      scalar localtime,$c->end_html;
+    close(STATS);
   }
 }
 
@@ -209,9 +268,11 @@ sub display {
   my ($i,$summary,$details,$failure,$class)=(0);
   # Walk on each smoke
   $summary = h2("Summary - ".$self->nb." reports available after smoke $limite.").
-    "<div class=\"box\"><table border=1>".
-    Tr(th("Os"),th("Os version"),th("Archi"),th("Compiler"),th("Version compiler"),
-       th("Last smoke"),th("Configuration<br>tested|pass"),
+    "
+<table class=box width=\"90%\"><tr><td>
+<table border=\"1\" width=\"100%\" class=\"box2\">".
+Tr(th("Os"),th("Os version"),th("Archi"),th("Compiler"),th("Version compiler"),
+       th("Last smoke"),th("Configure<br>run|build"),
        th("Tests fails"))."\n";
   my $ref = $self->read_all;
   my ($lasta,$lastosv,$lastcc,$lastccv,$lastar,$oss,$osvv,$ccc,$ccvv,$arr)=
@@ -265,31 +326,34 @@ sub display {
 	       $$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{nbco});
 	    my $id = $$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{id};
 	    # debut des tableaux erreurs et details
-	    my $de = "<a name=\"$id\"></a> <table width=\"80%\">".
-	      Tr(th({-colspan=>2},"$os $osver $ar $cc $ccver smoke patch $smoke"));
+	    my $de = "\n<a name=\"$id\"></a> <table width=\"80%\" class=\"box\">".
+	      Tr(th({-colspan=>5},"$os $osver $ar $cc $ccver smoke patch $smoke"));
 	    # Liste des tests echoues
 	    if ($$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{failure}) {
 	      (my $f = $$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{failure})
 		=~s/\n/<br>/g;
-	      $nbt = ($f =~ tr/FAILED//);
-	      if (param('failure')) {$failure.=$de.Tr(td($f))."</table><br>"; }
+	      if (param('failure') && $nbt) {
+		$failure.=$de.Tr(td($f))."</table><br>"; }
 	    }
 	
 	    # Liste des configs testees
 	    if (ref($$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{build})) {
 	      my $r2 = 1;
-	      my $dets;
+	      my ($dets);
 	      foreach my $config (sort keys %{$$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{build}}) {
 		$dets.= "<tr>".td($config);
-		my $r = 1;
+		my $co="<table border=0><tr>";
+		my $r = 1; my $classe=" ";
 		foreach my $v (split(/ /,$$ref{$os}{$osver}{$ar}{$cc}{$ccver}{$smoke}{build}{$config})) {
 		  my $u = $ENV{SCRIPT_NAME}."?failure=1&smoke=$smoke";
 		  $u.=$self->compl_url if ($self->compl_url);
 		  $u.="#$id" if ($id);
-		  if (($v ne 'O') and ($v ne '?')) {
-		    $v = a({-href=>$u},$v); $r=0; $r2=0;
+		  if ($v eq 'F') {
+		    $v= a({-href=>$u},$v); $r=0; $r2=0;
+		  } elsif ($v eq 'm' or $v eq 'c') {
+		    $classe="red";
 		  }
-		  $dets.=td({width=>5},$v);
+		  $dets.=td({-class=>$classe,-width=>3},$v);
 		}
 		$dets.="</tr>";
 		$nbto+=$r;
@@ -317,15 +381,23 @@ sub display {
 	      $nbt = td({-align=>"center", -class=>'red'},$nbt);
 	    }
 	    else { $nbt=td({-align=>"center"},0); }
-	    my $u = $ENV{SCRIPT_NAME}."?last=1";
+	    my $u = $ENV{SCRIPT_NAME}."?last=1&smoke=$smoke";
 	    $u.= $self->compl_url if ($self->compl_url);
 	    $u.="#$id" if ($id);
-	    $nbto=font({-color=>"red"},$nbto) if ($nbc!=$nbto);
+	    my $class_final=" ";
+	    if ($nbto==0) { $class_final="red"; }
+	    elsif ($nbc!=$nbto) { $class_final='orange';}
 	    $summary.=Tr({-class=>"mod".$class},
-			 td($oss),td($osvv),td($arr),td($ccc),td($ccvv),
-			 td({-align=>"center"},a({-href=>$u}, $smoke)),
-			 td(table({-border=>1}, Tr(td({-width=>"50"},$nbc),
-						   td({-width=>"50"},$nbto)))),
+			 td({-class=>"os"},$oss),
+			 td({-class=>"osver"},$osvv),
+			 td({-class=>"archi"},$arr),
+			 td({-class=>"cc"},$ccc),
+			 td({-class=>"ccver"},$ccvv),
+			 td({-class=>"smoke"},a({-href=>$u}, $smoke)),
+			 td({-class=>$class_final},
+			    table({-border=>0, -width=>'100%'},
+				  Tr(td({-width=>"30"},$nbc),
+				     td({-width=>"30"},$nbto)))),
 			 $nbt."\n");
 	  }
 	  }
@@ -333,7 +405,7 @@ sub display {
       }
     }
   }
-  $summary.="</table></div>";
+  $summary.="</table></td></tr></table>";
   return (\$summary,\$details,\$failure);
 }
 
@@ -462,7 +534,9 @@ sub parse_hm_brand_rpt {
       my $conf = (length($l)>9*$nbI ? substr($l,9*$nbI) : " ");
       next if ($conf!~/^-/ and $conf!~/^\s*$/);
       foreach (@l) {
-	$lr[$i]->{build}{$conf} = $_ if ($_!~m!^\s*$!);
+	if (!(/^[ \?\-\.]+$/)) { # really a result
+	  $lr[$i]->{build}{$conf} = $_ if ($_!~m!^\s*$!);
+	}
 	$i++;
       }
       $ok++;
@@ -474,11 +548,13 @@ sub parse_hm_brand_rpt {
 #	print "Dump:",Data::Dumper->Dump([ $a ]),"\n";
 #	print $a,"\n";
 	next if (!$a->{os} && !$a->{osver});
-	if ($a->{os} eq "cygwin") {
+	if ($a->{os} =~ /cygwin/i) {
 	  $ln{$i++} = $a->{os}." ".substr($a->{osver},0,3);
+	} elsif ($a->{os} =~ /aix/i) {
+	  $ln{$i++} = $a->{os}." ".substr($a->{osver},0,3).' '.$a->{cc};
 	} else { $ln{$i++} = $a->{os}." ".$a->{osver}; }
       }
-      foreach my $n (keys %ln) {
+      foreach my $n (keys %ln) {# print $ln{$n},"\n";
 	if ($l=~/^$ln{$n}/i) {
 	  $lr[$n]->{failure}.=$l if ($lr[$n]);
 	  $last{$n}=1;
@@ -486,8 +562,10 @@ sub parse_hm_brand_rpt {
 	}
       }
       if (!$r) {
-	if ($l=~/^\s+/ && %last) {
-	  foreach (keys %last) { $lr[$_]->{failure}.=$l if ($lr[$_]);  }
+	if ($l=~/^[ \t]+/ && %last) {
+	  foreach (keys %last) { 
+	    if ($lr[$_]) { $lr[$_]->{failure}.=$l; $lr[$_]->{nbte}++;  }
+	  }
 	} else { undef %last; }
       }
     }
@@ -503,16 +581,22 @@ sub parse_hm_brand_rpt {
     if (!$r->{ccver} && $header=~m/$name[^ ]*  \s*([^\n]*)\n/i) {
       my $v = $1;
       if ($v=~/^([^\n]*?\d)\s+(.*)/) {
-	$r->{ccver} = $1; 
-	$lr[$ok+1]->{ccver}=$2 
+	$r->{ccver} = $1;
+	$lr[$ok+1]->{ccver}=$2
 	  if ($lr[$ok+1]->{os} && $lr[$ok+1]->{os} eq $r->{os});
       } else { $r->{ccver} = $v; }
     }
     # Set others values
-    $r->{nbte} = ( $r->{failure} ? ($r->{failure}=~tr/FAILED//) : 0);
     $r->{nbc} = scalar keys %{$r->{build}};
     $r->{nbco} = 0;
+    $r->{nbte} = 0 if (!$r->{nbte});
     $r->{id} = $r->{smoke}.$ok;
+    if ($r->{ccver} && $r->{ccver}=~/^(.*?)\s+32-bit$/) {
+      $r->{ccver} = $1; 
+    } elsif (!$r->{ccver}) { $r->{ccver}= ' '; }
+    $r->{cc} = ' ' if (!$r->{cc});
+    $r->{osver} = ' ' if (!$r->{osver});
+    $r->{archi}= ' ';
   }
   return @lr;
 }
@@ -538,6 +622,7 @@ sub parse_rpt {
     else { $cont.=$l."\n"; }
   }
   return undef if (!$cont);
+  my $irix = 0;
   foreach my $l (split(/\n/, $cont)) {
     $content.=$l;
     chomp($l);
@@ -546,9 +631,10 @@ sub parse_rpt {
     elsif ($l=~/^From:/ && $l=~/Alian/) { $col=-3; }
     elsif ($l=~/^Return-Path: <h.m.brand\@hccnet.nl>/) { $col=-1; }
     # A report without info about os
-    elsif ($l=~/Automated smoke report for patch (\d+) on  - $/) { return -2; }
-    # A report without info about os
-    elsif ($l=~/Automated smoke report for patch (\d*) on  -  \(\)$/) { return -2; }
+    elsif (($l=~/Automated smoke report for patch (\d+) on  - $/) or
+	   ($l=~/Automated smoke report for patch (\d*) on  -  \(\)$/)) {
+      return -2;
+    }
     # A normal report with os and osver
     elsif (($l=~/Automated smoke report for patch (\d+) on (.*) - (.*)$/) or
 	   ($l=~/Automated smoke report for .* patch (\d+) on (.*) - (.*)$/)) {
@@ -561,9 +647,14 @@ sub parse_rpt {
     }
     elsif ($l=~/Automated smoke report for patch (\d*) on (.*)$/) {
       ($h{smoke},$h{os}, $h{osver}) = ($1,$2,"??");
+      if ($l=~/(irix\d*)$/) { $irix = 1; $h{os}=$1;}
     }
     elsif ($l=~/Automated smoke report for patch (\d*)$/) {
       ($h{smoke}) = ($1);
+    }
+    elsif ($irix==1) {
+      $irix=0;
+      $h{osver} = $1 if ($l=~/^ - (.*)$/);
     }
     elsif ($l=~/on (.*) using (.*) version (.*)$/) {
       ($h{os}, $h{cc},$h{ccver},$h{osver}) = ($1,$2,$3,"??");
@@ -571,21 +662,43 @@ sub parse_rpt {
     elsif ($l=~/using (.*) version (.*)$/) {
       ($h{cc}, $h{ccver}) = ($1,$2);
     }
+    # A line of result
     elsif ($l=~/^([\w?-] [\w?-] [\w?-] [\w?-]) ?\|? ?(.*)$/) {
       my $c = $2; 
       $c=' ' if (!$c);
       $h{"build"}{$c} = $1;
     }
     elsif ($l=~/Failures(.*):/) { $fail=1; }
-    elsif ($fail) { $h{"failure"}.=$l."\n"; }
+    elsif ($fail) { $h{"failure"}.=$l."\n"; $h{nbte}++ if ($l=~/\.\.\./); }
   }
-
+#    if ($h{os}=~/irix/i) { print Data::Dumper->Dump( [ \%h]); }
 #  print $h{failure},"\n";
+  # Valid report have os and build
   if ($h{build} && $h{os}) {
-    $h{ccver}="??" if (!$h{ccver});
-    $h{nbte} = ( $h{failure} ? ($h{failure}=~tr/FAILED//) : 0);
+    # ccver
+    if (!$h{ccver}) { $h{ccver}="??"; }
+    else {
+      $h{ccver}=~s/\(prerelease\)//g;
+      $h{ccver}=~s/\(release\)//g;
+    }
+    # Number of failed test
+    $h{nbte} = 0 if (!$h{nbte});
+    # cc
+    if (!$h{cc}) { $h{cc}="??"; }
+    elsif ($h{cc}=~m!/([^/]*)$!) { $h{cc}=$1 }
+    # Number of configure run
     $h{nbc} = scalar keys %{$h{build}};
     $h{nbco} = 0;
+    # Try to set the archi
+    if ($h{osver}=~m!^(.*)\((.*)/.*\)! or $h{osver}=~m!^(.*)\((.*)\)!) {
+      $h{osver} = $1;
+      $h{archi} = $2;
+      if ($h{archi}=~m!^([^-]*)-!) { $h{archi} = $1; }
+      $h{archi} = "i386" if ($h{archi}=~/86$/);
+    } else {$h{archi}= '??';}
+    if ($h{os}=~/^irix/ && $h{osver}=~/^(.*) (IP\d*)/) {
+      $h{osver}=$1; $h{archi}=$2;
+    }
 #    $h{report}= $content;
     $h{id}=$1 if ($file=~/(\d+)\.rpt/ or $file=~/(\d+)\.normal\.rpt/);
     return \%h
@@ -617,7 +730,6 @@ sub read_all {
     $a.="$o='$v' ";
   }
   $req.="where $a" if ($a);
-  print STDERR $req,"\n";
   my $st3 = $self->{DBH}->prepare($req);
   $st3->execute or print STDERR "On $req";
   while (my @l = $st3->fetchrow_array) {
@@ -631,7 +743,6 @@ sub read_all {
     if (@lid) { $req.=" where idbuild in (".join(",",@lid).")"; }
     my $st2 = $self->{DBH}->prepare($req);
     $st2->execute or print STDERR "On $req";
-    print STDERR $req,"\n";
     while (my @l = $st2->fetchrow_array) {
       my $id = shift @l;
       $f{$id} = shift @l;
@@ -642,7 +753,6 @@ sub read_all {
   if (param('last')) {
     $req = "select idbuild,configure,result from configure";
     if (@lid) { $req.=" where idbuild in (".join(",",@lid).")"; }
-    print STDERR $req,"\n";
     my $st2 = $self->{DBH}->prepare($req);
 #    print $req,"<br>";
     $st2->execute or print STDERR "On $req";
@@ -658,7 +768,6 @@ select id,os,osver,archi,cc,ccver,date,smoke,nbc,nbco,nbte
 from builds
 EOF
   if (@lid) { $req.=" where id in (".join(",",@lid).")"; }
-    print STDERR $req,"\n";
   my $st = $self->{DBH}->prepare($req);
   $st->execute or print STDERR $req,"<br>";
   my %h;
@@ -721,25 +830,26 @@ sub add_to_db {
   print STDERR Data::Dumper->Dump([$ref]) if ($self->{opts}->{verbose});
   return if (!$ref->{os});
   my ($nbco,$vf)=(0,0);
-  my ($cc,$ccf,$f,$r) = ($ref->{cc},$ref->{ccver} || ' ',
+  my ($cc,$ccf,$f,$r) = ($ref->{cc}||' ',$ref->{ccver} || ' ',
 			 $ref->{failure},$ref->{report});
   foreach ($cc,$ccf,$f,$r) { s/'/\\'/g if ($_); }
   foreach my $c (keys %{$$ref{build}}) {
     $vf=1;
     foreach (split(/ /,$$ref{build}{$c})) {
-      $vf=0 if ($_ ne 'O' and $_ ne '?');
+      $vf=0 if ($_ eq 'F' or $_ eq 'm' or $_ eq 'c');
     }
     $nbco+=$vf;
   }
   # Ajout des infos sur le host
   my $req = "INSERT INTO builds(";
   $req.= 'id,' if ($ref->{id});
-  $req.= "os,osver,cc,ccver,date,smoke,nbc,nbco,nbte) VALUES (";
+  $req.= "os,osver,cc,ccver,date,smoke,nbc,nbco,nbte,archi) VALUES (";
   $req.= "$ref->{id}," if ($ref->{id});
   $req.= <<EOF;
 '$ref->{os}', '$ref->{osver}','$cc','$ccf', NOW(),
-        $ref->{smoke}, $ref->{nbc}, $nbco, $ref->{nbte})
+        $ref->{smoke}, $ref->{nbc}, $nbco, $ref->{nbte},'$ref->{archi}')
 EOF
+
 #  print $req,"\n";
   my $st = $self->{DBH}->prepare($req);
   if (!$st->execute) {
@@ -772,6 +882,8 @@ EOF
   }
   return ($DBI::errstr ? 0 : 1);
 }
+
+
 #------------------------------------------------------------------------------
 # POD DOC
 #------------------------------------------------------------------------------
@@ -904,7 +1016,7 @@ after B<fetch> method.
 
 =head1 VERSION
 
-$Revision: 1.4 $
+$Revision: 1.5 $
 
 =head1 AUTHOR
 

@@ -2,8 +2,8 @@
 #
 # Simple perl example to interface with module Test::Smoke::Database
 # Copyright 200x A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/01/05 01:09:25 $
-# $Revision: 1.3 $
+# $Date: 2003/02/10 00:47:47 $
+# $Revision: 1.5 $
 #
 
 use strict;
@@ -24,14 +24,16 @@ my %opts =
 
 # SQL request to set architecture for report before 1.16 of Test-Smoke
 my $update_archi = <<EOF;
-update builds set archi='i386';
-update builds set archi='sparc' where os='solaris';
-update builds set archi='sparc' where os='NetBSD' and osver='1.5.3';
-update builds set archi='sparc' where os='linux' and osver='2.2.19';
-update builds set archi='ppc' where os='linux' and osver='2.2.16';
-update builds set archi='ppc'where os='linux' and osver='2.4.18' and ccver='2.95.4';
-update builds set archi=' ' where os='AIX'or os='HP-UX' or os='dec_osf' or os like 'irix%';
+update builds set archi='sparc' where os='solaris' and archi='??';
+update builds set archi='sparc' where os='NetBSD' and osver='1.5.3' and archi='??';
+update builds set archi='sparc' where os='linux' and osver='2.2.19' and archi='??';
+update builds set archi='ppc' where os='linux' and osver='2.2.16'  and archi='??';
+update builds set archi='ppc'where os='linux' and osver='2.4.18' and ccver='2.95.4' and archi='??';
+update builds set archi=' ' where os='AIX'or os='HP-UX' or os like 'irix%' and archi='??';
+update builds set archi='i386' where archi='??' or os='cygwin';
 update builds set osver='4.6-STABLE' where os='freebsd';
+update builds set os='linux' where os='Red Hat Linux 8.0';
+update builds set os='solaris' where os like 'SunOS%';
 EOF
 
 # SQL request to clear db
@@ -92,7 +94,8 @@ CREATE TABLE data (
 EOF
 
 my @options = qw/clear suck import dir=s verbose nntp_server=s create drop
-                 user=s password=s database=s update_archi help man/;
+                 user=s password=s database=s help man graph
+                 min_smoke=i/;
 
 GetOptions( \%opts, @options) or pod2usage( -verbose => 1, -exitval => 1 );
 $opts{help}  and pod2usage( -verbose => 1, -exitval => 0 );
@@ -122,10 +125,15 @@ $d->suck_ng() if ($opts{suck});
 $d->rename_rpt() if ($opts{rename});
 
 # Parse & import
-$d->parse_import() if ($opts{import});
+if ($opts{import}) {
+  $d->parse_import();
 
-# Update architecture for report before Test-Smoke-1.16
-$d->rundb($update_archi) if ($opts{update_archi});
+  # Update architecture for report before Test-Smoke-1.16
+  $d->rundb($update_archi);
+}
+# Create graph
+$opts{min_smoke}=0 if (!$opts{min_smoke});
+$d->build_graph($opts{min_smoke}) if ($opts{graph});
 
 =pod
 
@@ -135,10 +143,10 @@ admin_smokedb - Import smoke report in a mysql database
 
 =head1 SYNOSPIS
 
-  admin_smokedb --clear --suck --import --dir=s --verbose 
-                --nntp_server=s --mysql=s --user=s 
-                --password=s --database=s --update_archi
-                --help --man --create --drop
+  admin_smokedb --clear  --create --database=s  --dir=s
+                 --drop --graph --help --import --man
+                 --min_smoke=i --nntp_server=s --mysql=s
+                 --password=s --suck --user=s --verbose
 
 =head1 DESCRIPTION
 
@@ -153,7 +161,7 @@ overwrite default values.
 
 Then you must do:
 
-  admin_smokedb --suck --import --update_archi
+  admin_smokedb --suck --import
 
 for create a complete smoke database. You can add this sequence to your
 crontab daily. You can now lauch your browser yo browse database with
@@ -187,9 +195,9 @@ Parse and imports reports in database
 
 Fetch new report from perl.daily-build.reports
 
-=item B<--update_archi>
+=item B<--graph> [ B<--min_smoke=>I<no_smoke> ]
 
-Update row 'archi' in database for reports made before Test-Smoke-1.16.
+Build with GD::Graph graph about smoke
 
 =back
 
@@ -223,7 +231,7 @@ L<Test::Smoke::Database>, L<Test::Smoke::Database::FAQ>, L<Test::Smoke>
 
 =head1 VERSION
 
-$Revision: 1.3 $
+$Revision: 1.5 $
 
 =head1 AUTHOR
 

@@ -1,4 +1,13 @@
-Revision history for Perl extension Database.
+Revision history for Perl extension Test::Smoke::Database.
+
+1.5  2003/02/10 00:58:05  alian
+ - Add feature of graph
+ - Correct Irix report parsing (no os version)
+ - Correct number of failed test
+ - Read archi from 1.16 report
+ - Update parsing of error of HM Brand reports
+ - Update display for cgi
+ - Remove --update-archi option. Done after every import
 
 1.4  2003/01/05 21:45:55  alian
  - Fix for parsing hm. brand reports with 5.6

@@ -2,8 +2,8 @@
 #
 # cgi interface for database build with module Test::Smoke::Database
 # Copyright 200x A.Barbet alian@alianwebserver.com.  All rights reserved.
-# $Date: 2003/01/05 01:09:59 $
-# $Revision: 1.3 $
+# $Date: 2003/02/10 00:50:07 $
+# $Revision: 1.4 $
 #
 
 use CGI qw/:standard -no_xhtml/;
@@ -24,7 +24,6 @@ my %opts =
     'database'    => 'smoke',
     'limit'       => param('last_smoke_fil') || cookie('last_smoke') || 18188
   );
-my $css = "/smokedb.css";
 
 # for bench
 if (!$ENV{SERVER_NAME}) {
@@ -48,8 +47,6 @@ sub main {
   # Create a Test::Smoke::Database instance
   my $d = new Test::Smoke::Database(\%opts);
   print header(-cookie=>\@lc),
-        start_html
-	  (-style=>{'src'=>$css}, -title=>"perl-current smoke results"),
 	$d->header_html;
   if (param('filter')) { print $d->filter; }
   else {

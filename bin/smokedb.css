@@ -10,12 +10,16 @@ BODY {
   background: transparent;
   color: #006699;
   font-size: large;
+  margin-left: 3px;
+  margin-bottom: 0px;
+  padding: 0;border: 0;
 }
 
  H2      {
   background: transparent;
   color: #006699;
   font-size: medium;
+  margin-left: 5px;
 }
 .mod1
   { background : #DDDDDD; }
@@ -45,14 +49,20 @@ A:link, A:visited {
   color: #006699;
 }
 
-.red A:link, .red A:visited, .red TD {
+.smoke { text-align: center; }
+.ccver { font-size: 80%; }
+.result { text-align: right; }
+.red A:link, .red A:visited, .red {
 	  color: #FFFFFF;
 	  background: red;
+  }
+.orange A:link, .orange A:visited, .orange {
+	  background: orange;
   }
 
 TD {
   margin: 0;
-  padding: 0;
+  padding: 1px;
   font-size: 90%;
 }
 
@@ -85,8 +95,9 @@ DT {
 TH {
   background: #bbbbbb;
   color: inherit;
-  padding: 0.4ex 1ex;
+/*  padding: 0.4ex 1ex;*/
   text-align: left;
+  font-size: 80%;
 }
 
 TH A:link, TH A:visited {
@@ -96,8 +107,12 @@ TH A:link, TH A:visited {
 
 .box {
   border: 1px solid #006699;
-  margin: 5ex;
-  padding: 0;
+  margin: 10px;
+  padding: 0px;
+}
+.box2 {
+  margin: 0px;
+  padding: 0px;
 }
 
 .distfiles TD {
@@ -268,19 +283,6 @@ A.m:hover {
   background: transparent;
   color: #006699;
   font-size: medium;
-}
-
-.pod IMG     {
-  vertical-align: top;
-}
-
-.pod .toc A  {
-  text-decoration: none;
-}
-
-.pod .toc LI {
-  line-height: 1.2em;
-  list-style-type: none;
 }
 
 .faq DT {

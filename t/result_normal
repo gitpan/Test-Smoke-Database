@@ -19,10 +19,11 @@ $rep = {
                                                          '-Duse64bitall -Duselongdouble' => 'O O O O'
                                                        },
                                             'os' => 'openbsd',
-                                            'ccver' => '2.95.3 20010125 (prerelease)',
+                                            'ccver' => '2.95.3 20010125 ',
                                             'cc' => 'cc',
+                                            'archi' => 'i386',
                                             'id' => '1943',
-                                            'osver' => '3.2 (OpenBSD.i386/1 cpu)',
+                                            'osver' => '3.2 ',
                                             'nbc' => 12
                                           }
                                         ],
@@ -48,8 +49,9 @@ $rep = {
                                             'os' => 'linux',
                                             'ccver' => '2.96 20000731 (Red Hat Linux 7.2 2.96-112.7.2)',
                                             'cc' => 'cc',
+                                            'archi' => 'i386',
                                             'id' => '1981',
-                                            'osver' => '2.4.17-1 (i686/2 cpus)',
+                                            'osver' => '2.4.17-1 ',
                                             'nbc' => 12
                                           }
                                         ]

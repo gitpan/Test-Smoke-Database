@@ -35,8 +35,8 @@ foreach my $f (keys %$rep) {
     my $nb=0;
     foreach (@lr) { 
        ok(eq_hash($_, $$rep{$f}->[$nb])) 
-          or diag("Find ". $t->display_rptref($_).
-                  " and want ".$t->display_rptref($$rep{$f}->[$nb]));
+          or diag("Find ". Data::Dumper->Dump([ $_  ]).
+                  " and want ".Data::Dumper->Dump([ $$rep{$f}->[$nb] ]));
        $nb++;
     }
   }
